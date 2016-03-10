@@ -1,8 +1,50 @@
-angular.module('appCg').factory('gprRestApi', function($http) {
+angular.module('appCg').service('ItemsService', function($q) {
+    return {
+        getItem: function() {
+            var dfd = $q.defer();
 
+            setTimeout(function() {
+                dfd.resolve({
+                    name: 'Mittens Cat'
+                });
+            }, 2000);
+
+            return dfd.promise;
+        }
+    };
+});
+
+angular.module('appCg').factory('gprRestApi', ['$http', function($http, $q, $timeout) {
     var gprRestApi = {};
     gprRestApi.baseUrl = 'http://localhost:3000';
     gprRestApi.tables = [];
+    gprRestApi.FEUString = '';
+    gprRestApi.FEULevel = 1;
+    gprRestApi.FEULevelTrack = 0;
+
+    gprRestApi.setFEUString = function(table) {
+        var tableIndex = gprRestApi.getTableIndex(table);
+        angular.forEach(gprRestApi.tables[tableIndex].fields, function(value, key) {
+            if (value.type === 'reference') {
+                gprRestApi.FEUString += ',' + value.references.table + '{*';
+
+                if (gprRestApi.FEULevel > gprRestApi.FEULevelTrack) {
+                    gprRestApi.setFEUString(value.references.table);
+                    gprRestApi.FEULevelTrack += 1;
+                }
+
+                gprRestApi.FEUString += '}';
+            } else {}
+        });
+        return gprRestApi.FEUString;
+    };
+
+    gprRestApi.getFEUString = function(table) {
+        gprRestApi.FEUString = '';
+        gprRestApi.FEULevelTrack = 0;
+        gprRestApi.setFEUString(table);
+        return gprRestApi.FEUString;
+    };
 
     gprRestApi.getTableIndex = function(table) {
         var tableIndex;
@@ -12,14 +54,21 @@ angular.module('appCg').factory('gprRestApi', function($http) {
         return tableIndex;
     };
 
+
     gprRestApi.init = function(tableConfig) {
         gprRestApi.tables = tableConfig;
     };
 
-    gprRestApi.getRows = function(table) {
-        var tableIndex = gprRestApi.getTableIndex(table);
 
-        return $http.get(gprRestApi.baseUrl + '/' + table).then(function success(response) {
+    gprRestApi.getRows = function(table, efi) {
+        var tableIndex = gprRestApi.getTableIndex(table);
+        var urlString = gprRestApi.baseUrl + '/' + table + '?select=*';
+
+        if (efi) {
+            urlString += gprRestApi.getFEUString(table);
+        }
+
+        return $http.get(urlString).then(function success(response) {
             gprRestApi.tables[tableIndex].rows = response.data;
             return gprRestApi.tables[tableIndex];
         }, function error() {
@@ -27,9 +76,31 @@ angular.module('appCg').factory('gprRestApi', function($http) {
         });
     };
 
-    gprRestApi.getRow = function(table, id) {
+    gprRestApi.getRowsFilterColumn = function(table, column, value, efi) {
         var tableIndex = gprRestApi.getTableIndex(table);
-        return $http.get(gprRestApi.baseUrl + '/' + table + '?id=eq.' + id).then(function success(response) {
+        var urlString = gprRestApi.baseUrl + '/' + table + '?' + column + '=eq.' + value + '&select=*';
+
+        if (efi) {
+            urlString += gprRestApi.getFEUString(table);
+        }
+
+        return $http.get(urlString).then(function success(response) {
+            gprRestApi.tables[tableIndex].rows = response.data;
+            return gprRestApi.tables[tableIndex];
+        }, function error() {
+            console.log('Error! Getting Rows from ' + table);
+        });
+    };
+
+    gprRestApi.getRow = function(table, id, efi) {
+        var tableIndex = gprRestApi.getTableIndex(table);
+        var urlString = gprRestApi.baseUrl + '/' + table + '?id=eq.' + id + '&select=*';
+
+        if (efi) {
+            urlString += gprRestApi.getFEUString(table);
+        }
+
+        return $http.get(urlString).then(function success(response) {
             gprRestApi.tables[tableIndex].selectedRow = response.data[0];
             return gprRestApi.tables[tableIndex];
         }, function error(response) {
@@ -37,5 +108,63 @@ angular.module('appCg').factory('gprRestApi', function($http) {
         });
     };
 
+    gprRestApi.updateCreateRow = function(table, data, operation) {
+        var req = {};
+        if (operation === 'Update') { req.url = gprRestApi.baseUrl + '/' + table + '?id=eq.' + data.id; } else if (operation === 'Create') { req.url = gprRestApi.baseUrl + '/' + table; }
+        req.headers = { 'Content-Type': 'application/json', 'Prefer': 'return=representation' };
+        if (operation === 'Update') { req.method = 'PATCH'; } else if (operation === 'Create') { req.method = 'POST'; }
+        req.data = data;
+        return $http(req);
+    };
+
+    gprRestApi.deleteRow = function(table, id) {
+        var req = {};
+        req.url = gprRestApi.baseUrl + '/' + table + '?id=eq.' + id;
+        req.headers = {};
+        req.method = 'DELETE';
+        return $http(req);
+    };
+
+    gprRestApi.test = function() {
+        var dfd = $q.defer();
+
+        setTimeout(function() {
+            dfd.resolve({
+                name: 'Mittens Cat'
+            });
+        }, 2000);
+
+        return dfd.promise;
+    };
+
+    gprRestApi.getRowsAlternate = function(table) {
+        var tableIndex = gprRestApi.getTableIndex(table);
+        var foreignEntities = [];
+        var promises = [];
+
+        angular.forEach(gprRestApi.tables[tableIndex].fields, function(value, key0) {
+            if (value.type === 'reference') {
+                foreignEntities.push({ column: value.name, table: value.references.table });
+            } else {}
+        });
+
+        angular.forEach(gprRestApi.tables[tableIndex].rows, function(row, key1) {
+            angular.forEach(foreignEntities, function(field, key2) {
+                if (!row[field.column]) {
+
+                } else {
+                    promises.push(gprRestApi.getRow(field.table, row[field.column], false).then(function success(response) {
+                        gprRestApi.tables[tableIndex].rows[key1][field.column + '_'] = response.selectedRow;
+                    }));
+                }
+            });
+        });
+        return promises;
+    };
+
+    gprRestApi.getRowAlternate = function(table, id) {
+        var tableIndex = gprRestApi.getTableIndex(table);
+    };
+
     return gprRestApi;
-});
+}]);

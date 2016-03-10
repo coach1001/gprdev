@@ -1,0 +1,61 @@
+            <li class="dropdown" dropdown="" dropdown>
+                <a href="#" dropdown-toggle="" class="dropdown-toggle" data-toggle="dropdown" dropdown-toggle>EVC Meetings               <b class="caret"></b></a>
+                <ul class="dropdown-menu" role="menu" dropdown-menu>
+                    <li><a href="#">Create/Edit Meeting</a></li>
+                    <li><a href="#">Create/Edit Participants</a></li>
+                </ul>
+            </li>
+            <li class="dropdown" dropdown="" dropdown>
+                <a href="#" dropdown-toggle="" class="dropdown-toggle" data-toggle="dropdown" dropdown-toggle>Due Diligences               <b class="caret"></b></a>
+                <ul class="dropdown-menu" role="menu" dropdown-menu>
+                    <li><a href="#">Do Due Diligence</a></li>
+                    <li><a href="#">Assign Officers</a></li>
+                </ul>
+            </li>
+
+            <li class="dropdown" dropdown="" dropdown>
+                <a href="#" dropdown-toggle="" class="dropdown-toggle" data-toggle="dropdown" dropdown-toggle>Applications               <b class="caret"></b></a>
+                <ul class="dropdown-menu" role="menu" dropdown-menu>
+                    <li><a href="#">Create/Edit Application</a></li>
+                    <li><a href="#">Create/Edit Organization</a></li>
+                    <li><a href="#">Maintain Lookup Tables</a></li>
+                </ul>
+            </li>
+            <li class="dropdown" dropdown="" dropdown>
+                <a href="#" dropdown-toggle="" class="dropdown-toggle" data-toggle="dropdown" dropdown-toggle>Admin/Tech Compliance               <b class="caret"></b></a>
+                <ul class="dropdown-menu" role="menu" dropdown-menu>
+                    <li><a href="#">Do Compliance</a></li>
+                    <li><a href="#">Assign Officers</a></li>
+                </ul>
+            </li>
+            <li class="dropdown" dropdown="" dropdown>
+                <a href="#" dropdown-toggle="" class="dropdown-toggle" data-toggle="dropdown" dropdown-toggle>Relevance Checks               <b class="caret"></b></a>
+                <ul class="dropdown-menu" role="menu" dropdown-menu>
+                    <li><a href="#">Do Relevance Check</a></li>
+                    <li><a href="#">Assign Officers</a></li>
+                </ul>
+            </li>
+            <li class="dropdown" dropdown="" dropdown>
+                <a href="#" dropdown-toggle="" class="dropdown-toggle" data-toggle="dropdown" dropdown-toggle>Assessments               <b class="caret"></b></a>
+                <ul class="dropdown-menu" role="menu" dropdown-menu>
+                    <li><a href="#">Do Assessment</a></li>
+                    <li><a href="#">Assign Template to Call</a></li>
+                    <li><a href="#">Assign Assessors</a></li>
+                    <li><a href="#">Create/Edit Assessment Template</a></li>
+                </ul>
+            </li>
+            <li class="dropdown" dropdown="" dropdown>
+                <a href="#" dropdown-toggle="" class="dropdown-toggle" data-toggle="dropdown" dropdown-toggle>EVC Meetings               <b class="caret"></b></a>
+                <ul class="dropdown-menu" role="menu" dropdown-menu>
+                    <li><a href="#">Create/Edit Meeting</a></li>
+                    <li><a href="#">Create/Edit Participants</a></li>
+                </ul>
+            </li>
+            <li class="dropdown" dropdown="" dropdown>
+                <a href="#" dropdown-toggle="" class="dropdown-toggle" data-toggle="dropdown" dropdown-toggle>Due Diligences               <b class="caret"></b></a>
+                <ul class="dropdown-menu" role="menu" dropdown-menu>
+                    <li><a href="#">Do Due Diligence</a></li>
+                    <li><a href="#">Assign Officers</a></li>
+                </ul>
+            </li>
+        </ul>

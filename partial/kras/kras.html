@@ -1,0 +1,9 @@
+<h3>{{vm.title}} <span class="badge">{{vm.count}}</span></h3>
+<div class="grid"> 
+    <div class="row">
+         <div class="form-group">
+        <button class="btn btn-primary" ng-click="vm.openModal(0,'Create')" >Add Key Result Area</button>
+        </div>
+        <div ui-grid="vm.options" ui-grid-exporter  ui-grid-selection class="myGrid"></div>
+    </div>
+</div>
