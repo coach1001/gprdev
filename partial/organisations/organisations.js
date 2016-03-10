@@ -44,6 +44,7 @@ angular.module('appCg').controller('OrganisationsCtrl', function(grid_organisati
         $uibModal.open({
             templateUrl: 'partial/organisations/modal/organisation-modal.html',
             controller: 'OrganisationModalCtrl as vm',
+            size : 'lg',
             resolve: {
                 organisation: function res(gprRestApi) {
                     return gprRestApi.getRow('organisations', id);

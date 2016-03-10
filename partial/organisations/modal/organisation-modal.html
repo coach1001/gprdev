@@ -4,11 +4,15 @@
         <h4 class="modal-title">Organisation</h4>
     </div>
     <div class="modal-body">
-        <form novalidate>
-            <formly-form model="vm.organisation" fields="vm.organisationFields" form="vm.organisationForm">
-                <button ng-click="vm.updateCreateRow()" class="btn btn-primary" ng-disabled="vm.organisationForm.$invalid">{{vm.operation}}</button>
-                <button type="button" ng-click="vm.deleteRow()" class="btn btn-warning" confirm="Are you sure?" ng-hide="vm.operation === 'Create'">Delete</button>
-            </formly-form>
+        <form  name="vm.organisationForm" novalidate>
+            <uib-tabset type="pills">
+                <uib-tab ng-repeat="tab in vm.tabs" heading="{{tab.title}}" active="tab.active" disable="tab.disabled">
+                    </br>
+                    <formly-form model="tab.form.model" fields="tab.form.fields" form="vm.form" options="tab.form.options">
+                    </formly-form>
+                </uib-tab>     
+            </uib-tabset>
+            <button class="btn btn-primary submit-button" ng-disabled="vm.form.$invalid">Submit</button>            
         </form>
     </div>
 </div>

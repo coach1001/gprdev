@@ -17,19 +17,18 @@ angular.module('appCg').controller('OrganisationModalCtrl', function(
 
     if (operation === 'Create') { vm.organisation = {}; } else if (operation === 'Update') { vm.organisation = organisation.selectedRow; }
 
-    //console.log(provinces);
     vm.operation = angular.extend(operation);
-		//vm.referees = angular.extend(referees.rows);
-    //vm.auditors = angular.extend(auditors.rows);
+    vm.referees = angular.extend(referees.rows);
+    vm.auditors = angular.extend(auditors.rows);
     vm.provinces = angular.extend(provinces.rows);
-    //vm.orgTypes = angular.extend(orgTypes.rows);
-    //vm.orgStatuses = angular.extend(orgStatuses.rows);
-    //vm.suburbs = angular.extend(suburbs.rows);
-    //vm.places = angular.extend(places.rows);
-    
-    console.log(vm.provinces);
+    vm.orgTypes = angular.extend(orgTypes.rows);
+    vm.orgStatuses = angular.extend(orgStatuses.rows);
+    vm.suburbs = angular.extend(suburbs.rows);
+    vm.places = angular.extend(places.rows);
 
-    vm.organisationFields = [{
+    //console.log(vm.provinces);
+
+    /*vm.organisationFields = [{
             key: 'name',
             type: 'input',
             templateOptions: {
@@ -84,7 +83,56 @@ angular.module('appCg').controller('OrganisationModalCtrl', function(
                             rows: 3,
                             required: false
                         }
-                    }*/
+                    }second
+    ];*/
+    //vm.model = {};
+
+    vm.tabs = [
+      {
+        title: 'General Information',
+        active: true,
+        form: {
+          options: {},
+          model: vm.organisation,
+          fields: [
+            {
+              key: 'email_address',
+              type: 'input',
+              templateOptions: {
+                label: 'Organisation Email',
+                type: 'email',
+                placeholder: 'Organisation Email',
+                required: true
+              }
+            }
+          ]
+        }
+      },
+      {
+        title: 'Contact Details',
+        form: {
+          options: {},
+          model: vm.organisation,
+          fields: [
+            {
+              key: 'name',
+              type: 'input',
+              templateOptions: {
+                label: 'First Name',
+                required: true
+              }
+            },
+            {
+              key: 'lastName',
+              type: 'input',
+              templateOptions: {
+                label: 'Last Name',
+                required: true
+              }
+            }
+          ] 
+        }
+      }
     ];
 
     vm.updateCreateRow = function() {
