@@ -129,15 +129,12 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider) {
                 templateUrl: 'partial/organisations/organisations.html',
                 controller: 'OrganisationsCtrl as vm',
                 resolve: {
-                    item: function(gprRestApi) {
-                        return gprRestApi.getRows('organisations',false).then(function success(response){
-                           return gprRestApi.getRowsAlternate('organisations');
-                        });
+                    grid_organisations: function res(gprRestApi) {
+                        return gprRestApi.getRows('grid_organisations',false);
                     }
                 }
             }
         }
-
     });
     $stateProvider.state('home.applications', {
         url: 'applications',
@@ -146,7 +143,7 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider) {
                 templateUrl: 'partial/applications/applications.html',
                 controller: 'ApplicationsCtrl as vm',
                 resolve: {
-
+                    
                 }
             }
         }
@@ -177,7 +174,6 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider) {
             }
         }
     });
-    /* Add New States Above */
     $urlRouterProvider.otherwise('/');
 });
 

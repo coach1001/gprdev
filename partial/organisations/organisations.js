@@ -1,10 +1,11 @@
-angular.module('appCg').controller('OrganisationsCtrl', function(gprRestApi, $uibModal, $filter, $state, uiGridConstants) {
+angular.module('appCg').controller('OrganisationsCtrl', function(grid_organisations,gprRestApi, $uibModal, $filter, $state, uiGridConstants) {
     var vm = this;
     vm.title = 'Organisations';
-    var unfilteredRows = angular.extend(gprRestApi.tables[gprRestApi.getTableIndex('organisations')].rows);
-    vm.rows = angular.extend(gprRestApi.tables[gprRestApi.getTableIndex('organisations')].rows);
+   
+    var unfilteredRows = angular.extend(grid_organisations.rows);
+    vm.rows = angular.extend(grid_organisations.rows);
     vm.count = unfilteredRows.length;
-    console.log(vm.rows);
+   
     vm.options = {
         data: vm.rows,
         enableFiltering: true,
@@ -24,8 +25,10 @@ angular.module('appCg').controller('OrganisationsCtrl', function(gprRestApi, $ui
             { name: 'name' },
             { name: 'web_site' },
             { name: 'email_address' },
-            { name: 'referee_.name', displayName: 'Referee' },
-            { name: 'auditor_.name', displayName: 'Auditor' }
+            { name: 'referee'},
+            { name: 'auditor'},
+            { name: 'province'},
+            { name: 'organisation_type'}
         ],
         onRegisterApi: function(gridApi) {
             vm.gridApi = gridApi;
