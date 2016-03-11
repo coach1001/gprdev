@@ -1,9 +1,9 @@
-angular.module('appCg').controller('OrganisationsCtrl', function(grid_organisations, gprRestApi, $uibModal, $filter, $state, uiGridConstants) {
+angular.module('appCg').controller('OrganisationsCtrl', function(organisations, gprRestApi, $uibModal, $filter, $state, uiGridConstants) {
     var vm = this;
     vm.title = 'Organisations';
 
-    var unfilteredRows = angular.extend(grid_organisations.rows);
-    vm.rows = angular.extend(grid_organisations.rows);
+    var unfilteredRows = angular.extend(organisations.rows);
+    vm.rows = angular.extend(organisations.rows);
     vm.count = unfilteredRows.length;
 
     vm.options = {
@@ -15,13 +15,8 @@ angular.module('appCg').controller('OrganisationsCtrl', function(grid_organisati
         modifierKeysToMultiSelect: false,
         noUnselect: true,
         enableGridMenu: true,
-        columnDefs: [{
-                name: 'code',
-                sort: {
-                    direction: uiGridConstants.ASC,
-                    priority: 0,
-                }
-            },
+        columnDefs: [
+            {name: 'code'},
             { name: 'name' },
             { name: 'web_site' },
             { name: 'email_address' },
@@ -77,7 +72,9 @@ angular.module('appCg').controller('OrganisationsCtrl', function(grid_organisati
         }).result.then(function(result) {
             console.log('modal closed');
         }, function(result) {
-            $state.reload();
+           gprRestApi.getRows('grid_organisations',false).then(function success(res){
+                vm.options.data = vm.organisations = res.rows;
+            });
         });
     };
 });

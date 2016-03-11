@@ -12,11 +12,11 @@ div.navbar-collapse.collapse.in {
     max-height: 2000px;
 }
 
-*{
-  border-radius: 0 !important;
+* {
+    border-radius: 0 !important;
 }
 
-*{
+* {
     -webkit-box-shadow: none !important;
     -moz-box-shadow: none !important;
     box-shadow: none !important;
@@ -45,10 +45,16 @@ body {
     padding-left: 0;
 }
 
+.marginRow {
+    margin: 0px !important;
+}
+
+
 /*body {
     overflow-y: hidden;
 }
 */
+
 h3 {
     margin-left: -15px;
 }
@@ -81,17 +87,39 @@ h3 {
     background-color: white;
 }
 
-.ui-grid-header-cell-row{
-    border:  0px;
+.ui-grid-header-cell-row {
+    border: 0px;
 }
 
-.ui-grid-header{
-border-width:  0px !important ;   
- border-style: none !important;
- border:0px none !important;    
+.ui-grid-header {
+    border-width: 0px !important;
+    border-style: none !important;
+    border: 0px none !important;
 }
 
 .myGridSmall .ui-grid-viewport {
     width: 1170px !important;
     height: 390px !important;
+}
+
+.nav-pills > li.active > a,
+.nav-pills > li.active > a:hover,
+.nav-pills > li.active > a:focus {
+    color: #fff;
+    background-color: #005196;
+}
+
+.ui-grid-menu-button {
+    background: none;
+    border: none;
+}
+
+.ui-grid-menu-button .ui-grid-menu .ui-grid-menu-mid {
+    border: none;
+}
+
+.ui-grid-top-panel {
+    /*background: #EEEEEE !important;*/
+    background: #f5f5f5 !important;
+
 }

@@ -9,8 +9,6 @@
     <link href="bower_components/ngToast/dist/ngToast.css" rel="stylesheet">
     <link href="bower_components/angular-ui-grid/ui-grid.css" rel="stylesheet">
     <link href="bower_components/ui-select-master/dist/select.css" rel="stylesheet">
-    <link href="ui-grid.css" rel="stylesheet">
-<!--     <link href="yeti.css" rel="stylesheet"> -->
     <link href="styles.css" rel="stylesheet">
 </head>
 
@@ -37,6 +35,9 @@
     <script src="bower_components/angular-confirm-modal/angular-confirm.js"></script>
     <script src="bower_components/angular-ui-grid/ui-grid.js"></script>
     <script src="bower_components/ui-select-master/dist/select.js"></script>
+    <script src="bower_components/spin.js/spin.js"></script>
+    <script src="bower_components/angular-spinner/angular-spinner.js"></script> 
+    <script src="bower_components/angular-loading-spinner/angular-loading-spinner.js"></script>
     <!-- Add New Bower Component JS Above -->
     <!-- Main App JS -->
     <script src="app.js"></script>
@@ -65,6 +66,7 @@
     <script src="partial/organisations/modal/organisation-modal.js"></script>
     <!-- Add New Component JS Above -->
     <toast></toast>
+    <span us-spinner="{radius:30, width:10, length: 20}"></span>
     <div ui-view="topNav">
     </div>
     <div>
@@ -75,5 +77,6 @@
             </div>
         </div>
     </div>
+
 </body>
 </html>

@@ -67,7 +67,7 @@ angular.module('appCg').factory('gprRestApi', ['$http', function($http, $q, $tim
         if (efi) {
             urlString += gprRestApi.getFEUString(table);
         }
-        console.log(urlString);
+        //console.log(urlString);
         return $http.get(urlString).then(function success(response) {
             gprRestApi.tables[tableIndex].rows = response.data;
             return gprRestApi.tables[tableIndex];
@@ -99,7 +99,7 @@ angular.module('appCg').factory('gprRestApi', ['$http', function($http, $q, $tim
         if (efi) {
             urlString += gprRestApi.getFEUString(table);
         }
-        console.log(urlString);
+        //console.log(urlString);
         return $http.get(urlString).then(function success(response) {
             gprRestApi.tables[tableIndex].selectedRow = response.data[0];
             return gprRestApi.tables[tableIndex];

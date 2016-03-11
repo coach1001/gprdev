@@ -16,8 +16,8 @@ angular.module('appCg').controller('KpisCtrl', function(kpis, gprRestApi, $uibMo
         noUnselect: true,
         enableGridMenu: true,
         columnDefs: [
-            { name: 'key_result_areas.programmes.code', displayName: 'Programme Code' },
-            { name: 'key_result_areas.code', displayName: 'KRA Code' },
+            { name: 'programme_code', displayName: 'Programme Code' },
+            { name: 'kra_code', displayName: 'KRA Code' },
             { name: 'code', displayName: 'KPI Code' },
             { name: 'name', displayName: 'KPI Name' },
             { name: 'description', displayName: 'Description' }
@@ -56,7 +56,9 @@ angular.module('appCg').controller('KpisCtrl', function(kpis, gprRestApi, $uibMo
         }).result.then(function(result) {
             console.log('modal closed');
         }, function(result) {
-            $state.reload();
+            gprRestApi.getRows('grid_kpis',false).then(function success(res){
+                vm.options.data = vm.kpis = res.rows;
+            });
         });
     };
 });

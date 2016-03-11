@@ -1,18 +1,20 @@
 angular.module('appCg').controller('SuburbModalCtrl', function(
     suburb,
+    places,
     provinces,
     operation,
     gprRestApi,
     ngToast,
     $confirm,
-    $uibModalInstance) {
+    $uibModalInstance, $filter) {
 
     var vm = this;
 
     if (operation === 'Create') { vm.suburb = {}; } else if (operation === 'Update') { vm.suburb = suburb.selectedRow; }
 
     vm.operation = operation;
-    vm.provinces = angular.copy(provinces.rows);
+    vm.provinces = angular.extend(provinces.rows);
+    vm.places = angular.extend(places.rows);
 
 
     vm.suburbFields = [{
@@ -24,11 +26,34 @@ angular.module('appCg').controller('SuburbModalCtrl', function(
             label: 'Province',
             valueProp: 'id',
             labelProp: 'name',
-            required: true,
+            required: false,
             options: vm.provinces
+        },
+        watcher: {
+            listener: function(field, newValue, oldValue, scope) {
+                if(newValue !== oldValue){ vm.suburb.place = undefined;}
+
+                if (newValue) {
+                    scope.fields[1].templateOptions.options = $filter('filter')(vm.places, { province: newValue });
+                } else {
+                    scope.fields[1].templateOptions.options = [];
+                }
+            }
         }
     }, {
-       
+        key: 'place',
+        type: 'ui-select-single',
+        templateOptions: {
+            optionsAttr: 'bs-options',
+            ngOptions: 'option[to.valueProp] as option in to.options | filter: $select.search',
+            label: 'Place',
+            valueProp: 'id',
+            labelProp: 'name',
+            required: false,
+            options: vm.places
+        }
+    }, {
+
         key: 'name',
         type: 'input',
         templateOptions: {
@@ -38,7 +63,7 @@ angular.module('appCg').controller('SuburbModalCtrl', function(
             required: true
         }
     }, {
-        className : 'row',
+        className: 'row marginRow',
         fieldGroup: [{
             className: 'col-xs-4 nopadding',
             key: 'po_box_code',
@@ -60,8 +85,8 @@ angular.module('appCg').controller('SuburbModalCtrl', function(
                 required: false
             }
         }]
-    },{
-        className : 'row nopadding',
+    }, {
+        className: 'row marginRow',
         fieldGroup: [{
             className: 'col-xs-4 nopadding',
             key: 'latitude',

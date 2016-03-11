@@ -17,7 +17,8 @@ angular.module('appCg').controller('LookupsCtrl', function(
     vm.places = angular.extend(places.rows);
     vm.orgTypes = angular.extend(orgTypes.rows);
     vm.orgStatuses = angular.extend(orgStatuses.rows);
-    console.log(vm.orgStatuses);
+    //console.log(vm.orgStatuses);
+    
     vm.provincesOpt = {
         data: vm.provinces,
         enableFiltering: true,
@@ -50,10 +51,11 @@ angular.module('appCg').controller('LookupsCtrl', function(
         noUnselect: true,
         enableGridMenu: true,
         columnDefs: [
-            { name: 'name', displayName: 'Suburb Name' },
-            { name: 'provinces.name', displayName: 'Province'},
-            { name: 'po_box_code' },
-            { name: 'street_code'}
+            { name: 'name'},
+            { name: 'place'},
+            { name: 'province'},
+            { name: 'street_code'},
+            { name: 'po_box_code'}
         ],
         onRegisterApi: function(gridApi) {
             vm.grid2Api = gridApi;
@@ -74,7 +76,7 @@ angular.module('appCg').controller('LookupsCtrl', function(
         enableGridMenu: true,
         columnDefs: [
             { name: 'name' },
-            { name: 'provinces.name', displayName: 'Province' }
+            { name: 'province'}
         ],
         onRegisterApi: function(gridApi) {
             vm.grid3Api = gridApi;
@@ -134,7 +136,7 @@ angular.module('appCg').controller('LookupsCtrl', function(
             controller: 'ProvinceModalCtrl as vm',
             resolve: {
                 province: function res(gprRestApi) {
-                    return gprRestApi.getRow('provinces', id, true);
+                    return gprRestApi.getRow('provinces', id, false);
                 },
                 operation: function res() {
                     return operation;
@@ -154,7 +156,10 @@ angular.module('appCg').controller('LookupsCtrl', function(
             controller: 'SuburbModalCtrl as vm',
             resolve: {
                 suburb: function res(gprRestApi) {
-                    return gprRestApi.getRow('suburbs', id, true);
+                    return gprRestApi.getRow('suburbs', id, false);
+                },
+                places: function res(gprRestApi) {
+                    return gprRestApi.getRows('places', false);
                 },
                 provinces: function res(gprRestApi) {
                     return gprRestApi.getRows('provinces', false);
@@ -166,7 +171,7 @@ angular.module('appCg').controller('LookupsCtrl', function(
         }).result.then(function(result) {
             console.log('modal closed');
         }, function(result) {
-           gprRestApi.getRows('suburbs',true).then(function success(res){
+           gprRestApi.getRows('grid_suburbs',true).then(function success(res){
                 vm.suburbsOpt.data = vm.suburbs = res.rows;
             });
         });
@@ -177,7 +182,7 @@ angular.module('appCg').controller('LookupsCtrl', function(
             controller: 'PlaceModalCtrl as vm',
             resolve: {
                 place: function res(gprRestApi) {
-                    return gprRestApi.getRow('places', id, true);
+                    return gprRestApi.getRow('places', id, false);
                 },
                 provinces: function res(gprRestApi) {
                     return gprRestApi.getRows('provinces', false);
@@ -189,7 +194,7 @@ angular.module('appCg').controller('LookupsCtrl', function(
         }).result.then(function(result) {
             console.log('modal closed');
         }, function(result) {
-            gprRestApi.getRows('places',true).then(function success(res){
+            gprRestApi.getRows('grid_places',true).then(function success(res){
                 vm.placesOpt.data = vm.places = res.rows;
             });
         });
@@ -200,7 +205,7 @@ angular.module('appCg').controller('LookupsCtrl', function(
             controller: 'OrgTypeModalCtrl as vm',
             resolve: {
                 orgType: function res(gprRestApi) {
-                    return gprRestApi.getRow('organisation_types', id, true);
+                    return gprRestApi.getRow('organisation_types', id, false);
                 },
                 operation: function res() {
                     return operation;
@@ -209,7 +214,7 @@ angular.module('appCg').controller('LookupsCtrl', function(
         }).result.then(function(result) {
             console.log('modal closed');
         }, function(result) {
-            gprRestApi.getRows('organisation_types',true).then(function success(res){
+            gprRestApi.getRows('grid_org_types',true).then(function success(res){
                 vm.orgTypesOpt.data = vm.orgTypes = res.rows;
             });
         });
@@ -220,7 +225,7 @@ angular.module('appCg').controller('LookupsCtrl', function(
             controller: 'OrgStatusModalCtrl as vm',
             resolve: {
                 orgStatus: function res(gprRestApi) {
-                    return gprRestApi.getRow('organisation_statuses', id, true);
+                    return gprRestApi.getRow('organisation_statuses', id, false);
                 },
                 operation: function res() {
                     return operation;
@@ -229,7 +234,7 @@ angular.module('appCg').controller('LookupsCtrl', function(
         }).result.then(function(result) {
             console.log('modal closed');
         }, function(result) {
-            gprRestApi.getRows('organisation_statuses',true).then(function success(res){
+            gprRestApi.getRows('grid_org_statuses',false).then(function success(res){
                 vm.orgStatusesOpt.data = vm.orgStatuses = res.rows;
             });
         });

@@ -33,7 +33,7 @@ angular.module('appCg').controller('KraModalCtrl', function(
             templateOptions: {
                 type: 'text',
                 label: 'Code',
-                placeholder: 'Programme Code',
+                placeholder: 'KRA Code',
                 required: true
             }
         }, {
@@ -43,7 +43,7 @@ angular.module('appCg').controller('KraModalCtrl', function(
             templateOptions: {
                 type: 'text',
                 label: 'Name',
-                placeholder: 'Programme Name',
+                placeholder: 'KRA Name',
                 required: true
             }
         }]

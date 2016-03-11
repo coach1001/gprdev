@@ -51,9 +51,9 @@ angular.module('appCg').controller('ProgrammeModalCtrl', function(programme,
             required: false
         }
     }, {
-        className: 'row nopadding',
+        className: 'row marginRow',
         fieldGroup: [{
-            className: 'col-xs-4 nopadding',
+            className: 'col-xs-6 nopadding',
             key: 'dates.start_date_',
             type: 'datepicker',
             templateOptions: {
@@ -62,7 +62,7 @@ angular.module('appCg').controller('ProgrammeModalCtrl', function(programme,
                 datepickerPopup: 'yyyy-MM-dd'
             }
         }, {
-            className: 'col-xs-4 nopadding',
+            className: 'col-xs-6 nopadding',
             key: 'dates.end_date_',
             type: 'datepicker',
             templateOptions: {

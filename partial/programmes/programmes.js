@@ -44,7 +44,9 @@ angular.module('appCg').controller('ProgrammesCtrl', function(programmes, gprRes
         }).result.then(function(result) {
             console.log('modal closed');
         }, function(result) {
-            $state.reload();
+            gprRestApi.getRows('grid_programmes',false).then(function success(res){
+                vm.options.data = vm.programmes = res.rows;
+            });
         });
     };
 });

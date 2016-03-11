@@ -17,7 +17,7 @@ angular.module('appCg').controller('KrasCtrl', function(kras, gprRestApi, $uibMo
         enableGridMenu: true,
      
         columnDefs: [
-            { name: 'programmes.code', displayName: 'Programme' },
+            { name: 'programme_code'},
             { name: 'code', displayName: 'KRA Code' },
             { name: 'name', displayName: 'KRA Name' },
             { name: 'description', displayName: 'Description' }
@@ -51,7 +51,9 @@ angular.module('appCg').controller('KrasCtrl', function(kras, gprRestApi, $uibMo
         }).result.then(function(result) {
             console.log('modal closed');
         }, function(result) {
-            $state.reload();
+            gprRestApi.getRows('grid_kras',false).then(function success(res){
+                vm.options.data = vm.kras = res.rows;
+            });
         });
     };
 });

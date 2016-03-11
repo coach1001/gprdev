@@ -18,9 +18,9 @@ angular.module('appCg').controller('CfpsCtrl', function(cfps, gprRestApi, $uibMo
         columnDefs: [
             { name: 'call_reference', displayName: 'Call Reference' },
             { name: 'name',displayName: 'Call Name'},
-            { name: 'key_performance_indicators.key_result_areas.programmes.code', displayName: 'Programme Code' },
-            { name: 'key_performance_indicators.key_result_areas.code', displayName: 'KRA Code' },
-            { name: 'key_performance_indicators.code', displayName: 'KPI Code' }
+            { name: 'programme_code', displayName: 'Programme Code' },
+            { name: 'kra_code', displayName: 'KRA Code' },
+            { name: 'kpi_code', displayName: 'KPI Code' }
         ],
         onRegisterApi: function(gridApi) {
             vm.gridApi = gridApi;
@@ -60,7 +60,9 @@ angular.module('appCg').controller('CfpsCtrl', function(cfps, gprRestApi, $uibMo
         }).result.then(function(result) {
             console.log('modal closed');
         }, function(result) {
-            $state.reload();
+            gprRestApi.getRows('grid_calls',false).then(function success(res){
+                vm.options.data = vm.calls = res.rows;
+            });
         });
     };
 });

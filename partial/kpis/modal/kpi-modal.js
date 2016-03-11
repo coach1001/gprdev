@@ -10,7 +10,7 @@ angular.module('appCg').controller('KpiModalCtrl', function(
     $uibModalInstance,
     $uibModal,
     $filter, $interval) {
-    //console.log(targets);
+
 
     var vm = this;
 

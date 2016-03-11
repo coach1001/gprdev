@@ -7,13 +7,13 @@ angular.module('appCg', [
     'ngToast',
     'angular-confirm',
     'ui.grid', 'ui.grid.selection', 'ui.grid.exporter', 'ui.grid.edit',
-    'ui.select'
+    'ui.select','ngLoadingSpinner'
 ]);
 
 Date.prototype.toSA = function() {
 
     var yyyy = this.getFullYear().toString();
-    var mm = (this.getMonth() + 1).toString(); // getMonth() is zero-based         
+    var mm = (this.getMonth() + 1).toString();      
     var dd = this.getDate().toString();
 
     return yyyy + '-' + (mm[1] ? mm : "0" + mm[0]) + '-' + (dd[1] ? dd : "0" + dd[0]);
@@ -74,7 +74,7 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider) {
                 controller: 'ProgrammesCtrl as vm',
                 resolve: {
                     programmes: function res(gprRestApi) {
-                        return gprRestApi.getRows('programmes', false);
+                        return gprRestApi.getRows('grid_programmes', false);
                     }
                 }
             }
@@ -88,7 +88,7 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider) {
                 controller: 'KrasCtrl as vm',
                 resolve: {
                     kras: function res(gprRestApi) {
-                        return gprRestApi.getRows('key_result_areas', true);
+                        return gprRestApi.getRows('grid_kras', false);
                     }
                 }
             }
@@ -102,7 +102,7 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider) {
                 controller: 'KpisCtrl as vm',
                 resolve: {
                     kpis: function res(gprRestApi) {
-                        return gprRestApi.getRows('key_performance_indicators', true);
+                        return gprRestApi.getRows('grid_kpis', true);
                     }
                 }
             }
@@ -116,7 +116,7 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider) {
                 controller: 'CfpsCtrl as vm',
                 resolve: {
                     cfps: function res(gprRestApi) {
-                        return gprRestApi.getRows('calls', true);
+                        return gprRestApi.getRows('grid_calls', true);
                     }
                 }
             }
@@ -129,7 +129,7 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider) {
                 templateUrl: 'partial/organisations/organisations.html',
                 controller: 'OrganisationsCtrl as vm',
                 resolve: {
-                    grid_organisations: function res(gprRestApi) {
+                    organisations: function res(gprRestApi) {
                         return gprRestApi.getRows('grid_organisations',false);
                     }
                 }
@@ -156,19 +156,19 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider) {
                 controller: 'LookupsCtrl as vm',
                 resolve: {
                     provinces: function res(gprRestApi) {
-                        return gprRestApi.getRows('provinces', true);
+                        return gprRestApi.getRows('grid_provinces', false);
                     },
                     suburbs: function res(gprRestApi) {
-                        return gprRestApi.getRows('suburbs', true);
+                        return gprRestApi.getRows('grid_suburbs', false);
                     },
                     places: function res(gprRestApi) {
-                        return gprRestApi.getRows('places', true);
+                        return gprRestApi.getRows('grid_places', false);
                     },
                     orgTypes: function res(gprRestApi) {
-                        return gprRestApi.getRows('organisation_types', true);
+                        return gprRestApi.getRows('grid_org_types', false);
                     },
                     orgStatuses: function res(gprRestApi) {
-                        return gprRestApi.getRows('organisation_statuses', true);
+                        return gprRestApi.getRows('grid_org_statuses', false);
                     }
                 }
             }
@@ -191,3 +191,4 @@ angular.module('appCg').run(function($rootScope, gprRestApi, configData) {
         }
     };
 });
+

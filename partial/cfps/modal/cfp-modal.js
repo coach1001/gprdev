@@ -113,7 +113,7 @@ angular.module('appCg').controller('CfpModalCtrl', function(programmes,
             }
         }]
     }, {
-        className: 'row nopadding',
+        className: 'row marginRow',
         fieldGroup: [{
             className: 'col-xs-4 nopadding',
             key: 'dates.call_date_',
@@ -133,16 +133,6 @@ angular.module('appCg').controller('CfpModalCtrl', function(programmes,
                 datepickerPopup: 'yyyy-MM-dd'
             }
         }]
-    }, {
-        key: 'assessment_template',
-        type: 'select',
-        templateOptions: {
-            label: 'Assessment Template',
-            valueProp: 'id',
-            labelProp: 'name',
-            required: false,
-            options: vm.assessment_templates
-        }
     }];
 
     vm.updateCreateRow = function() {
