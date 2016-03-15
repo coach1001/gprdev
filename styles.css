@@ -23,10 +23,10 @@ div.navbar-collapse.collapse.in {
 }
 
 body {
-    font-family: 'RobotoDraft', 'Roboto', 'Helvetica Neue, Helvetica, Arial', sans-serif;
+    /*font-family: 'RobotoDraft', 'Roboto', 'Helvetica Neue, Helvetica, Arial', sans-serif;*/
     font-style: normal;
     font-weight: 300;
-    font-size: 1.4rem;
+    font-size: 1.5rem !important;
     line-height: 2rem;
     letter-spacing: 0.01rem;
     color: #212121;

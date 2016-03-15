@@ -1,19 +1,3 @@
-angular.module('appCg').service('ItemsService', function($q) {
-    return {
-        getItem: function() {
-            var dfd = $q.defer();
-
-            setTimeout(function() {
-                dfd.resolve({
-                    name: 'Mittens Cat'
-                });
-            }, 2000);
-
-            return dfd.promise;
-        }
-    };
-});
-
 angular.module('appCg').factory('gprRestApi', ['$http', function($http, $q, $timeout) {
     var gprRestApi = {};
     gprRestApi.baseUrl = 'http://localhost:3000';

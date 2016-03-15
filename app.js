@@ -9,17 +9,14 @@ angular.module('appCg', [
     'ui.grid', 'ui.grid.selection', 'ui.grid.exporter', 'ui.grid.edit',
     'ui.select','ngLoadingSpinner'
 ]);
-
 Date.prototype.toSA = function() {
 
     var yyyy = this.getFullYear().toString();
-    var mm = (this.getMonth() + 1).toString();      
+    var mm = (this.getMonth() + 1).toString();
     var dd = this.getDate().toString();
 
     return yyyy + '-' + (mm[1] ? mm : "0" + mm[0]) + '-' + (dd[1] ? dd : "0" + dd[0]);
 };
-
-
 function fetchData() {
     var initInjector = angular.injector(['ng']);
     var $http = initInjector.get('$http');
@@ -143,7 +140,7 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider) {
                 templateUrl: 'partial/applications/applications.html',
                 controller: 'ApplicationsCtrl as vm',
                 resolve: {
-                    
+
                 }
             }
         }
