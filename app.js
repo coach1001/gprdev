@@ -27,7 +27,7 @@ function fetchData() {
         tables.forEach(function(table, tablekey) {
             tables[tablekey].fields = [];
             tables[tablekey].rows = [];
-            tables[tablekey].selectRow = {};
+            tables[tablekey].selectedRow = {};
 
             $http({ url: 'http://localhost:3000' + '/' + table.name, method: 'OPTIONS' }).then(function success(response) {
                 var pk_column = response.data.pkey[0];

@@ -1,8 +1,8 @@
-angular.module('appCg').controller('ProgrammesCtrl', function(programmes, gprRestApi, $uibModal, $filter, $state, uiGridConstants) {
+angular.module('appCg').controller('ProgrammesCtrl', function(programmes, gprRestApi, $uibModal) {
     var vm = this;
     vm.title = 'Programmes';
-    var unfilteredRows = angular.extend(programmes.rows);
-    vm.rows = angular.extend(programmes.rows);
+    var unfilteredRows = angular.extend(programmes);
+    vm.rows = angular.extend(programmes);
     vm.count = unfilteredRows.length;
 
     vm.options = {
@@ -26,7 +26,7 @@ angular.module('appCg').controller('ProgrammesCtrl', function(programmes, gprRes
         gridApi.selection.on.rowSelectionChanged(null, function(row) {
             var msg = 'row selected ' + row.isSelected;
             vm.openModal(row.entity.id, 'Update');
-        });} 
+        });}
     };
 
     vm.openModal = function(id, operation) {
@@ -45,7 +45,7 @@ angular.module('appCg').controller('ProgrammesCtrl', function(programmes, gprRes
             console.log('modal closed');
         }, function(result) {
             gprRestApi.getRows('grid_programmes',false).then(function success(res){
-                vm.options.data = vm.programmes = res.rows;
+                vm.options.data = vm.programmes = res;
             });
         });
     };

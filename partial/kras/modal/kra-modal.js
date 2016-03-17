@@ -9,11 +9,10 @@ angular.module('appCg').controller('KraModalCtrl', function(
 
     var vm = this;
 
-    if (operation === 'Create') { vm.kra = {}; } else if (operation === 'Update') { vm.kra = kra.selectedRow; }
+    if (operation === 'Create') { vm.kra = {}; } else if (operation === 'Update') { vm.kra = angular.extend(kra); }
 
-    vm.operation = operation;
-    vm.programmes = angular.copy(programmes.rows);
-    //console.log(vm.programmes);
+    vm.operation = angular.extend(operation);
+    vm.programmes = angular.extend(programmes);
 
     vm.kraFields = [{
         key: 'programme',
@@ -65,9 +64,8 @@ angular.module('appCg').controller('KraModalCtrl', function(
         gprRestApi.updateCreateRow('key_result_areas', body, vm.operation).then(function success(response) {
             ngToast.create({ content: vm.operation + ' Record Successfull', timeout: 4000 });
             if (vm.operation === 'Create') { vm.kra.id = response.data.id; }
-
             vm.operation = 'Update';
-        }, function error(response) {
+        }, function error() {
             ngToast.warning({ content: vm.operation + ' Record Failed', timeout: 4000 });
         });
     };
@@ -76,7 +74,7 @@ angular.module('appCg').controller('KraModalCtrl', function(
         gprRestApi.deleteRow('key_result_areas', vm.kra.id).then(function success(response) {
             ngToast.warning({ content: 'Record Deleted Successfully', timeout: 4000 });
             $uibModalInstance.dismiss('Record Deleted');
-        }, function error(response) {
+        }, function error() {
             ngToast.warning({ content: 'Record Delete Failed', timeout: 4000 });
         });
 

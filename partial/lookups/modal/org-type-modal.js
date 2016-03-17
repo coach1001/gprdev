@@ -8,11 +8,9 @@ angular.module('appCg').controller('OrgTypeModalCtrl',function(
 
     var vm = this;
 
-    if (operation === 'Create') { vm.orgType = {}; } else if (operation === 'Update') { vm.orgType = orgType.selectedRow; }
+    if (operation === 'Create') { vm.orgType = {}; } else if (operation === 'Update') { vm.orgType = angular.extend(orgType); }
 
-    vm.operation = operation;
-
-
+    vm.operation = angular.extend(operation);
 
     vm.orgTypeFields = [{
         key: 'type',
@@ -24,7 +22,7 @@ angular.module('appCg').controller('OrgTypeModalCtrl',function(
             required: true
         }
     }, {
-       
+
         key: 'description',
         type: 'textarea',
         templateOptions: {

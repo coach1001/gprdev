@@ -8,9 +8,9 @@ angular.module('appCg').controller('OrgStatusModalCtrl',function(
 
     var vm = this;
 
-    if (operation === 'Create') { vm.orgStatus = {}; } else if (operation === 'Update') { vm.orgStatus = orgStatus.selectedRow; }
+    if (operation === 'Create') { vm.orgStatus = {}; } else if (operation === 'Update') { vm.orgStatus = angular.extend(orgStatus); }
 
-    vm.operation = operation;
+    vm.operation = angular.extend(operation);
 
     vm.orgStatusFields = [{
         key: 'status',
@@ -22,7 +22,7 @@ angular.module('appCg').controller('OrgStatusModalCtrl',function(
             required: true
         }
     }, {
-       
+
         key: 'description',
         type: 'textarea',
         templateOptions: {

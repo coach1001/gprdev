@@ -6,19 +6,18 @@ angular.module('appCg').controller('LookupsCtrl', function(
     orgStatuses, gprRestApi,
     ngToast,
     $confirm,
-    $filter, uiGridConstants, $uibModal, $state) {
+    $filter, uiGridConstants, $uibModal) {
 
     var vm = this;
     vm.provE = false;
     vm.title = "Lookups";
 
-    vm.provinces = angular.extend(provinces.rows);
-    vm.suburbs = angular.extend(suburbs.rows);
-    vm.places = angular.extend(places.rows);
-    vm.orgTypes = angular.extend(orgTypes.rows);
-    vm.orgStatuses = angular.extend(orgStatuses.rows);
-    //console.log(vm.orgStatuses);
-    
+    vm.provinces = angular.extend(provinces);
+    vm.suburbs = angular.extend(suburbs);
+    vm.places = angular.extend(places);
+    vm.orgTypes = angular.extend(orgTypes);
+    vm.orgStatuses = angular.extend(orgStatuses);
+
     vm.provincesOpt = {
         data: vm.provinces,
         enableFiltering: true,
@@ -146,7 +145,7 @@ angular.module('appCg').controller('LookupsCtrl', function(
             console.log('modal closed');
         }, function(result) {
             gprRestApi.getRows('provinces',true).then(function success(res){
-                vm.provincesOpt.data = vm.provinces = res.rows;
+                vm.provincesOpt.data = vm.provinces = res;
             });
         });
     };
@@ -172,7 +171,7 @@ angular.module('appCg').controller('LookupsCtrl', function(
             console.log('modal closed');
         }, function(result) {
            gprRestApi.getRows('grid_suburbs',true).then(function success(res){
-                vm.suburbsOpt.data = vm.suburbs = res.rows;
+                vm.suburbsOpt.data = vm.suburbs = res;
             });
         });
     };
@@ -195,7 +194,7 @@ angular.module('appCg').controller('LookupsCtrl', function(
             console.log('modal closed');
         }, function(result) {
             gprRestApi.getRows('grid_places',true).then(function success(res){
-                vm.placesOpt.data = vm.places = res.rows;
+                vm.placesOpt.data = vm.places = res;
             });
         });
     };
@@ -215,7 +214,7 @@ angular.module('appCg').controller('LookupsCtrl', function(
             console.log('modal closed');
         }, function(result) {
             gprRestApi.getRows('grid_org_types',true).then(function success(res){
-                vm.orgTypesOpt.data = vm.orgTypes = res.rows;
+                vm.orgTypesOpt.data = vm.orgTypes = res;
             });
         });
     };
@@ -235,7 +234,7 @@ angular.module('appCg').controller('LookupsCtrl', function(
             console.log('modal closed');
         }, function(result) {
             gprRestApi.getRows('grid_org_statuses',false).then(function success(res){
-                vm.orgStatusesOpt.data = vm.orgStatuses = res.rows;
+                vm.orgStatusesOpt.data = vm.orgStatuses = res;
             });
         });
     };

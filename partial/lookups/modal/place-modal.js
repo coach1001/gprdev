@@ -9,10 +9,10 @@ angular.module('appCg').controller('PlaceModalCtrl',function(
 
     var vm = this;
 
-    if (operation === 'Create') { vm.place = {}; } else if (operation === 'Update') { vm.place = place.selectedRow; }
+    if (operation === 'Create') { vm.place = {}; } else if (operation === 'Update') { vm.place = angular.extend(place); }
 
     vm.operation = operation;
-    vm.provinces = angular.copy(provinces.rows);
+    vm.provinces = angular.extend(provinces);
 
 
     vm.placeFields = [{
@@ -28,7 +28,7 @@ angular.module('appCg').controller('PlaceModalCtrl',function(
             options: vm.provinces
         }
     }, {
-       
+
         key: 'name',
         type: 'input',
         templateOptions: {

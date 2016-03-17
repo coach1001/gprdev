@@ -1,10 +1,10 @@
-angular.module('appCg').controller('CfpsCtrl', function(cfps, gprRestApi, $uibModal, $filter, $state) {
+angular.module('appCg').controller('CfpsCtrl', function(cfps, gprRestApi, $uibModal) {
     var vm = this;
     vm.title = 'Calls for Proposals';
 
-    var unfilteredRows = angular.extend(cfps.rows);
+    var unfilteredRows = angular.extend(cfps);
     vm.count = unfilteredRows.length;
-    vm.rows = angular.extend(cfps.rows);
+    vm.rows = angular.extend(cfps);
 
     vm.options = {
         data: vm.rows,
@@ -25,7 +25,6 @@ angular.module('appCg').controller('CfpsCtrl', function(cfps, gprRestApi, $uibMo
         onRegisterApi: function(gridApi) {
             vm.gridApi = gridApi;
             gridApi.selection.on.rowSelectionChanged(null, function(row) {
-                var msg = 'row selected ' + row.isSelected;
                 vm.openModal(row.entity.id, 'Update');
             });
         }
@@ -35,7 +34,6 @@ angular.module('appCg').controller('CfpsCtrl', function(cfps, gprRestApi, $uibMo
         $uibModal.open({
             templateUrl: 'partial/cfps/modal/cfp-modal.html',
             controller: 'CfpModalCtrl as vm',
-            //size : 'lg',
             resolve: {
                 operation: function res() {
                     return operation;
@@ -55,13 +53,12 @@ angular.module('appCg').controller('CfpsCtrl', function(cfps, gprRestApi, $uibMo
                 call: function(gprRestApi) {
                     return gprRestApi.getRow('calls', id, true);
                 }
-
             }
         }).result.then(function(result) {
             console.log('modal closed');
         }, function(result) {
             gprRestApi.getRows('grid_calls',false).then(function success(res){
-                vm.options.data = vm.calls = res.rows;
+                vm.options.data = vm.calls = res;
             });
         });
     };

@@ -1,17 +1,15 @@
-angular.module('appCg').controller('ProvinceModalCtrl',function(province, 
-    operation, 
-    gprRestApi, 
-    ngToast, 
-    $confirm, 
+angular.module('appCg').controller('ProvinceModalCtrl',function(province,
+    operation,
+    gprRestApi,
+    ngToast,
+    $confirm,
     $uibModalInstance) {
-    
+
     var vm = this;
 
-    if (operation === 'Create') { vm.province = {}; } else if (operation === 'Update') { vm.province = province.selectedRow; }
+    if (operation === 'Create') { vm.province = {}; } else if (operation === 'Update') { vm.province = angular.extend(province); }
 
-
-    vm.operation = operation;
-
+    vm.operation = angular.extend(operation);
 
     vm.provinceFields = [{
 
@@ -45,11 +43,10 @@ angular.module('appCg').controller('ProvinceModalCtrl',function(province,
 
             ngToast.create({ content: vm.operation + ' Record Successfull', timeout: 4000 });
 
-
             if (vm.operation === 'Create') { vm.province.id = response.data.id; }
 
             vm.operation = 'Update';
-        }, function error(response) {
+        }, function error() {
             ngToast.warning({ content: vm.operation + ' Record Failed', timeout: 4000 });
         });
     };
@@ -58,7 +55,7 @@ angular.module('appCg').controller('ProvinceModalCtrl',function(province,
         gprRestApi.deleteRow('provinces', vm.province.id).then(function success(response) {
             ngToast.warning({ content: 'Record Deleted Successfully', timeout: 4000 });
             $uibModalInstance.dismiss('Record Deleted');
-        }, function error(response) {
+        }, function error() {
             ngToast.warning({ content: 'Record Delete Failed', timeout: 4000 });
         });
 

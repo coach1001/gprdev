@@ -1,46 +1,52 @@
 <h3>{{vm.title}}</h3>
-<uib-tabset type="pills">
-    
+<div class="grid">
+  <uib-tabset type="pills" >
+
+    <uib-tab >
+      <uib-tab-heading>Provinces <span class="badge">{{vm.provinces.length}}</span></uib-tab-heading>
+      </br>
+      <div class="form-group">
+        <button class="btn btn-primary" ng-click="vm.openModalProvince(0,'Create')">Add Province</button>
+      </div>
+      <div ui-grid="vm.provincesOpt" ui-grid-selection class="gridSmall" ></div>
+
+    </uib-tab>
+
     <uib-tab>
-    <uib-tab-heading>Provinces <span class="badge">{{vm.provinces.length}}</span></uib-tab-heading>
-        </br>
-        <div class="form-group">
-            <button class="btn btn-primary" ng-click="vm.openModalProvince(0,'Create')">Add Province</button>
-        </div>
-        <div ui-grid="vm.provincesOpt" ui-grid-selection class="myGridSmall"></div>
-     
+      <uib-tab-heading>Places <span class="badge">{{vm.places.length}}</span></uib-tab-heading>
+      </br>
+      <div class="form-group">
+        <button class="btn btn-primary" ng-click="vm.openModalPlace(0,'Create')">Add Place</button>
+      </div>
+      <div ui-grid="vm.placesOpt" ui-grid-selection class="gridSmall"></div>
     </uib-tab>
 
-    <uib-tab><uib-tab-heading>Places <span class="badge">{{vm.places.length}}</span></uib-tab-heading>
-        </br>
-        <div class="form-group">
-            <button class="btn btn-primary" ng-click="vm.openModalPlace(0,'Create')">Add Place</button>
-        </div>
-        <div ui-grid="vm.placesOpt" ui-grid-selection class="myGridSmall"></div>
+    <uib-tab>
+      <uib-tab-heading>Suburbs <span class="badge">{{vm.suburbs.length}}</span></uib-tab-heading>
+      </br>
+      <div class="form-group">
+        <button class="btn btn-primary" ng-click="vm.openModalSuburb(0,'Create')">Add Suburb</button>
+      </div>
+      <div ui-grid="vm.suburbsOpt" ui-grid-selection class="gridSmall"></div>
     </uib-tab>
 
-    <uib-tab><uib-tab-heading>Suburbs <span class="badge">{{vm.suburbs.length}}</span></uib-tab-heading>
-        </br>
-        <div class="form-group">
-            <button class="btn btn-primary" ng-click="vm.openModalSuburb(0,'Create')">Add Suburb</button>
-        </div>
-        <div ui-grid="vm.suburbsOpt" ui-grid-selection class="myGridSmall"></div>
-    </uib-tab>
-    
 
-    <uib-tab><uib-tab-heading>Organisation Types <span class="badge">{{vm.orgTypes.length}}</span></uib-tab-heading>
-        </br>
-        <div class="form-group">
-            <button class="btn btn-primary" ng-click="vm.openModalOrgType(0,'Create')">Add Organisation Type</button>
-        </div>
-        <div ui-grid="vm.orgTypesOpt" ui-grid-selection class="myGridSmall"></div>
+    <uib-tab>
+      <uib-tab-heading>Organisation Types <span class="badge">{{vm.orgTypes.length}}</span></uib-tab-heading>
+      </br>
+      <div class="form-group">
+        <button class="btn btn-primary" ng-click="vm.openModalOrgType(0,'Create')">Add Organisation Type</button>
+      </div>
+      <div ui-grid="vm.orgTypesOpt" ui-grid-selection class="gridSmall" ></div>
     </uib-tab>
 
-    <uib-tab><uib-tab-heading>Organisation Statuses <span class="badge">{{vm.orgStatuses.length}}</span></uib-tab-heading>
-        </br>
-        <div class="form-group">
-            <button class="btn btn-primary" ng-click="vm.openModalOrgStatus(0,'Create')">Add Organisation Status</button>
-        </div>
-        <div ui-grid="vm.orgStatusesOpt" ui-grid-selection class="myGridSmall"></div>
-    </uib-tab>  
-</uib-tabset>
+    <uib-tab>
+      <uib-tab-heading>Organisation Statuses <span class="badge">{{vm.orgStatuses.length}}</span></uib-tab-heading>
+      </br>
+      <div class="form-group">
+        <button class="btn btn-primary" ng-click="vm.openModalOrgStatus(0,'Create')">Add Organisation Status</button>
+      </div>
+      <div ui-grid="vm.orgStatusesOpt" ui-grid-selection class="gridSmall"></div>
+    </uib-tab>
+  </uib-tabset>
+</div>

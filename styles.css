@@ -11,22 +11,31 @@ div.navbar-collapse.collapse {
 div.navbar-collapse.collapse.in {
     max-height: 2000px;
 }
+/*
 
+.btn{
+  border:0px solid transparent;
+}
+*/
+
+/*
 * {
     border-radius: 0 !important;
 }
+*/
 
 * {
     -webkit-box-shadow: none !important;
     -moz-box-shadow: none !important;
     box-shadow: none !important;
 }
+/*
 
 body {
-    /*font-family: 'RobotoDraft', 'Roboto', 'Helvetica Neue, Helvetica, Arial', sans-serif;*/
+    font-family: 'RobotoDraft', 'Roboto', 'Helvetica Neue, Helvetica, Arial', sans-serif;
     font-style: normal;
     font-weight: 300;
-    font-size: 1.5rem !important;
+    font-size: 1.4rem;
     line-height: 2rem;
     letter-spacing: 0.01rem;
     color: #212121;
@@ -35,6 +44,7 @@ body {
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
 }
+*/
 
 .navbar {
     margin-bottom: 0px;
@@ -45,34 +55,26 @@ body {
     padding-left: 0;
 }
 
-.marginRow {
+.grid {
+  width: 98vw;
+  height: 75vh;
+}
+
+.gridSmall {
+  width: 98vw;
+  height: 65vh;
+}
+
+
+/*.marginRow {
     margin: 0px !important;
-}
+}*/
 
 
-/*body {
+/*
+body {
     overflow-y: hidden;
-}
-*/
-
-h3 {
-    margin-left: -15px;
-}
-
-.myGrid {
-    width: 1200px;
-    height: 500px;
-}
-
-.myGridModal {
-    width: 100%;
-    height: 400px;
-}
-
-.myGridSmall {
-    width: 1170px;
-    height: 450px;
-}
+}*/
 
 .ui-grid-cell {
     border-right: 0px;
@@ -97,11 +99,6 @@ h3 {
     border: 0px none !important;
 }
 
-.myGridSmall .ui-grid-viewport {
-    width: 1170px !important;
-    height: 390px !important;
-}
-
 .nav-pills > li.active > a,
 .nav-pills > li.active > a:hover,
 .nav-pills > li.active > a:focus {
@@ -119,7 +116,10 @@ h3 {
 }
 
 .ui-grid-top-panel {
-    /*background: #EEEEEE !important;*/
+    background: #EEEEEE !important;
     background: #f5f5f5 !important;
-
 }
+
+.navbar-brand { font-weight: 400; font-size: 24px; }
+.navbar-nav a { font-weight: 400; font-size: 15px; }
+

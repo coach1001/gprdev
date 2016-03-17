@@ -10,11 +10,11 @@ angular.module('appCg').controller('SuburbModalCtrl', function(
 
     var vm = this;
 
-    if (operation === 'Create') { vm.suburb = {}; } else if (operation === 'Update') { vm.suburb = suburb.selectedRow; }
+    if (operation === 'Create') { vm.suburb = {}; } else if (operation === 'Update') { vm.suburb = angular.extend(suburb); }
 
-    vm.operation = operation;
-    vm.provinces = angular.extend(provinces.rows);
-    vm.places = angular.extend(places.rows);
+    vm.operation = angular.extend(operation);
+    vm.provinces = angular.extend(provinces);
+    vm.places = angular.extend(places);
 
 
     vm.suburbFields = [{
@@ -121,7 +121,7 @@ angular.module('appCg').controller('SuburbModalCtrl', function(
             if (vm.operation === 'Create') { vm.suburb.id = response.data.id; }
 
             vm.operation = 'Update';
-        }, function error(response) {
+        }, function error() {
             ngToast.warning({ content: vm.operation + ' Record Failed', timeout: 4000 });
         });
     };
@@ -130,7 +130,7 @@ angular.module('appCg').controller('SuburbModalCtrl', function(
         gprRestApi.deleteRow('suburbs', vm.suburb.id).then(function success(response) {
             ngToast.warning({ content: 'Record Deleted Successfully', timeout: 4000 });
             $uibModalInstance.dismiss('Record Deleted');
-        }, function error(response) {
+        }, function error() {
             ngToast.warning({ content: 'Record Delete Failed', timeout: 4000 });
         });
 

@@ -2,10 +2,10 @@ angular.module('appCg').controller('KpisCtrl', function(kpis, gprRestApi, $uibMo
     var vm = this;
     vm.title = 'Key Perfomance Indicators';
 
-    var unfilteredRows = angular.extend(kpis.rows);
+    var unfilteredRows = angular.extend(kpis);
     vm.count = unfilteredRows.length;
-    vm.rows = kpis.rows;
-    
+    vm.rows = angular.extend(kpis);
+
     vm.options = {
         data : vm.rows,
         enableFiltering: true,
@@ -27,7 +27,7 @@ angular.module('appCg').controller('KpisCtrl', function(kpis, gprRestApi, $uibMo
         gridApi.selection.on.rowSelectionChanged(null, function(row) {
             var msg = 'row selected ' + row.isSelected;
             vm.openModal(row.entity.id, 'Update');
-        });} 
+        });}
     };
 
     vm.openModal = function(id, operation) {
@@ -57,7 +57,7 @@ angular.module('appCg').controller('KpisCtrl', function(kpis, gprRestApi, $uibMo
             console.log('modal closed');
         }, function(result) {
             gprRestApi.getRows('grid_kpis',false).then(function success(res){
-                vm.options.data = vm.kpis = res.rows;
+                vm.options.data = vm.kpis = res;
             });
         });
     };

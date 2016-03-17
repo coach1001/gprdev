@@ -1,10 +1,10 @@
-angular.module('appCg').controller('KrasCtrl', function(kras, gprRestApi, $uibModal, $filter, $state) {
+angular.module('appCg').controller('KrasCtrl', function(kras, gprRestApi, $uibModal) {
     var vm = this;
     vm.title = 'Key Result Areas';
 
-    var unfilteredRows = angular.extend(kras.rows);
+    var unfilteredRows = angular.extend(kras);
     vm.count = unfilteredRows.length;
-    vm.rows = kras.rows;
+    vm.rows = angular.extend(kras);
 
     vm.options = {
         data: vm.rows,
@@ -15,7 +15,7 @@ angular.module('appCg').controller('KrasCtrl', function(kras, gprRestApi, $uibMo
         modifierKeysToMultiSelect: false,
         noUnselect: true,
         enableGridMenu: true,
-     
+
         columnDefs: [
             { name: 'programme_code'},
             { name: 'code', displayName: 'KRA Code' },
@@ -25,7 +25,6 @@ angular.module('appCg').controller('KrasCtrl', function(kras, gprRestApi, $uibMo
         onRegisterApi: function(gridApi) {
             vm.gridApi = gridApi;
             gridApi.selection.on.rowSelectionChanged(null, function(row) {
-                var msg = 'row selected ' + row.isSelected;
                 vm.openModal(row.entity.id, 'Update');
             });
         }
@@ -52,7 +51,7 @@ angular.module('appCg').controller('KrasCtrl', function(kras, gprRestApi, $uibMo
             console.log('modal closed');
         }, function(result) {
             gprRestApi.getRows('grid_kras',false).then(function success(res){
-                vm.options.data = vm.kras = res.rows;
+                vm.options.data = vm.kras = res;
             });
         });
     };

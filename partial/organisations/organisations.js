@@ -1,9 +1,9 @@
-angular.module('appCg').controller('OrganisationsCtrl', function(organisations, gprRestApi, $uibModal, $filter, $state, uiGridConstants) {
+angular.module('appCg').controller('OrganisationsCtrl', function(organisations, gprRestApi, $uibModal) {
     var vm = this;
     vm.title = 'Organisations';
 
-    var unfilteredRows = angular.extend(organisations.rows);
-    vm.rows = angular.extend(organisations.rows);
+    var unfilteredRows = angular.extend(organisations);
+    vm.rows = angular.extend(organisations);
     vm.count = unfilteredRows.length;
 
     vm.options = {
@@ -42,7 +42,7 @@ angular.module('appCg').controller('OrganisationsCtrl', function(organisations, 
             size : 'lg',
             resolve: {
                 organisation: function res(gprRestApi) {
-                    return gprRestApi.getRow('organisations', id);
+                    return gprRestApi.getRow('organisations',id);
                 },
                 referees: function res(gprRestApi) {
                     return gprRestApi.getRows('organisations',false);
@@ -73,7 +73,7 @@ angular.module('appCg').controller('OrganisationsCtrl', function(organisations, 
             console.log('modal closed');
         }, function(result) {
            gprRestApi.getRows('grid_organisations',false).then(function success(res){
-                vm.options.data = vm.organisations = res.rows;
+                vm.options.data = vm.organisations = res;
             });
         });
     };

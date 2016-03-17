@@ -11,16 +11,17 @@ angular.module('appCg').controller('CfpModalCtrl', function(programmes,
 
     var vm = this;
 
-    if (operation === 'Create') { vm.call = {}; } else if (operation === 'Update') { vm.call = call.selectedRow; }
+    if (operation === 'Create') { vm.call = {}; } else if (operation === 'Update') { vm.call = angular.copy(call); }
 
     vm.call.dates = {};
-    vm.operation = operation;
+    vm.operation = angular.extend(operation);
 
-    vm.programmes = angular.copy(programmes.rows);
-    vm.kras = angular.copy(kras.rows);
-    vm.kpis = angular.copy(kpis.rows);
-    vm.assessment_template = angular.copy(assessment_templates.rows);
-    if(!vm.assessment_templates){vm.assessment_templates = [];}
+    vm.programmes = angular.extend(programmes);
+    vm.kras = angular.extend(kras);
+    vm.kpis = angular.extend(kpis);
+    vm.assessment_template = angular.extend(assessment_templates);
+
+  if(!vm.assessment_templates){vm.assessment_templates = [];}
 
     if (vm.operation === 'Update' && vm.call.evaluation_date && vm.call.call_date) {
         vm.call.dates.evaluation_date_ = new Date(vm.call.evaluation_date);
@@ -81,10 +82,7 @@ angular.module('appCg').controller('CfpModalCtrl', function(programmes,
             listener: function(field, newValue, oldValue, scope) {
                 if (newValue) {
                     gprRestApi.getRowsFilterColumn('kpi_next_call_reference', 'kpi_id', newValue, false).then(function success(response) {
-                        //console.log(response.rows[0]);
-                        if (!vm.call.call_reference) {
-                            vm.call.call_reference = response.rows[0].next_call_reference;
-                        }
+                          vm.call.call_reference = response[0].next_call_reference;
                     });
                 }
             }

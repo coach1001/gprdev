@@ -10,24 +10,24 @@ angular.module('appCg').controller('OrganisationModalCtrl', function (organisati
                                                                       gprRestApi,
                                                                       ngToast,
                                                                       $confirm,
-                                                                      $uibModalInstance, $filter) {
+                                                                      $uibModalInstance, $uibModal, $filter) {
 
   var vm = this;
 
   if (operation === 'Create') {
     vm.organisation = {};
   } else if (operation === 'Update') {
-    vm.organisation = organisation.selectedRow;
+    vm.organisation = angular.extend(organisation);
   }
 
   vm.operation = angular.extend(operation);
-  vm.referees = angular.extend(referees.rows);
-  vm.auditors = angular.extend(auditors.rows);
-  vm.provinces = angular.extend(provinces.rows);
-  vm.orgTypes = angular.extend(orgTypes.rows);
-  vm.orgStatuses = angular.extend(orgStatuses.rows);
-  vm.suburbs = angular.extend(suburbs.rows);
-  vm.places = angular.extend(places.rows);
+  vm.referees = angular.extend(referees);
+  vm.auditors = angular.extend(auditors);
+  vm.provinces = angular.extend(provinces);
+  vm.orgTypes = angular.extend(orgTypes);
+  vm.orgStatuses = angular.extend(orgStatuses);
+  vm.suburbs = angular.extend(suburbs);
+  vm.places = angular.extend(places);
 
   vm.tabs = [{
     title: 'General',
@@ -178,7 +178,6 @@ angular.module('appCg').controller('OrganisationModalCtrl', function (organisati
                   vm.organisation.place = undefined;
                   vm.organisation.suburb = undefined;
                 }
-                //console.log(scope);
                 if (newValue) {
                   scope.fields[1].templateOptions.options = $filter('filter')(vm.places, {province: newValue});
                 } else {
@@ -203,7 +202,6 @@ angular.module('appCg').controller('OrganisationModalCtrl', function (organisati
                 if (newValue !== oldValue) {
                   vm.organisation.suburb = undefined;
                 }
-                //console.log(scope);
                 if (newValue) {
                   scope.fields[2].templateOptions.options = $filter('filter')(vm.suburbs, {place: newValue});
                 } else {
@@ -233,7 +231,7 @@ angular.module('appCg').controller('OrganisationModalCtrl', function (organisati
     title: 'Banking Details',
     form: {
       options: {},
-      model: vm.organisation,
+      model: vm.organisation.bank_accounts,
       fields: [{
         template: '<button class="btn btn-default" ng-click="openBankDetails()">Edit Bank Details</button>',
         controller: function ($scope) {
@@ -251,9 +249,11 @@ angular.module('appCg').controller('OrganisationModalCtrl', function (organisati
 
   vm.updateCreateRow = function () {
     var body = angular.copy(vm.organisation);
+    delete body.bank_accounts;
 
     gprRestApi.updateCreateRow('organisations', body, vm.operation).then(function success(response) {
       ngToast.create({content: vm.operation + ' Record Successfull', timeout: 4000});
+
       if (vm.operation === 'Create') {
         vm.organisation.id = response.data.id;
       }
