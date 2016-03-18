@@ -37,7 +37,7 @@ angular.module('appCg').controller('KpisCtrl', function(kpis, gprRestApi, $uibMo
             //size : 'lg',
             resolve: {
                 kpi: function res(gprRestApi) {
-                    return gprRestApi.getRow('key_performance_indicators', id, true);
+                    return gprRestApi.getRowWithFEs('key_performance_indicators', id, 'key_result_areas{*,programmes{*}}');
                 },
                 operation: function res() {
                     return operation;

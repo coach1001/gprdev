@@ -144,7 +144,7 @@ angular.module('appCg').controller('LookupsCtrl', function(
         }).result.then(function(result) {
             console.log('modal closed');
         }, function(result) {
-            gprRestApi.getRows('provinces',true).then(function success(res){
+            gprRestApi.getRows('grid_provinces',false).then(function success(res){
                 vm.provincesOpt.data = vm.provinces = res;
             });
         });
@@ -170,7 +170,7 @@ angular.module('appCg').controller('LookupsCtrl', function(
         }).result.then(function(result) {
             console.log('modal closed');
         }, function(result) {
-           gprRestApi.getRows('grid_suburbs',true).then(function success(res){
+           gprRestApi.getRows('grid_suburbs',false).then(function success(res){
                 vm.suburbsOpt.data = vm.suburbs = res;
             });
         });
@@ -193,7 +193,7 @@ angular.module('appCg').controller('LookupsCtrl', function(
         }).result.then(function(result) {
             console.log('modal closed');
         }, function(result) {
-            gprRestApi.getRows('grid_places',true).then(function success(res){
+            gprRestApi.getRows('grid_places',false).then(function success(res){
                 vm.placesOpt.data = vm.places = res;
             });
         });
@@ -213,7 +213,7 @@ angular.module('appCg').controller('LookupsCtrl', function(
         }).result.then(function(result) {
             console.log('modal closed');
         }, function(result) {
-            gprRestApi.getRows('grid_org_types',true).then(function success(res){
+            gprRestApi.getRows('grid_org_types',false).then(function success(res){
                 vm.orgTypesOpt.data = vm.orgTypes = res;
             });
         });

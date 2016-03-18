@@ -23,8 +23,9 @@ angular.module('appCg').controller('PlaceModalCtrl',function(
             ngOptions: 'option[to.valueProp] as option in to.options | filter: $select.search',
             label: 'Province',
             valueProp: 'id',
+            placeholder : 'Select Province',
             labelProp: 'name',
-            required: true,
+            ngRequired: false,
             options: vm.provinces
         }
     }, {
@@ -41,8 +42,10 @@ angular.module('appCg').controller('PlaceModalCtrl',function(
 
     vm.updateCreateRow = function() {
         var body = angular.copy(vm.place);
-
+        if(body.province === undefined ) {body.province = null;}
+        console.log(body);
         delete body.provinces;
+
 
         gprRestApi.updateCreateRow('places', body, vm.operation).then(function success(response) {
             ngToast.create({ content: vm.operation + ' Record Successfull', timeout: 4000 });
