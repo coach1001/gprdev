@@ -1,0 +1,14 @@
+{
+	"mail_host" : "mail.fhr.org.za",
+	"mail_port" : 25,
+	"postgres_dbname": "gprdev",
+	"postgres_host" : "localhost",
+	"postgres_port" : 5432,
+	"postgres_user" : "postgres",
+	"postgres_password" : "soulreaver",
+	"pg_listen_channels" : [
+		{"channel_name" : "test"},
+		{"channel_name" : "validate"},
+		{"channel_name" : "reset"}
+	]
+}

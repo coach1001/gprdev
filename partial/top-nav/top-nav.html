@@ -11,7 +11,7 @@
     </div>
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" uib-collapse="vm.navCollapsed">
-        <ul class="nav navbar-nav">
+        <ul class="nav navbar-nav navbar-left">
             <li uib-dropdown>
                 <a href="#" uib-dropdown-toggle>Calls for Proposals               <b class="caret"></b></a>
                 <ul uib-dropdown-menu>
@@ -29,6 +29,10 @@
                     <li><a ui-sref="home.lookups">Maintain Lookup Tables</a></li>
                 </ul>
             </li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+          <li><a style="cursor:pointer">Register </a></li>
+          <li><a style="cursor:pointer" ng-click="vm.loginFunc()">Login </a></li>
         </ul>
     </div>
     <!-- /.navbar-collapse -->
