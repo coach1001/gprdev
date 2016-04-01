@@ -139,11 +139,20 @@ angular.module('appCg').config(function ($stateProvider, $urlRouterProvider) {
     }
   });
   $stateProvider.state('home.user-validation', {
-    url: '^/validate?{validation_token}',
+    url: '^/validate?:validation_token&:user_email',
     views :{
       'mainContent@':{
         templateUrl: 'partial/user-validation/user-validation.html',
-        controller: 'UserValidationCtrl as vm'
+        controller: 'UserValidationCtrl as vm',
+        resolve :{
+          validation_success : function res(authenticationService,$stateParams){
+            return authenticationService.validate($stateParams.user_email,$stateParams.validation_token).then(function success(response){
+              return 'Validation Successful';
+            },function error(response){
+              return 'Validation Failed';
+            });
+          }
+        }
       }
     }
   });

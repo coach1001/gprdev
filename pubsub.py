@@ -2,9 +2,6 @@ import smtplib
 import pgpubsub
 import json
 
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
-
 try :
 	with open('server_config.json') as data_file:
 		data = json.load(data_file)
@@ -45,14 +42,15 @@ while 1:
 				token_type = payLoadJson["token_type"]
 				base_url = data["gpr_baseURL"]
 								
-				body = 'Please follow the Link'+'\n\n'+base_url+'/validate?validation_token='+token
+				body = 'Please follow the Link'+'\n\n'+base_url+'/validate?validation_token='+token+'&user_email='+receiver
 				header = 'To:'+receiver+ '\n'+'From:'+sender+'\n'+'Subject: GPR '+token_type+'\n'+'\n'				
 			except Exception,ex:
 				print ex
 							
-			try:
+			try:								
 				server.sendmail(sender,receiver, header + body)
-				print 'Email Notification Sent...'
+				print 'Email Notification Sent...'				
+				server.close()
 			except:
 				print 'Error Sending Email Notification...'
 			

@@ -12,5 +12,14 @@ angular.module('appCg').factory('authenticationService',function($http) {
     return $http(req);
   };
 
+  authenticationService.validate = function(email_,token_){
+    var req={};
+    req.method='POST';
+    req.headers = {'Content-Type': 'application/json'};
+    req.url =  this.baseUrl+'/validate_user';
+    req.data = {"email" : email_, "token" : token_};
+    return $http(req);
+  };
+
   return authenticationService;
 });

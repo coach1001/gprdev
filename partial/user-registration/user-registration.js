@@ -58,7 +58,7 @@ angular.module('appCg').controller('UserRegistrationCtrl', function (authenticat
   vm.registerFunc = function(){
     authenticationService.register(vm.registration.email,vm.registration.password).then(function success(response){
       ngToast.create({content: 'Registration Successful, please check your email for Validation Link', timeout: 8000});
-      //$uibModalInstance.dismiss();
+      $uibModalInstance.dismiss();
     },function error(response){
       ngToast.warning({content:'Registration Failed, Please Contact System Administrator', timeout: 6000});
     });
