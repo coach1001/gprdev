@@ -14,4 +14,16 @@ angular.module('appCg').controller('TopNavCtrl', function ($uibModal) {
 
       });
   };
+  vm.registerFunc = function () {
+    $uibModal.open({
+      templateUrl: 'partial/user-registration/user-registration.html',
+      controller: 'UserRegistrationCtrl as vm',
+      size : 'md',
+      resolve: {}
+    }).result.then(function (result) {
+        console.log('modal closed');
+      }, function (result) {
+
+      });
+  };
 });

@@ -6,6 +6,8 @@
 	"postgres_port" : 5432,
 	"postgres_user" : "postgres",
 	"postgres_password" : "soulreaver",
+	"gpr_baseURL" : "http://localhost:9001/#",
+	"sender_email" : "gpr@fhr.org.za",
 	"pg_listen_channels" : [
 		{"channel_name" : "test"},
 		{"channel_name" : "validate"},

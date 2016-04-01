@@ -1,0 +1,13 @@
+<div>
+  <div class="modal-header">
+    <button type="button" class="close pull-right" ng-click="$dismiss()" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">Register</h4>
+  </div>
+  <div class="modal-body">
+    <form novalidate>
+      <formly-form model="vm.registration" fields="vm.registrationFields" form="vm.registrationForm">
+        <button ng-click="vm.registerFunc()" class="btn btn-primary" ng-disabled="vm.registrationForm.$invalid">Register</button>
+      </formly-form>
+    </form>
+  </div>
+</div>

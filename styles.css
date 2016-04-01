@@ -8,23 +8,23 @@ div.navbar-collapse.collapse {
     transition: max-height .3s ease;
 }
 
+@font-face {
+  font-family: 'OpenSans';
+  src: url("OpenSans-Light.ttf");
+}
+
+*{
+  font-family: 'OpenSans';
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+}
+
 div.navbar-collapse.collapse.in {
     max-height: 2000px;
 }
-/*
 
-.btn{
-  border:0px solid transparent;
-}
-*/
-
-/*
-* {
-    border-radius: 0 !important;
-}
-*/
-
-* {
+*{
     -webkit-box-shadow: none !important;
     -moz-box-shadow: none !important;
     box-shadow: none !important;

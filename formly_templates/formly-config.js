@@ -1,3 +1,62 @@
+angular.module('appCg').constant('appCgFormlyApiCheck');
+angular.module('appCg').config(function config(formlyConfigProvider, appCgFormlyApiCheck) {
+  // set templates here
+  function find(array, prop, value) {
+    var foundItem;
+    array.some(function(item) {
+      if (item[prop] === value) {
+        foundItem = item;
+      }
+      return !!foundItem;
+    });
+    return foundItem;
+  }
+
+  formlyConfigProvider.setType({
+    name: 'matchField',
+    apiCheck: function() {
+      return {
+        data: {
+          fieldToMatch: appCgFormlyApiCheck.string
+        }
+      };
+    },
+    apiCheckOptions: {
+      prefix: 'matchField type'
+    },
+    defaultOptions: function matchFieldDefaultOptions(options) {
+      return {
+        extras: {
+          validateOnModelChange: true
+        },
+        expressionProperties: {
+          'templateOptions.disabled': function(viewValue, modelValue, scope) {
+            var matchField = find(scope.fields, 'key', options.data.fieldToMatch);
+            if (!matchField) {
+              throw new Error('Could not find a field for the key ' + options.data.fieldToMatch);
+            }
+            var model = options.data.modelToMatch || scope.model;
+            var originalValue = model[options.data.fieldToMatch];
+            var invalidOriginal = matchField.formControl && matchField.formControl.$invalid;
+            return !originalValue || invalidOriginal;
+          }
+        },
+        validators: {
+          fieldMatch: {
+            expression: function(viewValue, modelValue, fieldScope) {
+              var value = modelValue || viewValue;
+              var model = options.data.modelToMatch || fieldScope.model;
+              return value === model[options.data.fieldToMatch];
+            },
+            message: options.data.matchFieldMessage || '"Must match"'
+          }
+        }
+      };
+
+
+    }
+  });
+});
 angular.module('appCg').run(function(formlyConfig) {
     var attributes = [
         'date-disabled',
@@ -23,7 +82,7 @@ angular.module('appCg').run(function(formlyConfig) {
         'close-on-date-selection',
         'datepicker-append-to-body'
     ];
-    
+
     formlyConfig.extras.removeChromeAutoComplete = true;
 
     var bindings = [
