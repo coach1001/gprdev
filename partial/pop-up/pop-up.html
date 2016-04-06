@@ -1,0 +1,11 @@
+<div>
+	<div class="modal-header">
+		<button type="button" class="close pull-right" ng-click="$dismiss()" aria-hidden="true">&times;</button>
+    <h4 class="modal-title">{{vm.items.popupHeader}}</h4>
+	</div>
+	<div class="modal-body">
+    <p>{{vm.items.popupMessage}}</p>
+    <button ng-hide="vm.items.hideAffirmative" ng-click="vm.affirmative()" class="btn btn-primary">{{vm.items.affirmative}}</button>
+    <button ng-hide="vm.items.hideNegative" ng-click="vm.negative()" class="btn btn-default">{{vm.items.negative}}</button>
+	</div>
+</div>

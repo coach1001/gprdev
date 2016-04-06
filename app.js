@@ -1,3 +1,10 @@
+Date.prototype.toSA = function () {
+  var yyyy = this.getFullYear().toString();
+  var mm = (this.getMonth() + 1).toString();
+  var dd = this.getDate().toString();
+
+  return yyyy + '-' + (mm[1] ? mm : "0" + mm[0]) + '-' + (dd[1] ? dd : "0" + dd[0]);
+};
 angular.module('appCg', [
   'ui.bootstrap',
   'ui.router',
@@ -9,19 +16,10 @@ angular.module('appCg', [
   'ui.grid', 'ui.grid.selection', 'ui.grid.exporter', 'ui.grid.edit',
   'ui.select', 'ngLoadingSpinner'
 ]);
-Date.prototype.toSA = function () {
-
-  var yyyy = this.getFullYear().toString();
-  var mm = (this.getMonth() + 1).toString();
-  var dd = this.getDate().toString();
-
-  return yyyy + '-' + (mm[1] ? mm : "0" + mm[0]) + '-' + (dd[1] ? dd : "0" + dd[0]);
-};
-
-angular.module('appCg').config(function ($stateProvider, $urlRouterProvider) {
+angular.module('appCg').config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
 
   $stateProvider.state('home', {
-    url: '',
+    url: '/home',
     views: {
       'topNav@': {
         templateUrl: 'partial/top-nav/top-nav.html',
@@ -31,6 +29,9 @@ angular.module('appCg').config(function ($stateProvider, $urlRouterProvider) {
         templateUrl: 'partial/home/home.html',
         controller: 'HomeCtrl as vm'
       }
+    },
+    data: {
+      requireLogin: false
     }
   }).state('home.programmes', {
     url: '/programmes',
@@ -44,6 +45,9 @@ angular.module('appCg').config(function ($stateProvider, $urlRouterProvider) {
           }
         }
       }
+    },
+    data: {
+      requireLogin: true
     }
   });
   $stateProvider.state('home.kras', {
@@ -58,7 +62,10 @@ angular.module('appCg').config(function ($stateProvider, $urlRouterProvider) {
           }
         }
       }
-    }
+    },
+    data: {
+    requireLogin: true
+  }
   });
   $stateProvider.state('home.kpis', {
     url: '/kpis',
@@ -72,7 +79,11 @@ angular.module('appCg').config(function ($stateProvider, $urlRouterProvider) {
           }
         }
       }
+    },
+    data: {
+      requireLogin: true
     }
+
   });
   $stateProvider.state('home.cfps', {
     url: '/cfps',
@@ -86,7 +97,11 @@ angular.module('appCg').config(function ($stateProvider, $urlRouterProvider) {
           }
         }
       }
+    },
+    data: {
+      requireLogin: true
     }
+
   });
   $stateProvider.state('home.organisations', {
     url: '/organisations',
@@ -100,6 +115,9 @@ angular.module('appCg').config(function ($stateProvider, $urlRouterProvider) {
           }
         }
       }
+    },
+    data: {
+      requireLogin: true
     }
   });
   $stateProvider.state('home.applications', {
@@ -110,6 +128,9 @@ angular.module('appCg').config(function ($stateProvider, $urlRouterProvider) {
         controller: 'ApplicationsCtrl as vm',
         resolve: {}
       }
+    },
+    data: {
+      requireLogin: true
     }
   });
   $stateProvider.state('home.lookups', {
@@ -136,41 +157,114 @@ angular.module('appCg').config(function ($stateProvider, $urlRouterProvider) {
           }
         }
       }
+    },
+    data: {
+      requireLogin: true
     }
   });
   $stateProvider.state('home.user-validation', {
-    url: '^/validate?:validation_token&:user_email',
-    views :{
-      'mainContent@':{
+    url: '/validate?:validation_token&:user_email',
+    views: {
+      'mainContent@': {
         templateUrl: 'partial/user-validation/user-validation.html',
         controller: 'UserValidationCtrl as vm',
-        resolve :{
-          validation_success : function res(authenticationService,$stateParams){
-            return authenticationService.validate($stateParams.user_email,$stateParams.validation_token).then(function success(response){
+        resolve: {
+          validation_success: function res(authenticationService, $stateParams) {
+            return authenticationService.validate($stateParams.user_email, $stateParams.validation_token).then(function success(response) {
               return 'Validation Successful';
-            },function error(response){
+            }, function error(response) {
               return 'Validation Failed';
             });
           }
         }
       }
+    },
+    data: {
+      requireLogin: false
+    }
+
+  });
+  $urlRouterProvider.otherwise('/home');
+  $locationProvider.html5Mode(false);
+});
+angular.module('appCg').run(function ($rootScope, $state, loginModalService, authenticationService) {
+  $rootScope.authorizationError = false;
+
+  $rootScope.$on('$stateChangeStart', function (event, toState, toParams) {
+    var requireLogin = toState.data.requireLogin;
+    $rootScope.authorizationError = false;
+
+    if (requireLogin && !authenticationService.isAuthenticated) {
+      event.preventDefault();
+      loginModalService().then(function () {
+        return $state.go(toState.name, toParams);
+      }).catch(function () {
+        return $state.go('home');
+      });
     }
   });
 
-  $urlRouterProvider.otherwise('#');
 });
+angular.module('appCg').config(function ($httpProvider) {
 
-angular.module('appCg').run(function ($rootScope) {
-  console.log('Running Application...');
-  $rootScope.safeApply = function (fn) {
-    var phase = $rootScope.$$phase;
-    if (phase === '$apply' || phase === '$digest') {
-      if (fn && (typeof(fn) === 'function')) {
-        fn();
+  $httpProvider.interceptors.push(function ($timeout, $q, $injector, $rootScope) {
+    var loginModalService, $http, $state, authenticationService, $uibModal;
+    $timeout(function () {
+      loginModalService = $injector.get('loginModalService');
+      $http = $injector.get('$http');
+      $state = $injector.get('$state');
+      authenticationService = $injector.get('authenticationService');
+      $uibModal = $injector.get('$uibModal');
+    });
+
+    return {
+      responseError: function (rejection) {
+        if (rejection.status === 404 && authenticationService.isAuthenticated) {
+          if (!$rootScope.authorizationError) {
+            $rootScope.authorizationError = true;
+
+            $uibModal.open({
+              animation: true,
+              templateUrl: 'partial/pop-up/pop-up.html',
+              controller: 'PopUpCtrl as vm',
+              size: 'md',
+              resolve: {
+                items: function () {
+                  return {
+                    popupHeader: 'Not Authorized',
+                    popupMessage: 'You are not Authorized to View this Page',
+                    affirmative: 'Goto Login',
+                    negative: '',
+                    hideAffirmative: true,
+                    hideNegative: true
+                  };
+                }
+              }
+            });
+            $state.go('home');
+          }
+        }
+
+        if (rejection.status !== 401) {
+          return rejection;
+        }
+
+        var deferred = $q.defer();
+
+        /*loginModalService()
+         .then(function () {
+         deferred.resolve( $http(rejection.config) );
+         })
+         .catch(function () {
+         $state.go('welcome');
+         deferred.reject(rejection);
+         });*/
+
+        return deferred.promise;
       }
-    } else {
-      this.$apply(fn);
-    }
-  };
+
+    };
+
+  });
 });
 

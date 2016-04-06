@@ -7,12 +7,12 @@
             <span class="icon-bar"></span>
             <span class="icon-bar"></span>
         </button>
-        <a class="navbar-brand" href="#">Grants Unit</a>
+        <a class="navbar-brand" href="#">GPR</a>
     </div>
     <!-- Collect the nav links, forms, and other content for toggling -->
     <div class="collapse navbar-collapse" uib-collapse="vm.navCollapsed">
         <ul class="nav navbar-nav navbar-left">
-            <li uib-dropdown>
+            <li ng-hide="!isAuthenticated" uib-dropdown>
                 <a href="#" uib-dropdown-toggle>Calls for Proposals               <b class="caret"></b></a>
                 <ul uib-dropdown-menu>
                     <li><a ui-sref="home.cfps">Create/Edit Call</a></li>
@@ -21,18 +21,20 @@
                     <li><a ui-sref="home.programmes">Create/Edit Programme</a></li>
                 </ul>
             </li>
-            <li uib-dropdown>
+            <li  ng-hide="!isAuthenticated" uib-dropdown>
                 <a href="#" uib-dropdown-toggle>Applications              <b class="caret"></b></a>
                 <ul uib-dropdown-menu>
                     <li><a ui-sref="home.applications">Create/Edit Application</a></li>
                     <li><a ui-sref="home.organisations">Create/Edit Organisation</a></li>
-                    <li><a ui-sref="home.lookups">Maintain Lookup Tables</a></li>
+
                 </ul>
             </li>
         </ul>
         <ul class="nav navbar-nav navbar-right">
-          <li><a style="cursor:pointer" ng-click="vm.registerFunc()">Register </a></li>
-          <li><a style="cursor:pointer" ng-click="vm.loginFunc()">Login </a></li>
+          <li><a style="font-size: 13px;" ng-hide="isAuthenticated" ng-click="vm.registerFunc()">Register </a></li>
+          <li><a style="font-size: 13px;" ng-hide="!isAuthenticated" ui-sref="home.lookups">Maintain Lookup Tables</a></li>
+          <li><a style="cursor:pointer;font-size: 13px;" ng-hide="isAuthenticated" ng-click="vm.loginFunc()">Login </a></li>
+          <li><a style="cursor:pointer;font-size: 13px;" ng-hide="!isAuthenticated" ng-click="vm.logoutFunc()">Logout, {{currentUser}} </a></li>
         </ul>
     </div>
     <!-- /.navbar-collapse -->

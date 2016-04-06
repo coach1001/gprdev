@@ -1,13 +1,13 @@
 {
-	"mail_host" : "mail.fhr.org.za",
-	"mail_port" : 25,
+	"mail_host" : "smtp.gmail.com",
+	"mail_port" : 587,
 	"postgres_dbname": "gprdev",
 	"postgres_host" : "localhost",
 	"postgres_port" : 5432,
 	"postgres_user" : "postgres",
 	"postgres_password" : "soulreaver",
 	"gpr_baseURL" : "http://localhost:9001/#",
-	"sender_email" : "gpr_notifications@fhr.org.za",
+	"sender_email" : "gpr.fhr@gmail.com",
 	"pg_listen_channels" : [
 		{"channel_name" : "test"},
 		{"channel_name" : "validate"},

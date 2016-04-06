@@ -6,7 +6,7 @@
   <div class="modal-body">
     <form novalidate>
       <formly-form model="vm.login" fields="vm.loginFields" form="vm.loginForm">
-        <button ng-click="vm.updateCreateRow()" class="btn btn-primary" ng-disabled="vm.loginForm.$invalid">Sign In</button>
+        <button ng-click="vm.loginFunc()" class="btn btn-primary" ng-disabled="vm.loginForm.$invalid">Sign In</button>
       </formly-form>
     </form>
   </div>

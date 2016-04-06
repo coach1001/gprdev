@@ -1,4 +1,4 @@
-angular.module('appCg').factory('gprRestApi', ['$http', '$q', function ($http, $q, $timeout) {
+angular.module('appCg').factory('gprRestApi', ['$http', '$q', function ($http, $q) {
   var gprRestApi = {};
   gprRestApi.baseUrl = 'http://localhost:3000';
   gprRestApi.tables = [];

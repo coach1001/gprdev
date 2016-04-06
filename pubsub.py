@@ -11,6 +11,8 @@ except :
 
 try:
 	server = smtplib.SMTP(data["mail_host"],data["mail_port"])
+	server.starttls()
+	server.login('gpr.fhr@gmail.com','Justice##@!1996')		
 	print "SMTP Connected..."
 except:
 	print "Unable to connect to the SMTP Server"
@@ -42,17 +44,20 @@ while 1:
 				token_type = payLoadJson["token_type"]
 				base_url = data["gpr_baseURL"]
 								
-				body = 'Please follow the Link'+'\n\n'+base_url+'/validate?validation_token='+token+'&user_email='+receiver
+				body = 'Please follow the Link'+'\n\n'+base_url+'/home/validate?validation_token='+token+'&user_email='+receiver
 				header = 'To:'+receiver+ '\n'+'From:'+sender+'\n'+'Subject: GPR '+token_type+'\n'+'\n'				
 			except Exception,ex:
 				print ex
 							
-			try:								
+			try:
+				server = smtplib.SMTP(data["mail_host"],data["mail_port"])
+				server.starttls()
+				server.login('gpr.fhr@gmail.com','Justice##@!1996')		
 				server.sendmail(sender,receiver, header + body)
-				print 'Email Notification Sent...'				
+				print 'Email Notification Sent...'								
 				server.close()
-			except:
-				print 'Error Sending Email Notification...'
+			except Exception, exc:
+				print exc
 			
 		elif e.channel == 'test':
 			print e
