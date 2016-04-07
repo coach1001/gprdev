@@ -219,10 +219,10 @@ angular.module('appCg').config(function ($httpProvider) {
 
     return {
       responseError: function (rejection) {
+
         if (rejection.status === 404 && authenticationService.isAuthenticated) {
           if (!$rootScope.authorizationError) {
             $rootScope.authorizationError = true;
-
             $uibModal.open({
               animation: true,
               templateUrl: 'partial/pop-up/pop-up.html',
@@ -242,25 +242,36 @@ angular.module('appCg').config(function ($httpProvider) {
               }
             });
             $state.go('home');
+            return rejection;
+          }
+        }else if(rejection.status === 400 && authenticationService.isAuthenticated){
+          if (!$rootScope.authorizationError){
+            $rootScope.authorizationError = true;
+
+            $uibModal.open({
+              animation: true,
+              templateUrl: 'partial/pop-up/pop-up.html',
+              controller: 'PopUpCtrl as vm',
+              size: 'md',
+              resolve: {
+                items: function () {
+                  return {
+                    popupHeader: 'Not Authorized',
+                    popupMessage: 'Your Session has Expired Please Login Again.',
+                    affirmative: 'Goto Login',
+                    negative: '',
+                    hideAffirmative: true,
+                    hideNegative: true
+                  };
+                }
+              }
+            });
+            authenticationService.logout();
+            $state.go('home');
+            return rejection;
           }
         }
-
-        if (rejection.status !== 401) {
-          return rejection;
-        }
-
-        var deferred = $q.defer();
-
-        /*loginModalService()
-         .then(function () {
-         deferred.resolve( $http(rejection.config) );
-         })
-         .catch(function () {
-         $state.go('welcome');
-         deferred.reject(rejection);
-         });*/
-
-        return deferred.promise;
+        return rejection;
       }
 
     };
