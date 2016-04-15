@@ -9,7 +9,7 @@ angular.module('appCg').controller('KraModalCtrl', function(
 
     var vm = this;
 
-    if (operation === 'Create') { vm.kra = {}; } else if (operation === 'Update') { vm.kra = angular.extend(kra); }
+    if (operation === 'Create') { vm.kra = {};} else if (operation === 'Update') { vm.kra = angular.extend(kra); }
 
     vm.operation = angular.extend(operation);
     vm.programmes = angular.extend(programmes);

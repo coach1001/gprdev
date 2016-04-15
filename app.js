@@ -1,10 +1,45 @@
-Date.prototype.toSA = function () {
-  var yyyy = this.getFullYear().toString();
-  var mm = (this.getMonth() + 1).toString();
-  var dd = this.getDate().toString();
-
-  return yyyy + '-' + (mm[1] ? mm : "0" + mm[0]) + '-' + (dd[1] ? dd : "0" + dd[0]);
+Array.prototype.getIndex = function (prop, value) {
+  for (var i = 0; i < this.length; i++) {
+    if (this[i][prop] === value) {
+      return i;
+    }
+  }
+  return -1;
 };
+var regexIso8601forDate = /^\d{4}-\d{2}-\d{2}$/;
+var regexIso8601forDateTime = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/;
+function convertDateStringsToDates(input) {
+  // Ignore things that aren't objects.
+  if (typeof input !== "object") {
+    return input;
+  }
+
+  for (var key in input) {
+    if (!input.hasOwnProperty(key)) {
+      continue;
+    }
+
+    var value = input[key];
+    var match;
+    // Check for string properties which look like dates.
+    // TODO: Improve this regex to better match ISO 8601 date strings.
+    if (typeof value === "string" && (match = value.match(regexIso8601forDate))) {
+      // Assume that Date.parse can parse ISO 8601 strings, or has been shimmed in older browsers to do so.
+      var milliseconds = Date.parse(match[0]);
+      if (!isNaN(milliseconds)) {
+        input[key] = new Date(milliseconds);
+      }
+    } else if (typeof value === "string" && (match = value.match(regexIso8601forDateTime))) {
+      var milliseconds_ = Date.parse(match[0]);
+      if (!isNaN(milliseconds_)) {
+        input[key] = new Date(milliseconds_);
+      }
+    } else if (typeof value === "object") {
+      // Recurse into object
+      convertDateStringsToDates(value);
+    }
+  }
+}
 angular.module('appCg', [
   'ui.bootstrap',
   'ui.router',
@@ -14,7 +49,7 @@ angular.module('appCg', [
   'ngToast',
   'angular-confirm',
   'ui.grid', 'ui.grid.selection', 'ui.grid.exporter', 'ui.grid.edit',
-  'ui.select', 'ngLoadingSpinner'
+  'ui.select', 'ngLoadingSpinner','ui.checkbox'
 ]);
 angular.module('appCg').config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
 
@@ -33,7 +68,8 @@ angular.module('appCg').config(function ($stateProvider, $urlRouterProvider, $lo
     data: {
       requireLogin: false
     }
-  }).state('home.programmes', {
+  });
+  $stateProvider.state('home.programmes', {
     url: '/programmes',
     views: {
       'mainContent@': {
@@ -64,8 +100,8 @@ angular.module('appCg').config(function ($stateProvider, $urlRouterProvider, $lo
       }
     },
     data: {
-    requireLogin: true
-  }
+      requireLogin: true
+    }
   });
   $stateProvider.state('home.kpis', {
     url: '/kpis',
@@ -126,11 +162,15 @@ angular.module('appCg').config(function ($stateProvider, $urlRouterProvider, $lo
       'mainContent@': {
         templateUrl: 'partial/applications/applications.html',
         controller: 'ApplicationsCtrl as vm',
-        resolve: {}
+        resolve: {
+          applications: function res(gprRestApi) {
+            return gprRestApi.getRows('grid_applications', false);
+          }
+        }
       }
     },
     data: {
-      requireLogin: true
+      requireLogin: false
     }
   });
   $stateProvider.state('home.lookups', {
@@ -184,6 +224,53 @@ angular.module('appCg').config(function ($stateProvider, $urlRouterProvider, $lo
     }
 
   });
+  $stateProvider.state('home.do-assessment-select', {
+    url: '/assessments',
+    views: {
+      'mainContent@': {
+        templateUrl: 'partial/do-assessment-select/do-assessment-select.html',
+        controller: 'DoAssessmentSelectCtrl as vm',
+        resolve: {
+          assessments: function res(gprRestApi, authenticationService) {
+            return gprRestApi.getRowsFilterColumn('grid_assessor_applications', 'email_address', authenticationService.username);
+          }
+        }
+      }
+    }
+  });
+  $stateProvider.state('home.do-assessment-assess', {
+    url: '/assess_application?:templateId&:appassId',
+    views: {
+      'mainContent@': {
+        templateUrl: 'partial/do-assessment-assess/do-assessment-assess.html',
+        controller: 'DoAssessmentAssessCtrl as vm',
+        resolve: {
+          template: function res(gprRestApi, $stateParams) {
+            return gprRestApi.getRowsWithFEs('assessment_templates', ',categories{*,questions{*,question_types{*},question_options{*},compliance_answers{*}}}', '&id=eq.' + $stateParams.templateId +'&categories.questions.compliance_answers.application_assessor=eq.'+$stateParams.appassId);
+          },
+          assessmentInfo: function res(gprRestApi, $stateParams) {
+            return gprRestApi.getRowsFilterColumn('grid_assessor_applications','id',$stateParams.appassId);
+          }
+        }
+      }
+    }
+  });
+  $stateProvider.state('home.assign-assessors-applications', {
+    url: '/assign-assessments',
+    views: {
+      'mainContent@': {
+        templateUrl: 'partial/assign-assessors-applications/assign-assessors-applications.html',
+        controller: 'AssignAssessorsApplicationsCtrl as vm',
+        resolve: {
+          applications_assessors: function res(gprRestApi, $stateParams) {
+            return gprRestApi.getRows('grid_assign_assessor_application',false);
+          }
+        }
+      }
+    }
+  });
+
+
   $urlRouterProvider.otherwise('/home');
   $locationProvider.html5Mode(false);
 });
@@ -244,10 +331,10 @@ angular.module('appCg').config(function ($httpProvider) {
             $state.go('home');
             return rejection;
           }
-        }else if(rejection.status === 400 && authenticationService.isAuthenticated){
-          if (!$rootScope.authorizationError){
+        } else if (rejection.status === 400 && authenticationService.isAuthenticated) {
+          if (!$rootScope.authorizationError) {
             $rootScope.authorizationError = true;
-
+            authenticationService.logout();
             $uibModal.open({
               animation: true,
               templateUrl: 'partial/pop-up/pop-up.html',
@@ -278,4 +365,28 @@ angular.module('appCg').config(function ($httpProvider) {
 
   });
 });
+angular.module('appCg').config(function ($httpProvider) {
+  $httpProvider.defaults.transformResponse.push(function (responseData) {
+    convertDateStringsToDates(responseData);
+    return responseData;
+  });
+});
+angular.module('appCg').directive('input', [function() {
+  return {
+    restrict: 'E',
+    require: '?ngModel',
+    link: function(scope, element, attrs, ngModel) {
+      if (
+        'undefined' !== typeof attrs.type && 'number' === attrs.type && ngModel
+      ) {
+        ngModel.$formatters.push(function(modelValue) {
+          return Number(modelValue);
+        });
+        ngModel.$parsers.push(function(viewValue) {
+          return Number(viewValue);
+        });
+      }
+    }
+  };
+}]);
 

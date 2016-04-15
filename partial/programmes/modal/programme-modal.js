@@ -12,14 +12,16 @@ angular.module('appCg').controller('ProgrammeModalCtrl', function (programme,
   } else if (operation === 'Update') {
     vm.programme = angular.extend(programme);
   }
-
-  vm.programme.dates = {};
+ // console.log(vm.programme);
+//  vm.programme.dates = {};
   vm.operation = operation;
 
+/*
   if (vm.operation === 'Update' && vm.programme.start_date && vm.programme.end_date) {
     vm.programme.dates.start_date_ = new Date(vm.programme.start_date);
     vm.programme.dates.end_date_ = new Date(vm.programme.end_date);
   }
+*/
 
   vm.programmeFields = [{
     fieldGroup: [{
@@ -57,7 +59,7 @@ angular.module('appCg').controller('ProgrammeModalCtrl', function (programme,
     className: 'row marginRow',
     fieldGroup: [{
       className: 'col-xs-6 nopadding',
-      key: 'dates.start_date_',
+      key: 'start_date',
       type: 'datepicker',
       templateOptions: {
         label: 'Start Date',
@@ -66,7 +68,7 @@ angular.module('appCg').controller('ProgrammeModalCtrl', function (programme,
       }
     }, {
       className: 'col-xs-6 nopadding',
-      key: 'dates.end_date_',
+      key: 'end_date',
       type: 'datepicker',
       templateOptions: {
         label: 'End Date',
@@ -78,20 +80,15 @@ angular.module('appCg').controller('ProgrammeModalCtrl', function (programme,
 
   vm.updateCreateRow = function () {
     var body = angular.copy(vm.programme);
-    try {
-      body.start_date = body.dates.start_date_.toSA();
-      body.end_date = body.dates.end_date_.toSA();
-    } catch (err) {
-      body.start_date = null;
-      body.end_date = null;
-    }
-    delete body.dates;
+    console.log(body);
 
     gprRestApi.updateCreateRow('programmes', body, vm.operation).then(function success(response) {
       ngToast.create({content: vm.operation + ' Record Successfull', timeout: 4000});
       if (vm.operation === 'Create') {
         vm.programme.id = response.data.id;
       }
+      console.log(vm.programme);
+
       vm.operation = 'Update';
     }, function error(response) {
       ngToast.warning({content: vm.operation + ' Record Failed', timeout: 4000});

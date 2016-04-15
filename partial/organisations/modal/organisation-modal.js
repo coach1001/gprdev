@@ -4,8 +4,10 @@ angular.module('appCg').controller('OrganisationModalCtrl', function (organisati
                                                                       provinces,
                                                                       orgTypes,
                                                                       orgStatuses,
+/*
                                                                       suburbs,
                                                                       places,
+*/
                                                                       operation,
                                                                       gprRestApi,
                                                                       ngToast,
@@ -26,8 +28,8 @@ angular.module('appCg').controller('OrganisationModalCtrl', function (organisati
   vm.provinces = angular.extend(provinces);
   vm.orgTypes = angular.extend(orgTypes);
   vm.orgStatuses = angular.extend(orgStatuses);
-  vm.suburbs = angular.extend(suburbs);
-  vm.places = angular.extend(places);
+  vm.suburbs = [];
+  vm.places = [];
 
   vm.tabs = [{
     title: 'General',
@@ -179,7 +181,13 @@ angular.module('appCg').controller('OrganisationModalCtrl', function (organisati
                   vm.organisation.suburb = undefined;
                 }
                 if (newValue) {
-                  scope.fields[1].templateOptions.options = $filter('filter')(vm.places, {province: newValue});
+                  //scope.fields[1].templateOptions.options = $filter('filter')(vm.places, {province: newValue});
+                  gprRestApi.getRowsFilterColumn('places','province',newValue).then(function success(response){
+                    scope.fields[1].templateOptions.options = response;
+                  },function error(response){
+
+                  });
+
                 } else {
                   scope.fields[1].templateOptions.options = [];
                 }
@@ -203,7 +211,12 @@ angular.module('appCg').controller('OrganisationModalCtrl', function (organisati
                   vm.organisation.suburb = undefined;
                 }
                 if (newValue) {
-                  scope.fields[2].templateOptions.options = $filter('filter')(vm.suburbs, {place: newValue});
+                  //scope.fields[2].templateOptions.options = $filter('filter')(vm.suburbs, {place: newValue});
+                  gprRestApi.getRowsFilterColumn('suburbs','place',newValue).then(function success(response){
+                    scope.fields[2].templateOptions.options = response;
+                    console.log(scope);
+                  },function error(response){
+                  });
                 } else {
                   scope.fields[2].templateOptions.options = [];
                 }
@@ -212,16 +225,15 @@ angular.module('appCg').controller('OrganisationModalCtrl', function (organisati
           }, {
             className: 'col-xs-4 nopadding',
             key: 'suburb',
-            type: 'ui-select-single',
+            type: 'select',
             templateOptions: {
-              optionsAttr: 'bs-options',
-              ngOptions: 'option[to.valueProp] as option in to.options | filter: $select.search',
+
               label: 'Suburb',
               valueProp: 'id',
-              labelProp: 'name',
-              options: vm.suburbs
+              labelProp: 'name'
             }
           }]
+
         }
 
 

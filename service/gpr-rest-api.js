@@ -51,6 +51,20 @@ angular.module('appCg').factory('gprRestApi', ['$http', '$q', function ($http, $
       console.log('Error! Getting Rows from ' + table);
     });
   };
+  gprRestApi.getRowsWithFEs = function(table,efiString,filter){
+    var urlString = gprRestApi.baseUrl + '/' + table + '?select=*';
+    if (efiString) {
+      urlString += efiString;
+    }
+    if(filter) {
+      urlString += filter
+    }
+    return $http.get(urlString).then(function success(response) {
+      return response.data;
+    }, function error() {
+      console.log('Error! Getting Rows from ' + table);
+    });
+  };
   gprRestApi.getRowsFilterColumn = function (table, column, value, efi) {
     var urlString = gprRestApi.baseUrl + '/' + table + '?' + column + '=eq.' + value + '&select=*';
     if (efi) {

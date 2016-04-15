@@ -28,7 +28,11 @@
     "angular-confirm-modal": "^1.2.3",
     "angular-spinner": "^0.8.1",
     "angular-loading-bar": "^0.8.0",
-    "angular-loading-spinner": "^0.0.3"
+    "angular-loading-spinner": "^0.0.3",
+    "angular-vs-repeat": "^1.1.7",
+    "nz-toggle": "^2.1.0",
+    "pdfmake": "^0.1.20",
+    "angular-bootstrap-checkbox": "^0.4.0"
   },
   "resolutions": {
     "bootstrap": "~3.3.6",

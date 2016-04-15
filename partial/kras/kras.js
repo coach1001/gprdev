@@ -4,7 +4,7 @@ angular.module('appCg').controller('KrasCtrl', function(kras, gprRestApi, $uibMo
 
     var unfilteredRows = angular.extend(kras);
     vm.count = unfilteredRows.length;
-    vm.rows = angular.extend(kras);
+    vm.kras = vm.rows = angular.extend(kras);
 
     vm.options = {
         data: vm.rows,

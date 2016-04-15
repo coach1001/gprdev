@@ -1,0 +1,42 @@
+<h3>
+  Assessment - {{vm.assessmentInfo.application}} ({{vm.assessmentInfo.name}})
+</h3>
+  <h6>Call Reference - {{vm.assessmentInfo.call_reference}}</h6>
+<h4>
+Completed?
+  <checkbox ng-model="vm.assessmentInfo.complete"></checkbox>
+</h4>
+<h4>
+  <button class="btn btn-primary" ng-click="vm.saveAnswers()">Save Changes</button>
+    Score : {{vm.current_score || 0}} out of {{vm.scoring_max}}</span>
+  </h4>
+<div class="row"></div>
+<uib-tabset type="pills">
+  <uib-tab ng-init="catIndex = $index" ng-repeat="cat in vm.template.categories" heading="{{cat.title}}" active="tab.active" disable="tab.disabled">
+
+    <div ng-repeat="q in cat.questions" ng-init="qIndex = $index">
+      <h4>  <span class="badge badge-middle">{{$index+1}}</span>  {{q.question}}</h4>
+      <h5>{{q.description}}</h5>
+
+      <div ng-if="q.question_types.code==='boolean'" >
+        <select ng-blur="vm.updateModelAnswer(catIndex,qIndex,q.compliance_answers[0].answer)" style="width:25%;" ng-model="q.compliance_answers[0].answer">
+          <option value="null">Undecided</option>
+          <option value="true">Yes</option>
+          <option value="false">No</option>
+        </select>
+      </div>
+
+      <textarea ng-blur="vm.updateModelAnswer(catIndex,qIndex,q.compliance_answers[0].answer)" ng-model="q.compliance_answers[0].answer" label="" spellcheck="true" style="width:50%;height:150px;" ng-if="(q.question_types.code === 'textarea')"></textarea>
+      <h6 ng-if="(q.question_types.code === 'number' && q.is_scoring)">Rating Score for Above Question 0 (min) - {{q.max_scoring}} (max)</h6>
+      <input ng-blur="vm.updateModelAnswer(catIndex,qIndex,q.compliance_answers[0].answer)" ng-model="q.compliance_answers[0].answer" type="number" ng-change="vm.updateCurrScore(q.compliance_answers[0].answer)" value="0" style="width:15%;" ng-if="(q.question_types.code === 'number')" step="0.5" min="0" max="{{q.max_scoring}}">
+
+      <h5 ng-if="(q.has_motivation)">Comment/Justification</h5>
+      <textarea ng-blur="vm.updateModelMotivation(catIndex,qIndex,q.compliance_answers[0].motivation)" ng-model="q.compliance_answers[0].motivation" label="" style="width:50%;height:120px;" ng-if="(q.has_motivation)"></textarea>
+
+
+    </div>
+
+  </uib-tab>
+
+</uib-tabset>
+

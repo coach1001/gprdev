@@ -3,8 +3,7 @@ angular.module('appCg').controller('OrganisationsCtrl', function(organisations, 
     vm.title = 'Organisations';
 
     var unfilteredRows = angular.extend(organisations);
-    vm.rows = angular.extend(organisations);
-    vm.count = unfilteredRows.length;
+    vm.organisations = vm.rows = angular.extend(organisations);
 
     vm.options = {
         data: vm.rows,
@@ -59,12 +58,14 @@ angular.module('appCg').controller('OrganisationsCtrl', function(organisations, 
                 orgStatuses: function res(gprRestApi) {
                     return gprRestApi.getRows('organisation_statuses',false);
                 },
+/*
                 suburbs: function res(gprRestApi) {
                     return gprRestApi.getRows('suburbs',false);
                 },
                 places: function res() {
                     return gprRestApi.getRows('places',false);
                 },
+*/
                 operation: function res() {
                     return operation;
                 }

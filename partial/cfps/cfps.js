@@ -3,8 +3,8 @@ angular.module('appCg').controller('CfpsCtrl', function(cfps, gprRestApi, $uibMo
     vm.title = 'Calls for Proposals';
 
     var unfilteredRows = angular.extend(cfps);
-    vm.count = unfilteredRows.length;
-    vm.rows = angular.extend(cfps);
+
+    vm.calls = vm.rows = angular.extend(cfps);
 
     vm.options = {
         data: vm.rows,

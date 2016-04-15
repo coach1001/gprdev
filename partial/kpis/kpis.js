@@ -1,10 +1,10 @@
-angular.module('appCg').controller('KpisCtrl', function(kpis, gprRestApi, $uibModal, $filter, $state) {
+angular.module('appCg').controller('KpisCtrl', function(kpis, gprRestApi, $uibModal) {
     var vm = this;
     vm.title = 'Key Perfomance Indicators';
 
     var unfilteredRows = angular.extend(kpis);
     vm.count = unfilteredRows.length;
-    vm.rows = angular.extend(kpis);
+    vm.kpis = vm.rows = angular.extend(kpis);
 
     vm.options = {
         data : vm.rows,

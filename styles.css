@@ -29,6 +29,13 @@ div.navbar-collapse.collapse.in {
     -moz-box-shadow: none !important;
     box-shadow: none !important;
 }
+
+.badge-middle {
+  vertical-align: middle;
+}
+.nav {
+  font-size: 16px;
+}
 /*
 
 body {
@@ -45,6 +52,7 @@ body {
     text-rendering: optimizeLegibility;
 }
 */
+
 
 .navbar {
     margin-bottom: 0px;

@@ -2,8 +2,7 @@ angular.module('appCg').controller('ProgrammesCtrl', function(programmes, gprRes
     var vm = this;
     vm.title = 'Programmes';
     var unfilteredRows = angular.extend(programmes);
-    vm.rows = angular.extend(programmes);
-    vm.count = unfilteredRows.length;
+    vm.programmes = vm.rows = angular.extend(programmes);
 
     vm.options = {
         data : vm.rows,
@@ -18,8 +17,8 @@ angular.module('appCg').controller('ProgrammesCtrl', function(programmes, gprRes
             { name: 'code' },
             { name: 'name' },
             { name: 'description' },
-            { name: 'start_date' },
-            { name: 'end_date' }
+            { name: 'start_date',type: 'date', cellFilter: 'date:\'yyyy-MM-dd\'' },
+            { name: 'end_date',type: 'date', cellFilter: 'date:\'yyyy-MM-dd\'' }
         ],
         onRegisterApi : function(gridApi) {
         vm.gridApi = gridApi;

@@ -10,15 +10,10 @@ angular.module('appCg').controller('KpiTargetsModalCtrl', function(target,
 
     if (operation === 'Create') { vm.target = {}; } else if (operation === 'Update') { vm.target = target.selectedRow; }
 
-    vm.target.dates = {};
     vm.operation = operation;
 
-    if (vm.operation === 'Update' && vm.target.month) {
-        vm.target.dates.month_ = new Date(vm.target.month);
-    }
-
     vm.targetFields = [{
-        key: 'dates.month_',
+        key: 'month',
         type: 'datepicker',
         templateOptions: {
             label: 'For Month',
@@ -49,12 +44,7 @@ angular.module('appCg').controller('KpiTargetsModalCtrl', function(target,
 
     vm.updateCreateRow = function() {
         var body = angular.copy(vm.target);
-        try {
-            body.month = body.dates.month_.toSA();
-        } catch (err) {
-            body.month = null;
-        }
-        delete body.dates;
+
         body.key_performance_indicator = kpiId;
 
         gprRestApi.updateCreateRow('key_performance_indicators_targets', body, vm.operation).then(function success(response) {

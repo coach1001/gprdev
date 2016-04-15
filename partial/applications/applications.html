@@ -1,1 +1,13 @@
-<h3>{{vm.title}}</h3>
+
+<h3>{{vm.title}} <span class="badge">{{vm.applications.length}}</span></h3>
+<div class="grid">
+
+  <div class="form-group">
+    <button class="btn btn-primary" ng-click="vm.openModal(0,'Create')" >Add Organisation</button>
+  </div>
+  <div ui-grid="vm.options" ui-grid-exporter ui-grid-selection class="grid"></div>
+
+</div>
+
+
+
