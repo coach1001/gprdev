@@ -2,41 +2,7 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="cbab6538-2426-44ed-9060-952681af5368" name="Default" comment="">
-      <change type="DELETED" beforePath="C:\gprdev\gprdev\bower_components\spin.js\LICENSE.txt" afterPath="" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/gpr.backup" afterPath="$PROJECT_DIR$/gpr.backup" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bower_components/spin.js/.bower.json" afterPath="$PROJECT_DIR$/bower_components/spin.js/.bower.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bower_components/spin.js/.jshintrc" afterPath="$PROJECT_DIR$/bower_components/spin.js/.jshintrc" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bower_components/spin.js/README.md" afterPath="$PROJECT_DIR$/bower_components/spin.js/README.md" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app.js" afterPath="$PROJECT_DIR$/app.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/app.less" afterPath="$PROJECT_DIR$/app.less" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partial/applications/applications.html" afterPath="$PROJECT_DIR$/partial/applications/applications.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partial/applications/applications.js" afterPath="$PROJECT_DIR$/partial/applications/applications.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bower.json" afterPath="$PROJECT_DIR$/bower.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bower_components/spin.js/bower.json" afterPath="$PROJECT_DIR$/bower_components/spin.js/bower.json" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partial/cfps/modal/cfp-modal.js" afterPath="$PROJECT_DIR$/partial/cfps/modal/cfp-modal.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partial/cfps/cfps.html" afterPath="$PROJECT_DIR$/partial/cfps/cfps.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partial/cfps/cfps.js" afterPath="$PROJECT_DIR$/partial/cfps/cfps.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/dictionaries/fweberi7.xml" afterPath="$PROJECT_DIR$/.idea/dictionaries/fweberi7.xml" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/service/gpr-rest-api.js" afterPath="$PROJECT_DIR$/service/gpr-rest-api.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/index.html" afterPath="$PROJECT_DIR$/index.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bower_components/spin.js/jquery.spin.js" afterPath="$PROJECT_DIR$/bower_components/spin.js/jquery.spin.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partial/kpis/modal/kpi-targets-modal.js" afterPath="$PROJECT_DIR$/partial/kpis/modal/kpi-targets-modal.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partial/kpis/kpis.html" afterPath="$PROJECT_DIR$/partial/kpis/kpis.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partial/kpis/kpis.js" afterPath="$PROJECT_DIR$/partial/kpis/kpis.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partial/kras/modal/kra-modal.js" afterPath="$PROJECT_DIR$/partial/kras/modal/kra-modal.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partial/kras/kras.html" afterPath="$PROJECT_DIR$/partial/kras/kras.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partial/kras/kras.js" afterPath="$PROJECT_DIR$/partial/kras/kras.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partial/organisations/modal/organisation-modal.js" afterPath="$PROJECT_DIR$/partial/organisations/modal/organisation-modal.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partial/organisations/organisations.html" afterPath="$PROJECT_DIR$/partial/organisations/organisations.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partial/organisations/organisations.js" afterPath="$PROJECT_DIR$/partial/organisations/organisations.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/postgrest_run.bat" afterPath="$PROJECT_DIR$/postgrest_run.bat" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partial/programmes/modal/programme-modal.js" afterPath="$PROJECT_DIR$/partial/programmes/modal/programme-modal.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partial/programmes/programmes.html" afterPath="$PROJECT_DIR$/partial/programmes/programmes.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partial/programmes/programmes.js" afterPath="$PROJECT_DIR$/partial/programmes/programmes.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/bower_components/spin.js/spin.js" afterPath="$PROJECT_DIR$/bower_components/spin.js/spin.js" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/styles.css" afterPath="$PROJECT_DIR$/styles.css" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/partial/top-nav/top-nav.html" afterPath="$PROJECT_DIR$/partial/top-nav/top-nav.html" />
-      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/formly_templates/ui-select-single.html" afterPath="$PROJECT_DIR$/formly_templates/ui-select-single.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
     </list>
     <ignored path="gprdev.iws" />
@@ -64,8 +30,8 @@
       <file leaf-file-name="app.js" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app.js">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.6614509" vertical-offset="334" max-vertical-offset="1088">
-              <caret line="270" column="5" selection-start-line="270" selection-start-column="5" selection-end-line="270" selection-end-column="5" />
+            <state vertical-scroll-proportion="0.7098151" vertical-offset="317" max-vertical-offset="1071">
+              <caret line="271" column="2" selection-start-line="271" selection-start-column="2" selection-end-line="271" selection-end-column="2" />
               <folding>
                 <element signature="e#50#169#0" expanded="false" />
                 <element signature="n#!!block;n#convertDateStringsToDates#0" expanded="false" />
@@ -80,11 +46,11 @@
                 <element signature="e#4607#5469#0" expanded="false" />
                 <element signature="e#5519#6199#0" expanded="false" />
                 <element signature="e#6254#6710#0" expanded="false" />
-                <element signature="e#8280#8772#0" expanded="false" />
-                <element signature="e#8831#11286#0" expanded="false" />
-                <element signature="e#11345#11498#0" expanded="false" />
-                <element signature="e#11419#11494#0" expanded="false" />
-                <element signature="e#11556#11992#0" expanded="false" />
+                <element signature="e#8281#8773#0" expanded="false" />
+                <element signature="e#8832#11287#0" expanded="false" />
+                <element signature="e#11346#11499#0" expanded="false" />
+                <element signature="e#11420#11495#0" expanded="false" />
+                <element signature="e#11557#11993#0" expanded="false" />
               </folding>
             </state>
           </provider>
@@ -166,9 +132,9 @@
         <option value="$PROJECT_DIR$/partial/kpis/kpis.js" />
         <option value="$PROJECT_DIR$/partial/assign-assessors-applications/assign-assessors-applications.html" />
         <option value="$PROJECT_DIR$/partial/assign-assessors-applications/assign-assessors-applications.js" />
-        <option value="$PROJECT_DIR$/app.js" />
         <option value="$PROJECT_DIR$/partial/top-nav/top-nav.html" />
         <option value="$PROJECT_DIR$/partial/do-assessment-select/do-assessment-select.js" />
+        <option value="$PROJECT_DIR$/app.js" />
       </list>
     </option>
   </component>
@@ -819,8 +785,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app.js">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.6614509" vertical-offset="334" max-vertical-offset="1088">
-          <caret line="270" column="5" selection-start-line="270" selection-start-column="5" selection-end-line="270" selection-end-column="5" />
+        <state vertical-scroll-proportion="0.7098151" vertical-offset="317" max-vertical-offset="1071">
+          <caret line="271" column="2" selection-start-line="271" selection-start-column="2" selection-end-line="271" selection-end-column="2" />
           <folding>
             <element signature="e#50#169#0" expanded="false" />
             <element signature="n#!!block;n#convertDateStringsToDates#0" expanded="false" />
@@ -835,11 +801,11 @@
             <element signature="e#4607#5469#0" expanded="false" />
             <element signature="e#5519#6199#0" expanded="false" />
             <element signature="e#6254#6710#0" expanded="false" />
-            <element signature="e#8280#8772#0" expanded="false" />
-            <element signature="e#8831#11286#0" expanded="false" />
-            <element signature="e#11345#11498#0" expanded="false" />
-            <element signature="e#11419#11494#0" expanded="false" />
-            <element signature="e#11556#11992#0" expanded="false" />
+            <element signature="e#8281#8773#0" expanded="false" />
+            <element signature="e#8832#11287#0" expanded="false" />
+            <element signature="e#11346#11499#0" expanded="false" />
+            <element signature="e#11420#11495#0" expanded="false" />
+            <element signature="e#11557#11993#0" expanded="false" />
           </folding>
         </state>
       </provider>

@@ -269,8 +269,7 @@ angular.module('appCg').config(function ($stateProvider, $urlRouterProvider, $lo
       }
     }
   });
-
-
+  
   $urlRouterProvider.otherwise('/home');
   $locationProvider.html5Mode(false);
 });
