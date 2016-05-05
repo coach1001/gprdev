@@ -262,14 +262,13 @@ angular.module('appCg').config(function ($stateProvider, $urlRouterProvider, $lo
         templateUrl: 'partial/assign-assessors-applications/assign-assessors-applications.html',
         controller: 'AssignAssessorsApplicationsCtrl as vm',
         resolve: {
-          applications_assessors: function res(gprRestApi, $stateParams) {
+          applications_assessors: function res(gprRestApi) {
             return gprRestApi.getRows('grid_assign_assessor_application',false);
           }
         }
       }
     }
   });
-  
   $urlRouterProvider.otherwise('/home');
   $locationProvider.html5Mode(false);
 });

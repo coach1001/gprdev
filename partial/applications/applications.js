@@ -30,7 +30,6 @@ angular.module('appCg').controller('ApplicationsCtrl',function(applications,gprR
     }
   };
 
-
   vm.openModal = function(id, operation) {
     $uibModal.open({
       templateUrl: 'partial/applications/modal/application-modal.html',

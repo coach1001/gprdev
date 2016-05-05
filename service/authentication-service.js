@@ -9,7 +9,7 @@ angular.module('appCg').factory('authenticationService',function($http,$rootScop
   authenticationService.isAuthenticated = false;
   authenticationService.role = '';
 
-  authenticationService.baseUrl = 'http://localhost:3000/rpc';
+  authenticationService.baseUrl = 'http://localhost:3002/rpc';
 
   authenticationService.register = function (email_, password_){
     var req={};

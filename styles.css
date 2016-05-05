@@ -36,9 +36,8 @@ div.navbar-collapse.collapse.in {
 .nav {
   font-size: 16px;
 }
-/*
 
-body {
+/*body {
     font-family: 'RobotoDraft', 'Roboto', 'Helvetica Neue, Helvetica, Arial', sans-serif;
     font-style: normal;
     font-weight: 300;
@@ -50,9 +49,7 @@ body {
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
-}
-*/
-
+}*/
 
 .navbar {
     margin-bottom: 0px;

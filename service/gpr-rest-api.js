@@ -1,6 +1,6 @@
 angular.module('appCg').factory('gprRestApi', ['$http', '$q', function ($http, $q) {
   var gprRestApi = {};
-  gprRestApi.baseUrl = 'http://localhost:3000';
+  gprRestApi.baseUrl = 'http://localhost:3002';
   gprRestApi.tables = [];
   gprRestApi.FEUString = '';
   gprRestApi.FEULevel = 1;
@@ -57,7 +57,7 @@ angular.module('appCg').factory('gprRestApi', ['$http', '$q', function ($http, $
       urlString += efiString;
     }
     if(filter) {
-      urlString += filter
+      urlString += filter;
     }
     return $http.get(urlString).then(function success(response) {
       return response.data;
