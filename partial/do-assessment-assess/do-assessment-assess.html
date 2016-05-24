@@ -20,7 +20,7 @@ Completed?
       <h5>{{q.description}}</h5>
 
       <div ng-if="q.question_types.code==='boolean'" >
-        <select ng-blur="vm.updateModelAnswer(catIndex,qIndex,q.compliance_answers[0].answer)" style="width:25%;" ng-model="q.compliance_answers[0].answer">
+        <select class="form-control" ng-blur="vm.updateModelAnswer(catIndex,qIndex,q.compliance_answers[0].answer)" style="width:25%;" ng-model="q.compliance_answers[0].answer">
           <option value="null">Undecided</option>
           <option value="true">Yes</option>
           <option value="false">No</option>

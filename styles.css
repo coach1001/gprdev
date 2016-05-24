@@ -11,6 +11,7 @@ div.navbar-collapse.collapse {
 @font-face {
   font-family: 'OpenSans';
   src: url("OpenSans-Light.ttf");
+  /*src: url("Arcon-Regular.otf");*/
 }
 
 *{
