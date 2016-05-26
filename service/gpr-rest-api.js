@@ -1,6 +1,6 @@
-angular.module('appCg').factory('gprRestApi', ['$http', '$q', function ($http, $q) {
+angular.module('appCg').factory('gprRestApi', ['$http', '$q', function ($http, $q,appConstants) {
   var gprRestApi = {};
-  gprRestApi.baseUrl = 'http://localhost:3002';
+  gprRestApi.baseUrl = 'http://10.0.0.111:3002';
   gprRestApi.tables = [];
   gprRestApi.FEUString = '';
   gprRestApi.FEULevel = 1;

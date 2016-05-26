@@ -12,7 +12,7 @@ except :
 try:
 	server = smtplib.SMTP(data["mail_host"],data["mail_port"])
 	server.starttls()
-	server.login('gpr.fhr@gmail.com','Justice##@!1996')		
+	server.login(data["mail_user"],data["mail_password"])		
 	print "SMTP Connected..."
 except:
 	print "Unable to connect to the SMTP Server"
@@ -36,9 +36,9 @@ while 1:
 		if e.channel == 'validate' or e.channel == 'reset':			
 			
 			try:
-				payLoadJson = json.loads(e.payload)			
-				
+				payLoadJson = json.loads(e.payload)											
 				sender = data["sender_email"]
+				print payLoadJson["email"]
 				receiver = payLoadJson["email"]			
 				token = payLoadJson["token"]
 				token_type = payLoadJson["token_type"]
@@ -52,7 +52,7 @@ while 1:
 			try:
 				server = smtplib.SMTP(data["mail_host"],data["mail_port"])
 				server.starttls()
-				server.login('gpr.fhr@gmail.com','Justice##@!1996')		
+				server.login(data["mail_user"],data["mail_password"])	
 				server.sendmail(sender,receiver, header + body)
 				print 'Email Notification Sent...'								
 				server.close()

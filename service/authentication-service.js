@@ -1,4 +1,4 @@
-angular.module('appCg').factory('authenticationService',function($http,$rootScope) {
+angular.module('appCg').factory('authenticationService',function($http,$rootScope,appConstants) {
 
   var authenticationService = {};
 
@@ -9,7 +9,7 @@ angular.module('appCg').factory('authenticationService',function($http,$rootScop
   authenticationService.isAuthenticated = false;
   authenticationService.role = '';
 
-  authenticationService.baseUrl = 'http://localhost:3002/rpc';
+  authenticationService.baseUrl = appConstants.rest_baseURL + appConstants.authentication_baseURL;
 
   authenticationService.register = function (email_, password_){
     var req={};
