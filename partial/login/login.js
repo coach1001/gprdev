@@ -22,7 +22,8 @@ angular.module('appCg').controller('LoginCtrl',function(authenticationService,ng
   }];
 
   vm.loginFunc = function(){
-      authenticationService.login(vm.login.email,vm.login.password).then(function success(response){
+      authenticationService.login(vm.login.email,vm.login.password).then(function success(response){      
+      console.log(response);
       authenticationService.useCredentials(response.data.token,vm.login.email);
       authenticationService.storeCredentials(response.data.token,vm.login.email);
       ngToast.create({content: 'Login Successfull', timeout: 3000});

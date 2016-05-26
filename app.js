@@ -303,8 +303,7 @@ angular.module('appCg').config(function ($httpProvider) {
     });
 
     return {
-      responseError: function (rejection) {
-
+      responseError: function (rejection) {        
         if (rejection.status === 404 && authenticationService.isAuthenticated) {
           if (!$rootScope.authorizationError) {
             $rootScope.authorizationError = true;
@@ -327,7 +326,7 @@ angular.module('appCg').config(function ($httpProvider) {
               }
             });
             $state.go('home');
-            return rejection;
+            return $q.reject(rejection);
           }
         } else if (rejection.status === 400 && authenticationService.isAuthenticated) {
           if (!$rootScope.authorizationError) {
@@ -353,10 +352,10 @@ angular.module('appCg').config(function ($httpProvider) {
             });
             authenticationService.logout();
             $state.go('home');
-            return rejection;
+            return $q.reject(rejection);
           }
         }
-        return rejection;
+        return $q.reject(rejection);
       }
 
     };
