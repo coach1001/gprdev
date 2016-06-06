@@ -1,3 +1,35 @@
+(function() {
+    
+    angular.module( 'appCg', [
+                    'ui.bootstrap',
+                    'ui.router',
+                    'ngAnimate',
+                    'formly',
+                    'formlyBootstrap',
+                    'ngToast',
+                    'angular-confirm',
+                    'ui.grid', 'ui.grid.selection', 'ui.grid.exporter','ui.grid.edit',
+                    'ui.select', 'ngLoadingSpinner','ui.checkbox'
+                  ]);
+
+    fetchData().then(bootstrapApplication);
+
+    function fetchData() {
+        var initInjector = angular.injector(["ng"]);
+        var $http = initInjector.get("$http");
+
+        return $http.get("config.json").then(function(response) {
+            angular.module('appCg').constant("config", response.data);
+        }, function(errorResponse) {
+            // Handle error case
+        });
+    }
+    function bootstrapApplication() {
+        angular.element(document).ready(function() {
+            angular.bootstrap(document, ["appCg"]);
+        });
+    }
+}());
 Array.prototype.getIndex = function (prop, value) {
   for (var i = 0; i < this.length; i++) {
     if (this[i][prop] === value) {
@@ -40,7 +72,7 @@ function convertDateStringsToDates(input) {
     }
   }
 }
-angular.module('appCg', [
+/*angular.module('appCg', [
   'ui.bootstrap',
   'ui.router',
   'ngAnimate',
@@ -48,9 +80,9 @@ angular.module('appCg', [
   'formlyBootstrap',
   'ngToast',
   'angular-confirm',
-  'ui.grid', 'ui.grid.selection', 'ui.grid.exporter', 'ui.grid.edit',
+  'ui.grid', 'ui.grid.selection', 'ui.grid.exporter','ui.grid.edit',
   'ui.select', 'ngLoadingSpinner','ui.checkbox'
-]);
+]);*/
 angular.module('appCg').config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
 
   $stateProvider.state('home', {
@@ -119,7 +151,6 @@ angular.module('appCg').config(function ($stateProvider, $urlRouterProvider, $lo
     data: {
       requireLogin: true
     }
-
   });
   $stateProvider.state('home.cfps', {
     url: '/cfps',
@@ -137,7 +168,6 @@ angular.module('appCg').config(function ($stateProvider, $urlRouterProvider, $lo
     data: {
       requireLogin: true
     }
-
   });
   $stateProvider.state('home.organisations', {
     url: '/organisations',
@@ -222,8 +252,74 @@ angular.module('appCg').config(function ($stateProvider, $urlRouterProvider, $lo
     data: {
       requireLogin: false
     }
-
   });
+
+  $stateProvider.state('home.admin-compliance-select', {
+    url: '/admin-compliance-select',
+    views: {
+      'mainContent@': {
+        templateUrl: 'partial/compliance-select/compliance-select.html',
+        controller: 'ComplianceSelectCtrl as vm',
+        resolve: {
+          compliances: function (gprRestApi, authenticationService) {
+            return gprRestApi.getRowsWithFEs('grid_compliance_applications','&compliance_section=eq.0&email_address=eq.'+authenticationService.username);      
+          },
+          complianceSection : function (){return 0;}
+        }
+      }
+    }
+  });
+  $stateProvider.state('home.relevance-check-select', {
+    url: '/relevance-check-select',
+    views: {
+      'mainContent@': {
+        templateUrl: 'partial/compliance-select/compliance-select.html',
+        controller: 'ComplianceSelectCtrl as vm',
+        resolve: {
+          compliances: function (gprRestApi, authenticationService) {
+            return gprRestApi.getRowsWithFEs('grid_compliance_applications','&compliance_section=eq.1&email_address=eq.'+authenticationService.username);      
+          },
+          complianceSection : function (){return 1;}
+        }
+      }
+    }
+  });
+  $stateProvider.state('home.assessment-select', {
+    url: '/assessment-select',
+    views: {
+      'mainContent@': {
+        templateUrl: 'partial/compliance-select/compliance-select.html',
+        controller: 'ComplianceSelectCtrl as vm',
+        resolve: {
+          compliances: function (gprRestApi, authenticationService) {
+            return gprRestApi.getRowsWithFEs('grid_compliance_applications','&compliance_section=eq.2&email_address=eq.'+authenticationService.username);      
+          },
+          complianceSection : function (){return 2;}
+        }
+      }
+    }
+  });
+  
+  $stateProvider.state('home.compliance', {
+    url: '/compliance?:templateId&:appId',
+    views: {
+      'mainContent@': {
+        templateUrl: 'partial/compliance/compliance.html',
+        controller: 'ComplianceCtrl as vm',
+        resolve: {
+          template: function res(gprRestApi, $stateParams) {
+            return gprRestApi.getRowsWithFEs('compliance_templates', ',categories{*,questions{*,question_types{*},question_options{*},compliance_answers{*}}}', '&id=eq.' + $stateParams.templateId +'&categories.questions.compliance_answers.application_compliance_officer=eq.'+$stateParams.appId);
+          },
+          complianceInfo: function res(gprRestApi, $stateParams) {
+            return gprRestApi.getRowsWithFEs('grid_compliance_applications','&id=eq.'+$stateParams.appId);
+          }          
+        }
+      }
+    }
+  });
+
+
+
   $stateProvider.state('home.do-assessment-select', {
     url: '/assessments',
     views: {
@@ -246,7 +342,7 @@ angular.module('appCg').config(function ($stateProvider, $urlRouterProvider, $lo
         controller: 'DoAssessmentAssessCtrl as vm',
         resolve: {
           template: function res(gprRestApi, $stateParams) {
-            return gprRestApi.getRowsWithFEs('assessment_templates', ',categories{*,questions{*,question_types{*},question_options{*},compliance_answers{*}}}', '&id=eq.' + $stateParams.templateId +'&categories.questions.compliance_answers.application_assessor=eq.'+$stateParams.appassId);
+            return gprRestApi.getRowsWithFEs('compliance_templates', ',categories{*,questions{*,question_types{*},question_options{*},compliance_answers{*}}}', '&id=eq.' + $stateParams.templateId +'&categories.questions.compliance_answers.application_compliance_officer=eq.'+$stateParams.appassId);
           },
           assessmentInfo: function res(gprRestApi, $stateParams) {
             return gprRestApi.getRowsFilterColumn('grid_assessor_applications','id',$stateParams.appassId);
@@ -269,6 +365,33 @@ angular.module('appCg').config(function ($stateProvider, $urlRouterProvider, $lo
       }
     }
   });
+  $stateProvider.state('home.persons', {
+    url: '/persons',
+    views: {
+      'mainContent@': {
+        templateUrl: 'partial/persons/persons.html',
+        controller: 'PersonsCtrl as vm',
+        resolve: {
+          persons: function res(gprRestApi) {
+            return gprRestApi.getRows('grid_persons',false);
+          }
+        }
+      }
+    }
+  });
+  /*
+  $stateProvider.state('home.people', {              
+    url: '/people',
+    views: {
+      'mainContent@': {
+        templateUrl: 'partial/people/people.html',
+        controller: 'PeopleCtrl as vm',
+        resolve: {
+          }
+        }
+      }
+    });*/
+  
   $urlRouterProvider.otherwise('/home');
   $locationProvider.html5Mode(false);
 });
@@ -288,7 +411,6 @@ angular.module('appCg').run(function ($rootScope, $state, loginModalService, aut
       });
     }
   });
-
 });
 angular.module('appCg').config(function ($httpProvider) {
 

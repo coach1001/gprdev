@@ -1,7 +1,7 @@
 angular.module('appCg').controller('CfpModalCtrl', function (programmes,
                                                              kras,
                                                              kpis,
-                                                             assessment_templates,
+                                                             compliance_templates,
                                                              call,
                                                              operation,
                                                              gprRestApi,
@@ -22,10 +22,10 @@ angular.module('appCg').controller('CfpModalCtrl', function (programmes,
   vm.programmes = angular.extend(programmes);
   vm.kras = angular.extend(kras);
   vm.kpis = angular.extend(kpis);
-  vm.assessment_templates = angular.extend(assessment_templates);
+  vm.compliance_templates = angular.extend(compliance_templates);
 
-  if (!vm.assessment_templates) {
-    vm.assessment_templates = [];
+  if (!vm.compliance_templates) {
+    vm.compliance_templates = [];
   }
 
   vm.callFields = [{
@@ -129,17 +129,42 @@ angular.module('appCg').controller('CfpModalCtrl', function (programmes,
         datepickerPopup: 'yyyy-MM-dd'
       }
     }]
-  }, {
-    className: 'row nopadding',
-    key: 'assessment_template',
+  },{
+  fieldGroup : [
+  {
+    className: 'nopadding',
+    key: 'admin_compliance_template',
     type: 'select',
     templateOptions: {
-      label: 'Assessment Template',
+      label: 'Admin Compliance Template',
       valueProp: 'id',
       labelProp: 'name',
       required: false,
-      options: vm.assessment_templates}
-    }];
+      options: vm.compliance_templates}
+    }, 
+  {
+    className: 'nopadding',
+    key: 'relevance_compliance_template',
+    type: 'select',
+    templateOptions: {
+      label: 'Relevance Compliance Template',
+      valueProp: 'id',
+      labelProp: 'name',
+      required: false,
+      options: vm.compliance_templates}
+    }, 
+  {
+    className: 'nopadding',
+    key: 'assessment_compliance_template',
+    type: 'select',
+    templateOptions: {
+      label: 'Assessment Compliance Template',
+      valueProp: 'id',
+      labelProp: 'name',
+      required: false,
+      options: vm.compliance_templates}
+    }]}
+    ];
 
   vm.updateCreateRow = function () {
     var body = angular.copy(vm.call);

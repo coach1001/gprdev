@@ -30,18 +30,31 @@
         </ul>
       </li>
       <li ng-hide="!isAuthenticated" uib-dropdown>
-        <a href="#" uib-dropdown-toggle>Assessments <b class="caret"></b></a>
+        <a href="#" uib-dropdown-toggle>Admin Compliances <b class="caret"></b></a>
         <ul uib-dropdown-menu>
-          <li><a ui-sref="home.do-assessment-select">Do Assessment</a></li>
-          <li><a ui-sref="home.assign-assessors-applications">Assign Assessors</a></li>
+          <li><a ui-sref="home.admin-compliance-select">Do Admin Compliance</a></li>          
+          <!--<li><a href="#">Create/Edit Assessment Template</a></li>-->
+        </ul>
+      </li>
+      <li ng-hide="!isAuthenticated" uib-dropdown>
+        <a href="#" uib-dropdown-toggle>Relevance Checks <b class="caret"></b></a>
+        <ul uib-dropdown-menu>
+          <li><a ui-sref="home.relevance-check-select">Do Relevance</a></li>          
           <!--<li><a href="#">Create/Edit Assessment Template</a></li>-->
         </ul>
       </li>
 
+      <li ng-hide="!isAuthenticated" uib-dropdown>
+        <a href="#" uib-dropdown-toggle>Assessments <b class="caret"></b></a>
+        <ul uib-dropdown-menu>
+          <li><a ui-sref="home.assessment-select">Do Assessment</a></li>          
+          <!--<li><a href="#">Create/Edit Assessment Template</a></li>-->
+        </ul>
+      </li>
     </ul>
-
     <ul class="nav navbar-nav navbar-right">
       <li><a style="font-size: 13px;" ng-hide="isAuthenticated" ng-click="vm.registerFunc()"> Register </a></li>
+      <li><a style="font-size: 13px;" ng-hide="!isAuthenticated" ui-sref="home.persons">Persons</a></li>
       <li><a style="font-size: 13px;" ng-hide="!isAuthenticated" ui-sref="home.lookups">Lookup Tables</a></li>
       <li><a style="cursor:pointer;font-size: 13px;" ng-hide="isAuthenticated" ng-click="vm.loginFunc()"><span class="
 glyphicon glyphicon-log-in aria-hidden=" true"></span> Login </a></li>

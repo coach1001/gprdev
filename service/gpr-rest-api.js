@@ -1,6 +1,7 @@
-angular.module('appCg').factory('gprRestApi', ['$http', '$q', function ($http, $q,appConstants) {
-  var gprRestApi = {};
-  gprRestApi.baseUrl = 'http://10.0.0.111:3002';
+angular.module('appCg').factory('gprRestApi', function ($http, $q,config) {
+  var gprRestApi = {};   
+  
+  gprRestApi.baseUrl = config.rest_baseURL; 
   gprRestApi.tables = [];
   gprRestApi.FEUString = '';
   gprRestApi.FEULevel = 1;
@@ -88,6 +89,8 @@ angular.module('appCg').factory('gprRestApi', ['$http', '$q', function ($http, $
       console.log('Error! Getting Row from ' + table);
     });
   };
+
+  
   gprRestApi.getRowWithFEs = function (table, id, efiString) {
     var urlString = gprRestApi.baseUrl + '/' + table + '?id=eq.' + id + '&select=*';
     urlString = urlString + ',' + efiString;
@@ -97,6 +100,22 @@ angular.module('appCg').factory('gprRestApi', ['$http', '$q', function ($http, $
       console.log('Error! Getting Row from ' + table);
     });
   };
+  
+  gprRestApi.getRowWithFE_2 = function(table,efiString,filter){
+    var urlString = gprRestApi.baseUrl + '/' + table + '?select=*';
+    if (efiString) {
+      urlString += efiString;
+    }
+    if(filter) {
+      urlString += filter;
+    }
+    return $http.get(urlString).then(function success(response) {
+      return response.data[0];
+    }, function error() {
+      console.log('Error! Getting Rows from ' + table);
+    });
+  };
+
   gprRestApi.updateCreateRow = function (table, data, operation) {
     var req = {};
     if (operation === 'Update') {
@@ -152,4 +171,5 @@ angular.module('appCg').factory('gprRestApi', ['$http', '$q', function ($http, $
   };
 
   return gprRestApi;
-}]);
+
+});

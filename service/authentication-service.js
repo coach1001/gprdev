@@ -1,7 +1,7 @@
-angular.module('appCg').factory('authenticationService',function($http,$rootScope,appConstants) {
+angular.module('appCg').factory('authenticationService',function($http,$rootScope,config) {
 
-  var authenticationService = {};
-
+  var authenticationService = {};  
+  
   authenticationService.LOCAL_TOKEN_KEY = 'local_token';
   authenticationService.LOCAL_TOKEN_USERNAME = 'local_username';
 
@@ -9,7 +9,7 @@ angular.module('appCg').factory('authenticationService',function($http,$rootScop
   authenticationService.isAuthenticated = false;
   authenticationService.role = '';
 
-  authenticationService.baseUrl = appConstants.rest_baseURL + appConstants.authentication_baseURL;
+  authenticationService.baseUrl = config.rest_baseURL + config.authentication_baseURL;
 
   authenticationService.register = function (email_, password_){
     var req={};

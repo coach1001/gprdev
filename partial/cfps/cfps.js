@@ -47,8 +47,8 @@ angular.module('appCg').controller('CfpsCtrl', function(cfps, gprRestApi, $uibMo
                 kpis: function res(gprRestApi) {
                     return gprRestApi.getRows('key_performance_indicators', false);
                 },
-                assessment_templates: function(gprRestApi) {
-                    return gprRestApi.getRows('assessment_templates', false);
+                compliance_templates: function(gprRestApi) {
+                    return gprRestApi.getRows('compliance_templates', false);
                 },
                 call: function(gprRestApi) {
                     return gprRestApi.getRowWithFEs('calls', id, 'key_performance_indicators{*,key_result_areas{*,programmes{*}}}');

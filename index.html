@@ -14,7 +14,8 @@
   <link href="styles.css" rel="stylesheet">
 </head>
 
-<body ng-app="appCg">
+<!-- <body ng-app="appCg"> -->
+<body>
 <!-- Livereload script for development only (stripped during dist build) -->
 <script src="http://localhost:35729/livereload.js" data-concat="false"></script>
 <script>
@@ -49,7 +50,6 @@
 <script src="app.js"></script>
 <script src="service/app-constants.js"></script>
 <script src="formly_templates/formly-config.js"></script>
-<script src="service/gpr-rest-api.js"></script>
 <script src="partial/home/home.js"></script>
 <script src="partial/top-nav/top-nav.js"></script>
 <script src="partial/programmes/programmes.js"></script>
@@ -79,11 +79,14 @@
 <script src="service/auth-events.js"></script>
 <script src="partial/pop-up/pop-up.js"></script>
 <script src="service/login-modal-service.js"></script>
-<script src="partial/do-assessment-select/do-assessment-select.js"></script>
-<script src="partial/do-assessment-assess/do-assessment-assess.js"></script>
+<script src="service/gpr-rest-api.js"></script>
+
+<script src="partial/compliance-select/compliance-select.js"></script>
+<script src="partial/compliance/compliance.js"></script>
+
 <script src="partial/applications/modal/application-modal.js"></script>
-<script src="partial/assign-assessors-applications/assign-assessors-applications.js"></script>
-<script src="partial/assign-assessors-applications/modal/assign-assessor-modal.js"></script>
+<script src="partial/persons/persons.js"></script>
+<script src="partial/persons/modal/person-modal.js"></script>
 <!-- Add New Component JS Above -->
 <toast></toast>
 <span us-spinner="{radius:30, width:10, length: 20}"></span>
