@@ -12,6 +12,10 @@
    Assessment - {{vm.complianceInfo.application}} ({{vm.complianceInfo.name}})
 </h3>
 
+<h3 ng-if="vm.complianceInfo.compliance_section === 3">
+   Due Diligence - {{vm.complianceInfo.application}} ({{vm.complianceInfo.name}})
+</h3>
+
   <h6>Call Reference - {{vm.complianceInfo.call_reference}}</h6>
 <h4>
 Completed?

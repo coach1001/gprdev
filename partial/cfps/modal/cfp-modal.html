@@ -4,11 +4,16 @@
         <h4 class="modal-title">Call</h4>
     </div>
     <div class="modal-body">
-        <form novalidate>
-            <formly-form model="vm.call" fields="vm.callFields" form="vm.callForm">
-                <button ng-click="vm.updateCreateRow()" class="btn btn-primary" ng-disabled="vm.callForm.$invalid">{{vm.operation}}</button>
-                <button type="button" ng-click="vm.deleteRow()" class="btn btn-warning" confirm="Are you sure?" ng-hide="vm.operation === 'Create'">Delete</button>
-            </formly-form>
+        <form  name="vm.callForm" novalidate>
+            <uib-tabset type="pills">
+                <uib-tab ng-repeat="tab in vm.tabs" heading="{{tab.title}}" active="tab.active" disable="tab.disabled">
+                    </br>
+                    <formly-form model="tab.form.model" fields="tab.form.fields" form="vm.form" options="tab.form.options">
+                    </formly-form>
+                </uib-tab>
+            </uib-tabset>
+          <button ng-click="vm.updateCreateRow()" class="btn btn-primary" ng-disabled="vm.callForm.$invalid">{{vm.operation}}</button>
+          <button type="button" ng-click="vm.deleteRow()" class="btn btn-warning" confirm="Are you sure?" ng-hide="vm.operation === 'Create'">Delete</button>
         </form>
     </div>
 </div>

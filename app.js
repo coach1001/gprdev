@@ -299,7 +299,23 @@ angular.module('appCg').config(function ($stateProvider, $urlRouterProvider, $lo
       }
     }
   });
+  $stateProvider.state('home.due-diligence-select', {
+    url: '/due-diligence-select',
+    views: {
+      'mainContent@': {
+        templateUrl: 'partial/compliance-select/compliance-select.html',
+        controller: 'ComplianceSelectCtrl as vm',
+        resolve: {
+          compliances: function (gprRestApi, authenticationService) {
+            return gprRestApi.getRowsWithFEs('grid_compliance_applications','&compliance_section=eq.3&email_address=eq.'+authenticationService.username);      
+          },
+          complianceSection : function (){return 3;}
+        }
+      }
+    }
+  });
   
+
   $stateProvider.state('home.compliance', {
     url: '/compliance?:templateId&:appId',
     views: {
@@ -318,53 +334,6 @@ angular.module('appCg').config(function ($stateProvider, $urlRouterProvider, $lo
     }
   });
 
-
-
-  $stateProvider.state('home.do-assessment-select', {
-    url: '/assessments',
-    views: {
-      'mainContent@': {
-        templateUrl: 'partial/do-assessment-select/do-assessment-select.html',
-        controller: 'DoAssessmentSelectCtrl as vm',
-        resolve: {
-          assessments: function res(gprRestApi, authenticationService) {
-            return gprRestApi.getRowsFilterColumn('grid_assessor_applications', 'email_address', authenticationService.username);
-          }
-        }
-      }
-    }
-  });
-  $stateProvider.state('home.do-assessment-assess', {
-    url: '/assess_application?:templateId&:appassId',
-    views: {
-      'mainContent@': {
-        templateUrl: 'partial/do-assessment-assess/do-assessment-assess.html',
-        controller: 'DoAssessmentAssessCtrl as vm',
-        resolve: {
-          template: function res(gprRestApi, $stateParams) {
-            return gprRestApi.getRowsWithFEs('compliance_templates', ',categories{*,questions{*,question_types{*},question_options{*},compliance_answers{*}}}', '&id=eq.' + $stateParams.templateId +'&categories.questions.compliance_answers.application_compliance_officer=eq.'+$stateParams.appassId);
-          },
-          assessmentInfo: function res(gprRestApi, $stateParams) {
-            return gprRestApi.getRowsFilterColumn('grid_assessor_applications','id',$stateParams.appassId);
-          }
-        }
-      }
-    }
-  });
-  $stateProvider.state('home.assign-assessors-applications', {
-    url: '/assign-assessments',
-    views: {
-      'mainContent@': {
-        templateUrl: 'partial/assign-assessors-applications/assign-assessors-applications.html',
-        controller: 'AssignAssessorsApplicationsCtrl as vm',
-        resolve: {
-          applications_assessors: function res(gprRestApi) {
-            return gprRestApi.getRows('grid_assign_assessor_application',false);
-          }
-        }
-      }
-    }
-  });
   $stateProvider.state('home.persons', {
     url: '/persons',
     views: {
@@ -379,19 +348,7 @@ angular.module('appCg').config(function ($stateProvider, $urlRouterProvider, $lo
       }
     }
   });
-  /*
-  $stateProvider.state('home.people', {              
-    url: '/people',
-    views: {
-      'mainContent@': {
-        templateUrl: 'partial/people/people.html',
-        controller: 'PeopleCtrl as vm',
-        resolve: {
-          }
-        }
-      }
-    });*/
-  
+
   $urlRouterProvider.otherwise('/home');
   $locationProvider.html5Mode(false);
 });

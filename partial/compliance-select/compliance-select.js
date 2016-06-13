@@ -7,8 +7,9 @@ angular.module('appCg').controller('ComplianceSelectCtrl',function(compliances,$
     vm.title = 'Relevance Checks';
   else if (complianceSection === 2)
     vm.title = 'Assessments';
+  else if (complianceSection === 3)
+    vm.title = 'Due Diligences';
 
-  
   var unfilteredRows = angular.extend(compliances);
   vm.compliances = vm.rows = angular.extend(compliances);
 
@@ -26,7 +27,9 @@ angular.module('appCg').controller('ComplianceSelectCtrl',function(compliances,$
       { name: 'call_reference' },
       { name: 'name', displayName : 'Organisation' },
       { name: 'province'},
-      { name: 'complete', displayName: 'Completed?', type: 'boolean',cellTemplate: '<input disabled="true" type="checkbox" ng-model="row.entity.complete">'}
+      //{ name: 'complete', displayName: 'Completed?', type: 'boolean',cellTemplate: '<input disabled="true" type="checkbox" ng-model="row.entity.complete">'}
+      { name: 'complete', displayName: 'Completed?', type: 'boolean',cellTemplate: '<checkbox disabled="true" ng-model="row.entity.complete"></checkbox>'}
+      
     ],
     onRegisterApi : function(gridApi) {
       vm.gridApi = gridApi;
@@ -44,6 +47,8 @@ angular.module('appCg').controller('ComplianceSelectCtrl',function(compliances,$
       else if (complianceSection === 1)
         compliance_packet.compliance_template = row.entity.relevance_compliance_template;
       else if (complianceSection === 2)
+        compliance_packet.compliance_template = row.entity.assessment_compliance_template;
+      else if (complianceSection === 3)
         compliance_packet.compliance_template = row.entity.assessment_compliance_template;
 
         vm.openModal(compliance_packet);

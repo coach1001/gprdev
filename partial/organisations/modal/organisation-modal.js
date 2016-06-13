@@ -214,7 +214,7 @@ angular.module('appCg').controller('OrganisationModalCtrl', function (organisati
                   //scope.fields[2].templateOptions.options = $filter('filter')(vm.suburbs, {place: newValue});
                   gprRestApi.getRowsFilterColumn('suburbs','place',newValue).then(function success(response){
                     scope.fields[2].templateOptions.options = response;
-                    console.log(scope);
+                    //console.log(scope);
                   },function error(response){
                   });
                 } else {

@@ -7,6 +7,15 @@ div.navbar-collapse.collapse {
     -o-transition: max-height .3s ease;
     transition: max-height .3s ease;
 }
+/*
+.navbar-default .navbar-nav>li>a {
+    font-size: 14px;
+}*/
+
+.nav.navbar-nav.navbar-right li a {
+    color: black;
+    background: #D0D0D0 ;
+}
 
 @font-face {
   font-family: 'OpenSans';
