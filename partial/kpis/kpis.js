@@ -34,7 +34,7 @@ angular.module('appCg').controller('KpisCtrl', function(kpis, gprRestApi, $uibMo
         $uibModal.open({
             templateUrl: 'partial/kpis/modal/kpi-modal.html',
             controller: 'KpiModalCtrl as vm',
-            //size : 'lg',
+            size : 'lg',
             resolve: {
                 kpi: function res(gprRestApi) {
                     return gprRestApi.getRowWithFEs('key_performance_indicators', id, 'key_result_areas{*,programmes{*}}');

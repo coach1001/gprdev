@@ -324,7 +324,7 @@ angular.module('appCg').config(function ($stateProvider, $urlRouterProvider, $lo
         controller: 'ComplianceCtrl as vm',
         resolve: {
           template: function res(gprRestApi, $stateParams) {
-            return gprRestApi.getRowsWithFEs('compliance_templates', ',categories{*,questions{*,question_types{*},question_options{*},compliance_answers{*}}}', '&id=eq.' + $stateParams.templateId +'&categories.questions.compliance_answers.application_compliance_officer=eq.'+$stateParams.appId);
+            return gprRestApi.getRowsWithFEs('compliance_templates', ',categories{*,questions{*,question_types{*},question_options{*},compliance_answers{*}}}', '&id=eq.' + $stateParams.templateId +'&categories.questions.compliance_answers.application_compliance_officer=eq.'+$stateParams.appId+'&categories.questions.order=id.asc');
           },
           complianceInfo: function res(gprRestApi, $stateParams) {
             return gprRestApi.getRowsWithFEs('grid_compliance_applications','&id=eq.'+$stateParams.appId);
@@ -348,6 +348,40 @@ angular.module('appCg').config(function ($stateProvider, $urlRouterProvider, $lo
       }
     }
   });
+
+  $stateProvider.state('home.pmu-advisory-notes', {
+        url: '/pmu-advisory-notes',        
+        views: {
+          'mainContent@': {
+            templateUrl: 'partial/pmu-advisory-notes/pmu-advisory-notes.html',
+            controller: 'PmuAdvisoryNotesCtrl as vm',
+            resolve: {
+              applications: function res(gprRestApi) {
+                return gprRestApi.getRows('grid_applications', false);
+              }
+            }
+          }
+        }
+    });
+
+  $stateProvider.state('home.evc-meetings', {
+        url: 'evc-meetings',        
+        views: {
+          'mainContent@': {
+            templateUrl: 'partial/evc-meetings/evc-meetings.html',
+            controller: 'EvcMeetingsCtrl as vm',
+            resolve: {
+              evcMeetings: function res(gprRestApi) {
+                return gprRestApi.getRows('grid_evc', false);
+              }
+
+            }
+          }
+        }
+
+    });
+
+
 
   $urlRouterProvider.otherwise('/home');
   $locationProvider.html5Mode(false);

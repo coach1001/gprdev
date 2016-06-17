@@ -8,7 +8,7 @@ angular.module('appCg').controller('KpiTargetsModalCtrl', function(target,
 
     var vm = this;
 
-    if (operation === 'Create') { vm.target = {}; } else if (operation === 'Update') { vm.target = target.selectedRow; }
+    if (operation === 'Create') { vm.target = {}; } else if (operation === 'Update') { vm.target = angular.extend(target); }
 
     vm.operation = operation;
 

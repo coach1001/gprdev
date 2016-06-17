@@ -7,11 +7,11 @@ angular.module('appCg').controller('ComplianceCtrl',function(template,gprRestApi
   vm.current_score = 0;
   //console.log(complianceInfo);
 
-  angular.forEach(vm.template.categories, function(cat, catkey) {
+  /*angular.forEach(vm.template.categories, function(cat, catkey) {
     vm.template.categories[catkey].questions = cat.questions.sort(function (a,b){
       return a.id- b.id;
     });
-  });
+  });*/
 
   angular.forEach(vm.template.categories, function(cat, catkey) {
     angular.forEach(cat.questions,function(q,qkey){

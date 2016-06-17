@@ -12,6 +12,7 @@ div.navbar-collapse.collapse {
     font-size: 14px;
 }*/
 
+
 .nav.navbar-nav.navbar-right li a {
     color: black;
     background: #D0D0D0 ;
@@ -20,9 +21,15 @@ div.navbar-collapse.collapse {
 @font-face {
   font-family: 'OpenSans';
   src: url("OpenSans-Light.ttf");
-  /*src: url("Arcon-Regular.otf");*/
+/*  src: url("Arcon-Regular.otf");*/
 }
 
+h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
+    font-family: "OpenSans";
+    font-weight: 300;
+    line-height: 1.1;
+    color: inherit;
+}
 *{
   font-family: 'OpenSans';
   -webkit-font-smoothing: antialiased;
@@ -80,6 +87,10 @@ div.navbar-collapse.collapse.in {
   height: 65vh;
 }
 
+.gridSmallDialog {
+  width: 60vw;
+  height: 20vh;
+}
 
 /*.marginRow {
     margin: 0px !important;

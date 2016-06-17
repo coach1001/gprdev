@@ -1,6 +1,6 @@
 {
   "name": "angular-data-table",
-  "version": "0.4.15",
+  "version": "0.5.1",
   "homepage": "https://github.com/Swimlane/angular-data-table",
   "author": {
     "name": "Swimlane",
@@ -8,7 +8,6 @@
     "web": "http://swimlane.com/"
   },
   "main": [
-    "release/dataTable.helpers.js",
     "release/dataTable.js",
     "release/dataTable.css"
   ],
@@ -29,13 +28,14 @@
     "test",
     "tests"
   ],
-  "_release": "0.4.15",
+  "_release": "0.5.1",
   "_resolution": {
     "type": "version",
-    "tag": "v0.4.15",
-    "commit": "528fcb743169596b5da84f213838cec9d1af2dfa"
+    "tag": "v0.5.1",
+    "commit": "cf5521c812d4a5fe843be1b4c44ee5c27d72e938"
   },
-  "_source": "git://github.com/Swimlane/angular-data-table.git",
-  "_target": "^0.4.15",
-  "_originalSource": "angular-data-table"
+  "_source": "https://github.com/Swimlane/angular-data-table.git",
+  "_target": "~0.5.1",
+  "_originalSource": "angular-data-table",
+  "_direct": true
 }

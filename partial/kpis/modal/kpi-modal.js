@@ -18,8 +18,7 @@ angular.module('appCg').controller('KpiModalCtrl', function (kpi,
   } else if (operation === 'Update') {
     vm.kpi = angular.copy(kpi);
   }
-  console.log(vm.kpi);
-
+  
   vm.operation = angular.extend(operation);
 
   vm.programmes = angular.extend(programmes);
@@ -36,7 +35,7 @@ angular.module('appCg').controller('KpiModalCtrl', function (kpi,
     noUnselect: true,
     enableGridMenu: true,
     columnDefs: [
-      {name: 'month', displayName: 'Month'},
+      {name: 'month', type: 'date', cellFilter: 'date:\'MMMM yyyy\'' ,displayName: 'Month'},
       {name: 'target', displayName: 'Target'},
       {name: 'actual', displayName: 'Actual'}
     ],
@@ -45,9 +44,10 @@ angular.module('appCg').controller('KpiModalCtrl', function (kpi,
 
       $interval(function () {
         gridApi.core.handleWindowResize();
-      }, 500, 10);
+      }, 10, 500);
 
       gridApi.selection.on.rowSelectionChanged(null, function (row) {
+        console.log(row.entity.id);
         vm.openModal(row.entity.id, 'Update');
       });
     }
@@ -126,9 +126,7 @@ angular.module('appCg').controller('KpiModalCtrl', function (kpi,
         vm.kpi.id = response.data.id;
       }
       vm.operation = 'Update';
-
-      //console.log(vm.kpi);
-
+      
     }, function error(response) {
       ngToast.warning({content: vm.operation + ' Record Failed', timeout: 4000});
     });
