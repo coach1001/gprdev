@@ -40,6 +40,9 @@ Array.prototype.getIndex = function (prop, value) {
 };
 var regexIso8601forDate = /^\d{4}-\d{2}-\d{2}$/;
 var regexIso8601forDateTime = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/;
+var regexIso8601forDateTimeWithMS = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3}/;
+var regexUTCforDateTime = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/;
+
 function convertDateStringsToDates(input) {
   // Ignore things that aren't objects.
   if (typeof input !== "object") {
@@ -57,32 +60,34 @@ function convertDateStringsToDates(input) {
     // TODO: Improve this regex to better match ISO 8601 date strings.
     if (typeof value === "string" && (match = value.match(regexIso8601forDate))) {
       // Assume that Date.parse can parse ISO 8601 strings, or has been shimmed in older browsers to do so.
+      //console.log('Date' + value);
       var milliseconds = Date.parse(match[0]);
       if (!isNaN(milliseconds)) {
         input[key] = new Date(milliseconds);
       }
     } else if (typeof value === "string" && (match = value.match(regexIso8601forDateTime))) {
+      //console.log('Date Time ' + value);
       var milliseconds_ = Date.parse(match[0]);
+      //var milliseconds 
       if (!isNaN(milliseconds_)) {
         input[key] = new Date(milliseconds_);
       }
-    } else if (typeof value === "object") {
+    } else if (typeof value === "string" && (match = value.match(regexIso8601forDateTimeWithMS))) {
+      //console.log('MilliSeconds');
+      var milliseconds_ = Date.parse(match[0]);
+      var milliseconds 
+      if (!isNaN(milliseconds_)) {
+        input[key] = new Date(milliseconds_);
+      }
+    }  
+
+    else if (typeof value === "object") {
       // Recurse into object
       convertDateStringsToDates(value);
     }
   }
 }
-/*angular.module('appCg', [
-  'ui.bootstrap',
-  'ui.router',
-  'ngAnimate',
-  'formly',
-  'formlyBootstrap',
-  'ngToast',
-  'angular-confirm',
-  'ui.grid', 'ui.grid.selection', 'ui.grid.exporter','ui.grid.edit',
-  'ui.select', 'ngLoadingSpinner','ui.checkbox'
-]);*/
+
 angular.module('appCg').config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
 
   $stateProvider.state('home', {
@@ -378,7 +383,6 @@ angular.module('appCg').config(function ($stateProvider, $urlRouterProvider, $lo
             }
           }
         }
-
     });
 
 
@@ -476,10 +480,38 @@ angular.module('appCg').config(function ($httpProvider) {
   });
 });
 angular.module('appCg').config(function ($httpProvider) {
-  $httpProvider.defaults.transformResponse.push(function (responseData) {
-    convertDateStringsToDates(responseData);
+  
+  $httpProvider.defaults.transformResponse.push(function (responseData) {    
+    convertDateStringsToDates(responseData);  
     return responseData;
   });
+
+  $httpProvider.defaults.transformRequest.push(function (requestData) {            
+    
+    try{
+      var obj = JSON.parse(requestData);
+      var objString;
+      var match;
+      
+      for (var ob in obj){
+        var attrib = obj[ob];        
+        if(typeof attrib == "string" && (match = attrib.match(regexUTCforDateTime))){
+          var date_;
+          var date_string;
+
+          date_ = new Date(attrib);
+          date_string = moment(date_).format('YYYY-MM-DD HH:mm:ss.SSS')
+          obj[ob] = date_string;          
+        }                      
+      }      
+      objString = JSON.stringify(obj);
+      return objString;
+    }catch(ex){
+    }
+      
+    return requestData;
+  });
+
 });
 angular.module('appCg').directive('input', [function() {
   return {

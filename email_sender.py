@@ -6,23 +6,23 @@ import time
 from validate_email import validate_email
 
 try :
-	with open('email_config.json') as data_file:
+	with open('server_config.json') as data_file:
 		data = json.load(data_file)
 		print "Servers Configuration Loaded..."
 except :
 	print "Server Config File Missing or Corrupted (email_config.json)"
 
 try:
-	server = smtplib.SMTP(data["mail_host"],data["mail_port"])
+	server = smtplib.SMTP(data["app_mail_host"],data["app_mail_port"])
 	server.starttls()
-	server.login(data["mail_user"],data["mail_password"])		
+	server.login(data["app_mail_user"],data["app_mail_password"])		
 	print "SMTP Connected..."
 	server.close()
 except:
 	print "Unable to connect to the SMTP Server"
 
 try:
-    conn = psycopg2.connect(database=data["postgres_dbname"],user=data["postgres_user"],password=data["postgres_password"],host=data["postgres_host"],port=data["postgres_port"])    
+    conn = psycopg2.connect(database=data["app_db_name"],user=data["app_db_user"],password=data["app_db_password"],host=data["app_db_host"],port=data["app_db_port"])    
     curS = conn.cursor()
     curU = conn.cursor()
     print "Postgres Connected..."
@@ -37,35 +37,33 @@ while 1:
 		print "No Email Notifications!..."
 	else:				
 		
-		server = smtplib.SMTP(data["mail_host"],data["mail_port"])
+		server = smtplib.SMTP(data["app_mail_host"],data["app_mail_port"])
 		server.starttls()
-		server.login(data["mail_user"],data["mail_password"])	
+		server.login(data["app_mail_user"],data["app_mail_password"])	
 	
 		for r in rs:				
 			email_notification = json.loads(json.dumps(r[0]))			
 			
 			is_valid = validate_email(email_notification["email_to"])
 			
-			if is_valid:
-					
-	
-				sender = data["sender_email"]			
+			if is_valid:					
+				sender = data["app_sender_email"]			
 				receiver = email_notification["email_to"]			
 				body = email_notification["body"]			
 			
 				if email_notification["token_email"]:				
 					
 					if email_notification["token_type"] == "validation":					
-						header = 'To:'+receiver+ '\n'+'From:'+sender+'\n'+"Subject:"+data["email_subject_prefix"]+email_notification["subject"]+'\n'+'\n'				
+						header = 'To:'+receiver+ '\n'+'From:'+sender+'\n'+"Subject:"+data["app_email_subject_prefix"]+email_notification["subject"]+'\n'+'\n'				
 						body = email_notification["body"]+'\n'
-						body += data["app_baseURL"]+data["app_validationURL"]+email_notification["token"]+"&user_email="+email_notification["email_to"] 
+						body += data["app_base_url"]+data["app_validation_url"]+email_notification["token"]+"&user_email="+email_notification["email_to"] 
 				
 					elif email_notification["token_type"] == "reset":
-						header = 'To:'+receiver+ '\n'+'From:'+sender+'\n'+"Subject:"+data["email_subject_prefix"]+email_notification["subject"]+'\n'+'\n'				
-						body = email_notification["body"]+data["app_reset_passwordURL"]+email_notification["token"]+"&user_email="+email_notification["email_to"]  
+						header = 'To:'+receiver+ '\n'+'From:'+sender+'\n'+"Subject:"+data["app_email_subject_prefix"]+email_notification["subject"]+'\n'+'\n'				
+						body = email_notification["body"]+data["app_reset_password_url"]+email_notification["token"]+"&user_email="+email_notification["email_to"]  
 			
 				else:
-					header = 'To:'+receiver+ '\n'+'From:'+sender+'\n'+"Subject:"+data["email_subject_prefix"]++email_notification["subject"]+'\n'+'\n'								
+					header = 'To:'+receiver+ '\n'+'From:'+sender+'\n'+"Subject:"+data["app_email_subject_prefix"]++email_notification["subject"]+'\n'+'\n'								
 					body = email_notification["body"]			
 								
 				try:
@@ -94,35 +92,6 @@ while 1:
 	
 	server.close()		
 	time.sleep(5)
-
-	# for e in pubsub.events():
-	# 	if e.channel == 'validate' or e.channel == 'reset':			
-			
-	# 		try:
-	# 			payLoadJson = json.loads(e.payload)											
-	# 			sender = data["sender_email"]
-	# 			print payLoadJson["email"]
-	# 			receiver = payLoadJson["email"]			
-	# 			token = payLoadJson["token"]
-	# 			token_type = payLoadJson["token_type"]
-	# 			base_url = data["gpr_baseURL"]								
-	# 			body = 'Please follow the Link'+'\n\n'+base_url+'/home/validate?validation_token='+token+'&user_email='+receiver
-	# 			header = 'To:'+receiver+ '\n'+'From:'+sender+'\n'+'Subject: GPR '+token_type+'\n'+'\n'				
-	# 		except Exception,ex:
-	# 			print ex
-							
-	# 		try:
-	# 			server = smtplib.SMTP(data["mail_host"],data["mail_port"])
-	# 			server.starttls()
-	# 			server.login(data["mail_user"],data["mail_password"])	
-	# 			server.sendmail(sender,receiver, header + body)
-	# 			print 'Email Notification Sent...'								
-	# 			server.close()
-	# 		except Exception, exc:
-	# 			print exc
-			
-	# 	elif e.channel == 'test':
-	# 		print e
 
 
 

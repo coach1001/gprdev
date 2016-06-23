@@ -15,30 +15,23 @@
                 </form>
             </uib-tab>
            
-            <uib-tab heading="Applications">
+            <uib-tab heading="Applications" ng-if="vm.operation==='Update'">
                 <div class="form-group"></div>
                 <div class="form-group">
-                    <button class="btn btn-primary" ng-click="vm.openModal(0,'Create')">Add Application Decision</button>
+                    <button class="btn btn-primary" ng-click="vm.openModalApplication(0,'Create')">Add Application Decision</button>
                 </div>
                 <div ui-grid="vm.applicationOptions" ui-grid-exporter ui-grid-selection></div>
             </uib-tab>
             
 
-            <uib-tab heading="Attendees">
+            <uib-tab heading="Attendees" ng-if="vm.operation==='Update'">
                 <div class="form-group"></div>
                 <div class="form-group">
-                    <button class="btn btn-primary" ng-click="vm.openModal(0,'Create')">Add Attendee</button>
+                    <button class="btn btn-primary" ng-click="vm.openModalAttendee(0,'Create')">Add Attendee</button>
                 </div>
                 <div ui-grid="vm.attendeeOptions" ui-grid-exporter ui-grid-selection></div>
 
             </uib-tab>
-            <!--             <uib-tab heading="Monthly Targets" ng-click="vm.change()" ng-hide="vm.operation === 'Create'">
-                <div class="form-group"></div>
-                <div class="form-group">
-                    <button class="btn btn-primary" ng-click="vm.openModal(0,'Create')">Add Target</button>
-                </div>
-                <div ui-grid="vm.options" ui-grid-exporter ui-grid-selection class="myGridModal"></div>
-            </uib-tab>
- --></uib-tabset>
+</uib-tabset>
     </div>
 </div>

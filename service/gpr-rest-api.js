@@ -117,7 +117,7 @@ angular.module('appCg').factory('gprRestApi', function ($http, $q,config) {
   };
 
   gprRestApi.updateCreateRow = function (table, data, operation) {
-    var req = {};
+    var req = {};    
     if (operation === 'Update') {
       req.url = gprRestApi.baseUrl + '/' + table + '?id=eq.' + data.id;
     } else if (operation === 'Create') {

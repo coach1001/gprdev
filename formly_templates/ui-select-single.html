@@ -5,6 +5,7 @@
     </ui-select-match>
     <ui-select-choices data-repeat="{{to.ngOptions}}">
       <div ng-bind-html="option[to.labelProp] | highlight: $select.search"></div>
+      <small ng-if="to.showDetails">{{option.name}} - {{option.call_reference}}</small>
     </ui-select-choices>
   </ui-select>
 

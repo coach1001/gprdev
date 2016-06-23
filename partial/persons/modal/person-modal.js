@@ -1,11 +1,11 @@
-angular.module('appCg').controller('PersonModalCtrl', function (   person,
-																   user,
-																   roles,
-                                                                   operation,
-                                                                   gprRestApi,
-                                                                   ngToast,
-                                                                   $confirm,
-                                                                   $uibModalInstance) {
+angular.module('appCg').controller('PersonModalCtrl', function (    person,
+																                                    user,
+																                                    roles,
+                                                                    operation,
+                                                                    gprRestApi,
+                                                                    ngToast,
+                                                                    $confirm,
+                                                                    $uibModalInstance) {
 
   var vm = this;
 

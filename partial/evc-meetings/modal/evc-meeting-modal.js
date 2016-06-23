@@ -1,6 +1,6 @@
 angular.module('appCg').controller('EvcMeetingModalCtrl', function(evcMeeting,
                                                              evcApplications,
-                                                             evcAttendees,
+                                                             evcAttendees,                                                             
                                                              operation,
                                                              gprRestApi,
                                                              ngToast,
@@ -9,19 +9,18 @@ angular.module('appCg').controller('EvcMeetingModalCtrl', function(evcMeeting,
                                                              $uibModal,
                                                              $filter, $interval) {
 
-
   var vm = this;
 
   if (operation === 'Create') {
     vm.evcMeeting = {};
   } else if (operation === 'Update') {
-    vm.evcMeeting = angular.copy(evcMeeting);
+    vm.evcMeeting = angular.copy(evcMeeting);  
   }
   
   vm.operation = angular.extend(operation);
   
   vm.applicationRows = angular.extend(evcApplications);
-  vm.attendeeRows = angular.extend(evcAttendees);
+  vm.attendeeRows = angular.extend(evcAttendees);  
 
   vm.applicationOptions = {
     data: vm.applicationRows,
@@ -33,20 +32,19 @@ angular.module('appCg').controller('EvcMeetingModalCtrl', function(evcMeeting,
     noUnselect: true,
     enableGridMenu: true,
     columnDefs: [
-      {name: 'application', displayName: 'Application #'},
-      {name: 'approved'},
-      {name: 'approved_amount'},
-      {name: 'organisation'}
+      {name: 'application', displayName: 'Application #'},      
+      {name: 'organisation'},
+      {name: 'amount_approved',type : 'number'},
+      {name: 'approved',type: 'boolean',cellTemplate: '<checkbox disabled="true" ng-model="row.entity.approved"></checkbox>'}
     ],
     onRegisterApi: function (gridApi) {
       vm.gridApiApplications = gridApi;
 
-      $interval(function () {
-        gridApi.core.handleWindowResize();
-      },200,500);
-
-      gridApi.selection.on.rowSelectionChanged(null, function (row) {
-        //vm.openModal(row.entity.id, 'Update');
+      $interval(function () {        
+        vm.gridApiApplications.core.handleWindowResize();
+      },200,500);      
+      vm.gridApiApplications.selection.on.rowSelectionChanged(null, function (row) {
+        vm.openModalApplication(row.entity.id, 'Update');
       });
     }
   };
@@ -67,13 +65,12 @@ angular.module('appCg').controller('EvcMeetingModalCtrl', function(evcMeeting,
     ],
     onRegisterApi: function (gridApi) {
       vm.gridApiAttendees = gridApi;
-
       $interval(function () {
-        gridApi.core.handleWindowResize();
+        vm.gridApiAttendees.core.handleWindowResize();
       },200,500);
 
-      gridApi.selection.on.rowSelectionChanged(null, function (row) {
-        //vm.openModal(row.entity.id, 'Update');
+      vm.gridApiAttendees.selection.on.rowSelectionChanged(null, function (row) {
+        vm.openModalAttendee(row.entity.id, 'Update');
       });
     }
   };
@@ -125,30 +122,61 @@ angular.module('appCg').controller('EvcMeetingModalCtrl', function(evcMeeting,
 
   };
 
-  vm.openModal = function (id, operation) {
+  vm.openModalApplication = function (id, operation) {
     $uibModal.open({
-      templateUrl: 'partial/evcMeetings/modal/evcMeeting-targets-modal.html',
-      controller: 'evcMeetingTargetsModalCtrl as vm',
+      templateUrl: 'partial/evc-meetings/modal/evc-meeting-application-modal.html',
+      controller: 'EvcMeetingApplicationModalCtrl as vm',
       resolve: {
-        target: function res(gprRestApi) {
-          return gprRestApi.getRow('key_performance_indicators_targets', id, false);
+        evcApplication: function res(gprRestApi) {
+          return gprRestApi.getRow('evc_applications', id, false);
         },
+        evcApplicationLookup : function res(gprRestApi){
+          return gprRestApi.getRows('lookup_evc_applications');
+        },               
         operation: function res() {
           return operation;
-        },
-        evcMeetingId: function res() {
+        },        
+        evcId: function res() {
           return vm.evcMeeting.id;
         }
       }
     }).result.then(function (result) {
         console.log('modal closed');
       }, function (result) {
-        gprRestApi.getRowsFilterColumn('key_performance_indicators_targets',
-          'key_performance_indicator', vm.evcMeeting.id, false).then(function success(response) {
-            vm.rows = angular.extend(response);
-            vm.options.data = vm.rows;
+        gprRestApi.getRowsFilterColumn('grid_evc_applications',
+          'evc', vm.evcMeeting.id, false).then(function success(response) {
+            vm.applicationRows = angular.extend(response);
+            vm.applicationOptions.data = vm.applicationRows;
           });
       });
   };
+
+
+  vm.openModalAttendee = function (id, operation) {
+    $uibModal.open({
+      templateUrl: 'partial/evc-meetings/modal/evc-meeting-attendee-modal.html',
+      controller: 'EvcMeetingAttendeeModalCtrl as vm',
+      resolve: {
+        evcAttendee: function res(gprRestApi) {
+          return gprRestApi.getRow('evc_attendees', id, false);
+        },
+        operation: function res() {
+          return operation;
+        },        
+        evcId: function res() {
+          return vm.evcMeeting.id;
+        }
+      }
+    }).result.then(function (result) {
+        console.log('modal closed');
+      }, function (result) {
+        gprRestApi.getRowsFilterColumn('grid_evc_attendees',
+          'evc', vm.evcMeeting.id, false).then(function success(response) {
+            vm.attendeeRows = angular.extend(response);
+            vm.attendeeOptions.data = vm.attendeeRows;
+          });
+      });
+  };
+
 
 });
