@@ -1,21 +1,23 @@
 import ldap,sys,jwt,urllib2,json
 from bottle import run, get, post, request
 
-auth_token = ''
-server_config = ''
+auth_token = None
+server_config = None
 
 def check_credentials(username, password):
   """Verifies credentials for username and password.
   returns None on success or a string describing the error on failure
   # Adapt to your needs
   """
+  global server_config
+
   LDAP_SERVER = server_config["app_ldap_host"]
   # fully qualified AD user name
-  LDAP_USERNAME = '%s%s' % username % server_config["app_ldap_domain_suffix"]
+  LDAP_USERNAME = '%s%s' % (username,server_config["app_ldap_domain_suffix"])
   # your password
   LDAP_PASSWORD = password
   base_dn = server_config["app_ldap_base_dn"]
-  ldap_filter = 'userPrincipalName=%s%s' % username % server_config["app_ldap_domain_suffix"]
+  ldap_filter = 'userPrincipalName=%s%s' % (username,server_config["app_ldap_domain_suffix"])
   attrs = ['memberOf']
   try:
    # build a client       
@@ -37,22 +39,26 @@ def check_credentials(username, password):
 def get_application_jwt(username,password):
   try:
     url = "http://10.0.0.111:3002/rpc/login"
+    #url = server_config["app_rest_base_url"] 
     values = {'email' : username,'pass' : password}
     req = urllib2.Request(url, json.dumps(values), headers={'Content-type': 'application/json', 'Accept': 'application/json'})
     response = urllib2.urlopen(req)
     token = response.read()
+    return token      
   except urllib2.URLError:
     print 'URL Invalid Cant Connect to Backend'
     sys.exit()
 
+def init_server():
+  global server_config
   try:
     with open('server_config.json') as data_file:
       server_config = json.load(data_file)
+
       print "Servers Configuration Loaded..."
-      return token      
   except:
-      print "Server Config File Missing or Corrupted (server_config.json)"
-      sys.exit()
+    print "Server Config File Missing or Corrupted (server_config.json)"
+    sys.exit()
 
 @get('/')
 def index():
@@ -63,9 +69,10 @@ def login():
 	result = check_credentials(request.json.get('name'),request.json.get('password'))
 	return result
 
-if __name__ == '__main__':
-	auth_token = get_application_jwt('ldap@fhr.org.za','Justice##@!1996')
-	run(reloader=True, debug=True, port='3003')		
+if __name__ == '__main__':  
+  init_server()
+  auth_token = get_application_jwt('ldap@fhr.org.za','Justice##@!1996')
+  run(reloader=True, debug=True, port='3003')		
 
 
 

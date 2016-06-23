@@ -1,28 +1,30 @@
 {
-	"app_mail_host" : "smtp.gmail.com",
-	"app_mail_port" : 587,
-	"app_mail_user" : "gpr.fhr@gmail.com",
-	"app_mail_password" : "Justice##@!1996",
-	"app_sender_email" : "gpr.fhr@gmail.com",
-	"app_email_subject_prefix" : "GPR Notification - ",
-	"app_email_notifaction_table" : "email_notifications",
-	"app_mail_retries_before_fail" : 5,
+	"app_mail_host" 				: "smtp.gmail.com",
+	"app_mail_port" 				: 587,
+	"app_mail_user" 				: "gpr.fhr@gmail.com",
+	"app_mail_password" 			: "Justice##@!1996",
+	"app_sender_email" 				: "gpr.fhr@gmail.com",
+	"app_email_subject_prefix" 		: "GPR Notification - ",
+	"app_email_notifaction_table" 	: "email_notifications",
+	"app_mail_retries_before_fail" 	: 5,
 
-	"app_db_name": "gpr-dev",
-	"app_db_host" : "10.0.0.111",
-	"app_db_port" : 5432,
-	"app_db_user" : "postgres",
-	"app_db_password" : "Justice##@!1996",
+	"app_db_name" 					: "gpr-dev",
+	"app_db_host" 					: "10.0.0.111",
+	"app_db_port" 					: 5432,
+	"app_db_user" 					: "postgres",
+	"app_db_password" 				: "Justice##@!1996",
 	
-	"app_base_url" : "http://localhost:9001/#",
-	"app_validation_url" : "/home/validate?validation_token=",
-	"app_reset_password_url" : "",
-	"app_login_url" : "/rpc/login",
-	"app_signup_url" : "/rpc/signup",
+	"app_rest_base_url"				: "http://10.0.0.111:3002",
+	
+	"app_base_url" 					: "http://localhost:9001/#",
+	"app_validation_url" 			: "/home/validate?validation_token=",
+	"app_reset_password_url" 		: "",
+	"app_login_url" 				: "/rpc/login",
+	"app_signup_url" 				: "/rpc/signup",
 	
 	
-	"app_ldap_host" : "ldap://10.0.0.11",
-	"app_ldap_base_dn" : "DC=fhr,DC=org,DC=za",
-	"app_ldap_domain_suffix" : "@fhr.org.za",
-	"app_ldap_db_user_table_url" : "/ldap_users"
+	"app_ldap_host" 				: "ldap://10.0.0.11",
+	"app_ldap_base_dn" 				: "DC=fhr,DC=org,DC=za",
+	"app_ldap_domain_suffix" 		: "@fhr.org.za",
+	"app_ldap_db_user_table_url" 	: "/ldap_users"
 }
