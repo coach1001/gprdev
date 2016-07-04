@@ -18,7 +18,7 @@
         var initInjector = angular.injector(["ng"]);
         var $http = initInjector.get("$http");
 
-        return $http.get("config.json").then(function(response) {
+        return $http.get("client_config.json").then(function(response) {
             angular.module('appCg').constant("config", response.data);
         }, function(errorResponse) {
             // Handle error case
@@ -42,7 +42,6 @@ var regexIso8601forDate = /^\d{4}-\d{2}-\d{2}$/;
 var regexIso8601forDateTime = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/;
 var regexIso8601forDateTimeWithMS = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3}/;
 var regexUTCforDateTime = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/;
-
 function convertDateStringsToDates(input) {
   // Ignore things that aren't objects.
   if (typeof input !== "object") {
@@ -87,7 +86,6 @@ function convertDateStringsToDates(input) {
     }
   }
 }
-
 angular.module('appCg').config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
 
   $stateProvider.state('home', {
@@ -421,7 +419,7 @@ angular.module('appCg').config(function ($httpProvider) {
 
     return {
       responseError: function (rejection) {        
-        if (rejection.status === 404 && authenticationService.isAuthenticated) {
+        if (rejection.status === 403 && authenticationService.isAuthenticated) {
           if (!$rootScope.authorizationError) {
             $rootScope.authorizationError = true;
             $uibModal.open({
@@ -511,7 +509,6 @@ angular.module('appCg').config(function ($httpProvider) {
       
     return requestData;
   });
-
 });
 angular.module('appCg').directive('input', [function() {
   return {

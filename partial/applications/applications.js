@@ -23,6 +23,7 @@ angular.module('appCg').controller('ApplicationsCtrl',function(applications,gprR
     ],
     onRegisterApi: function(gridApi) {
       vm.gridApi = gridApi;
+
       gridApi.selection.on.rowSelectionChanged(null, function(row) {
         var msg = 'row selected ' + row.isSelected;
         vm.openModal(row.entity.id, 'Update');

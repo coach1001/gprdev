@@ -1,4 +1,4 @@
-<h3>{{vm.title}} <span class="badge">{{vm.persons.length}}</span></h3>
+<h3>{{vm.title}} <span class="badge">{{vm.gridApi.core.getVisibleRows().length}} of {{vm.persons.length}}</span></h3>
 <div class="grid">
          <div class="form-group">
         <button class="btn btn-primary" ng-click="vm.openModal(0,'Create')" >Add Person</button>

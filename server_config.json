@@ -14,8 +14,10 @@
 	"app_db_user" 					: "postgres",
 	"app_db_password" 				: "Justice##@!1996",
 	
+
 	"app_rest_base_url"				: "http://10.0.0.111:3002",
-	
+	"app_rest_create_ldap_user"		: "/rpc/create_ldap_user",
+
 	"app_base_url" 					: "http://localhost:9001/#",
 	"app_validation_url" 			: "/home/validate?validation_token=",
 	"app_reset_password_url" 		: "",
@@ -27,4 +29,6 @@
 	"app_ldap_base_dn" 				: "DC=fhr,DC=org,DC=za",
 	"app_ldap_domain_suffix" 		: "@fhr.org.za",
 	"app_ldap_db_user_table_url" 	: "/ldap_users"
+
+
 }

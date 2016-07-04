@@ -92,7 +92,25 @@ angular.module('appCg').controller('CfpModalCtrl', function(programmes,
                         }
                     }
                 }
-            }, {
+            }, {                
+                key: 'name',
+                type: 'input',
+                templateOptions: {
+                    type: 'text',
+                    label: 'Name',
+                    placeholder: 'Call Name',
+                    required: true
+                }
+            },{                
+                key: 'call_reference',
+                type: 'input',
+                templateOptions: {
+                    type: 'text',
+                    label: 'Call Reference',
+                    placeholder: 'Call Reference',
+                    required: true
+                }
+            } ,{
                 fieldGroup: [{
                     className: 'col-xs-6 nopadding',
                     key: 'call_date',

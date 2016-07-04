@@ -3,7 +3,7 @@
   <uib-tabset type="pills" >
 
     <uib-tab >
-      <uib-tab-heading>Provinces <span class="badge">{{vm.provinces.length}}</span></uib-tab-heading>
+      <uib-tab-heading>Provinces <span class="badge">{{vm.grid1Api.core.getVisibleRows().length}} of {{vm.provinces.length}}</span></uib-tab-heading>
       </br>
       <div class="form-group">
         <button class="btn btn-primary" ng-click="vm.openModalProvince(0,'Create')">Add Province</button>
@@ -13,7 +13,7 @@
     </uib-tab>
 
     <uib-tab>
-      <uib-tab-heading>Places <span class="badge">{{vm.places.length}}</span></uib-tab-heading>
+      <uib-tab-heading>Places <span class="badge">{{vm.grid2Api.core.getVisibleRows().length}} of {{vm.places.length}}</span></uib-tab-heading>
       </br>
       <div class="form-group">
         <button class="btn btn-primary" ng-click="vm.openModalPlace(0,'Create')">Add Place</button>
@@ -22,7 +22,7 @@
     </uib-tab>
 
     <uib-tab>
-      <uib-tab-heading>Suburbs <span class="badge">{{vm.suburbs.length}}</span></uib-tab-heading>
+      <uib-tab-heading>Suburbs <span class="badge">{{vm.grid3Api.core.getVisibleRows().length}} of {{vm.suburbs.length}}</span></uib-tab-heading>
       </br>
       <div class="form-group">
         <button class="btn btn-primary" ng-click="vm.openModalSuburb(0,'Create')">Add Suburb</button>
@@ -32,7 +32,7 @@
 
 
     <uib-tab>
-      <uib-tab-heading>Organisation Types <span class="badge">{{vm.orgTypes.length}}</span></uib-tab-heading>
+      <uib-tab-heading>Organisation Types <span class="badge">{{vm.grid4Api.core.getVisibleRows().length}} of {{vm.orgTypes.length}}</span></uib-tab-heading>
       </br>
       <div class="form-group">
         <button class="btn btn-primary" ng-click="vm.openModalOrgType(0,'Create')">Add Organisation Type</button>
@@ -41,7 +41,7 @@
     </uib-tab>
 
     <uib-tab>
-      <uib-tab-heading>Organisation Statuses <span class="badge">{{vm.orgStatuses.length}}</span></uib-tab-heading>
+      <uib-tab-heading>Organisation Statuses <span class="badge">{{vm.grid5Api.core.getVisibleRows().length}} of {{vm.orgStatuses.length}}</span></uib-tab-heading>
       </br>
       <div class="form-group">
         <button class="btn btn-primary" ng-click="vm.openModalOrgStatus(0,'Create')">Add Organisation Status</button>

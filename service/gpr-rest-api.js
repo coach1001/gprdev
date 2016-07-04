@@ -1,7 +1,7 @@
 angular.module('appCg').factory('gprRestApi', function ($http, $q,config) {
   var gprRestApi = {};   
   
-  gprRestApi.baseUrl = config.rest_baseURL; 
+  gprRestApi.baseUrl = config.app_db_base_url; 
   gprRestApi.tables = [];
   gprRestApi.FEUString = '';
   gprRestApi.FEULevel = 1;

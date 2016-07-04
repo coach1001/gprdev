@@ -9,7 +9,8 @@ angular.module('appCg').factory('authenticationService',function($http,$rootScop
   authenticationService.isAuthenticated = false;
   authenticationService.role = '';
 
-  authenticationService.baseUrl = config.rest_baseURL + config.authentication_baseURL;
+  authenticationService.baseUrl = config.app_db_base_url + config.app_dbrpc_base_url;
+  authenticationService.ldapLoginUrl = config.app_ldap_base_url + config.app_ldap_login_url;
 
   authenticationService.register = function (email_, password_){
     var req={};
@@ -28,6 +29,16 @@ angular.module('appCg').factory('authenticationService',function($http,$rootScop
     req.data = {"email" : email_, "pass" : password_};
     return $http(req);
   };
+
+  authenticationService.ldapLogin = function (email_, password_){
+    var req={};
+    req.method='POST';
+    req.headers = {'Content-Type': 'application/json'};
+    req.url =  authenticationService.ldapLoginUrl;
+    req.data = {"email" : email_, "pass" : password_};
+    return $http(req);
+  };
+
 
   authenticationService.validate = function(email_,token_){
     var req={};

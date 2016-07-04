@@ -40,6 +40,28 @@ angular.module('appCg').controller('LookupsCtrl', function(
             });
         }
     };
+    vm.placesOpt = {
+        data: vm.places,
+        enableFiltering: true,
+        enableRowSelection: true,
+        enableRowHeaderSelection: false,
+        multiSelect: false,
+        modifierKeysToMultiSelect: false,
+        noUnselect: true,
+        enableGridMenu: true,
+        columnDefs: [
+            { name: 'name' },
+            { name: 'province'}
+        ],
+        onRegisterApi: function(gridApi) {
+            vm.grid2Api = gridApi;
+            gridApi.selection.on.rowSelectionChanged(null, function(row) {
+                var msg = 'row selected ' + row.isSelected;
+                vm.openModalPlace(row.entity.id, 'Update');
+            });
+        }
+    };
+
     vm.suburbsOpt = {
         data: vm.suburbs,
         enableFiltering: true,
@@ -57,31 +79,10 @@ angular.module('appCg').controller('LookupsCtrl', function(
             { name: 'po_box_code'}
         ],
         onRegisterApi: function(gridApi) {
-            vm.grid2Api = gridApi;
-            gridApi.selection.on.rowSelectionChanged(null, function(row) {
-                var msg = 'row selected ' + row.isSelected;
-                vm.openModalSuburb(row.entity.id, 'Update');
-            });
-        }
-    };
-    vm.placesOpt = {
-        data: vm.places,
-        enableFiltering: true,
-        enableRowSelection: true,
-        enableRowHeaderSelection: false,
-        multiSelect: false,
-        modifierKeysToMultiSelect: false,
-        noUnselect: true,
-        enableGridMenu: true,
-        columnDefs: [
-            { name: 'name' },
-            { name: 'province'}
-        ],
-        onRegisterApi: function(gridApi) {
             vm.grid3Api = gridApi;
             gridApi.selection.on.rowSelectionChanged(null, function(row) {
                 var msg = 'row selected ' + row.isSelected;
-                vm.openModalPlace(row.entity.id, 'Update');
+                vm.openModalSuburb(row.entity.id, 'Update');
             });
         }
     };
