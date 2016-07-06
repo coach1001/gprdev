@@ -184,7 +184,7 @@ angular.module('appCg').controller('CfpModalCtrl', function(programmes,
                 }
             }]
         }
-    }]
+    }];
 
     vm.updateCreateRow = function() {
         var body = angular.copy(vm.call);

@@ -36,14 +36,15 @@
     "mocha": "~1.21.4"
   },
   "homepage": "https://github.com/formly-js/angular-formly-templates-bootstrap",
-  "version": "6.2.0",
-  "_release": "6.2.0",
+  "version": "6.3.2",
+  "_release": "6.3.2",
   "_resolution": {
     "type": "version",
-    "tag": "v6.2.0",
-    "commit": "18308b793d603501fa600edd5a88f42955d74979"
+    "tag": "v6.3.2",
+    "commit": "73c2c9ca3ab6d23bed69f7f3521db96e1faa9f9e"
   },
-  "_source": "git://github.com/formly-js/angular-formly-templates-bootstrap.git",
-  "_target": "^6.2.0",
-  "_originalSource": "angular-formly-templates-bootstrap"
+  "_source": "https://github.com/formly-js/angular-formly-templates-bootstrap.git",
+  "_target": "^6.3.2",
+  "_originalSource": "angular-formly-templates-bootstrap",
+  "_direct": true
 }

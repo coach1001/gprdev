@@ -81,10 +81,15 @@
       <li><a style="font-size: 12px;" ng-hide="isAuthenticated" ng-click="vm.registerFunc()"> Register </a></li>
       <li><a style="font-size: 12px;" ng-hide="!isAuthenticated" ui-sref="home.persons">Persons</a></li>
       <li><a style="font-size: 12px;" ng-hide="!isAuthenticated" ui-sref="home.lookups">Lookup Tables</a></li>
-      <li><a style="cursor:pointer;font-size: 13px;" ng-hide="isAuthenticated" ng-click="vm.loginFunc()"><span class="
-glyphicon glyphicon-log-in aria-hidden=" true"></span> Login </a></li>
-      <li><a style="cursor:pointer;font-size: 13px;" ng-hide="!isAuthenticated" ng-click="vm.logoutFunc()"><span class="
-glyphicon glyphicon-log-out aria-hidden=" true"></span> Logout, {{currentUser}} </a></li>
+      <li>
+        <a style="cursor:pointer;font-size: 13px;" ng-hide="isAuthenticated" ng-click="vm.loginFunc()">
+          <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span> Login</a>
+      </li>
+      
+      <li>
+        <a style="cursor:pointer;font-size: 13px;" ng-hide="!isAuthenticated" ng-click="vm.logoutFunc()">
+          <span class="glyphicon glyphicon-log-out" aria-hidden="true"></span> Logout, {{currentUser}}</a>
+      </li>    
     </ul>
   </div>
   <!-- /.navbar-collapse -->

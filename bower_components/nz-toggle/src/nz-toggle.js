@@ -1,14 +1,15 @@
 (function() {
     var module = angular.module('nzToggle', []);
 
-    module.directive('nzToggle', function($timeout) {
+    module.directive('nzToggle', ['$timeout', function($timeout) {
         return {
             restrict: 'E',
             replace: true,
             scope: {
                 config: '=?',
                 ngModel: '=',
-                onToggle: '&'
+                onToggle: '&',
+                ngDisabled: '=',
             },
             template: [
                 '<div class="nz-toggle-wrap" ng-class="getStyle()" ng-style="wrapStyle">',
@@ -139,6 +140,7 @@
                 }
 
                 function onToggleTouch(e) {
+                    if (vm.ngDisabled) return;
 
                     e = e ? e : window.event;
 
@@ -285,13 +287,23 @@
                         'colorFalse',
                         'colorNull',
                         'colorTrue',
+                    ], function(prop) {
+                        if (has(attrs[prop])) {
+                            vm[prop] = vm.$eval(attrs[prop]);
+                        }
+                    });
+
+                    // Dynamic attribute overrides
+                    angular.forEach([
                         /* ToolTips */
                         'tipTrue',
                         'tipFalse',
                         'tipNull',
                     ], function(prop) {
                         if (has(attrs[prop])) {
-                            vm[prop] = vm.$eval(attrs[prop]);
+                            vm.$watch(attrs[prop], function(val) {
+                                vm[prop] = val;
+                            })
                         }
                     });
 
@@ -378,6 +390,8 @@
                 }
 
                 function toggle(state) {
+                    if (vm.ngDisabled) return;
+
                     $timeout(function() {
                         if (!state) {
                             if (vm.state == 'false') {
@@ -419,5 +433,5 @@
                 }
             },
         };
-    });
+    }]);
 })();

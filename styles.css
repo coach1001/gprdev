@@ -149,3 +149,11 @@ body {
 .navbar-brand { font-weight: 400; font-size: 24px; }
 .navbar-nav a { font-weight: 400; font-size: 15px; }
 
+.modal-backdrop.fade {
+opacity: 0;
+filter: alpha(opacity=0);
+}
+.modal-backdrop.fade.in {
+opacity: 0.5;
+filter: alpha(opacity=50);
+}

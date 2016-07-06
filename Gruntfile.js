@@ -34,9 +34,48 @@ module.exports = function (grunt) {
 
   // load all grunt tasks
   require('load-grunt-tasks')(grunt);
+  
 
   // Project configuration.
   grunt.initConfig({
+    sftp: {
+      dev01: {
+        files : {
+          './' : 'dist/**',          
+        },
+        options : {
+          dot : true,
+          path : '/var/www/html/gpr-dev01/',          
+          srcBasePath : 'dist/',
+          showProgress : true,
+          port : 22,
+          host : '10.0.0.111',
+          username : 'administrator',
+          password : 'Justice##@!1996',
+          agent: process.env.SSH_AUTH_SOCK
+        }
+      }
+    },
+    sshexec: {
+      uptime: {
+        command: "uptime",
+        options: {
+          host: "10.0.0.111",
+          port: 22,
+          username: "administrator",
+          password: "Justice##@!1996"
+        }
+      },
+      rename_dev01_htaccess : {
+        command : 'cd /var/www/html/gpr-dev01 && mv htaccess .htaccess',
+        options: {
+          host: "10.0.0.111",
+          port: 22,
+          username: "administrator",
+          password: "Justice##@!1996"
+        }        
+      }
+    },  
     connect: {
       main: {
         options: {
@@ -79,12 +118,30 @@ module.exports = function (grunt) {
           'temp/app.css': 'app.less'
         }
       }
+    },    
+    replace : {
+       main:{
+          src : ['dist/*.css'],
+          dest : 'dist/',
+          replacements : [{ from : '../fonts', to : 'fonts'}]
+        }
     },
     ngtemplates: {
       main: {
         options: {
             module: pkg.name,
-            htmlmin:'<%= htmlmin.main.options %>'
+            //module : 'appCg',
+            //htmlmin:'<%= htmlmin.main.options %>'
+            htmlmin: {
+  						collapseBooleanAttributes:      true,
+  						collapseWhitespace:             false,
+  						removeAttributeQuotes:          true,
+  						removeComments:                 true, // Only if you don't use comment directives! 
+  						removeEmptyAttributes:          true,
+  						removeRedundantAttributes:      true,
+  						removeScriptTypeAttributes:     true,
+  						removeStyleLinkTypeAttributes:  true
+						}
         },
         src: [createFolderGlobs('*.html'),'!index.html','!_SpecRunner.html'],
         dest: 'temp/templates.js'
@@ -93,9 +150,16 @@ module.exports = function (grunt) {
     copy: {
       main: {
         files: [
+          {src: ['OpenSans-Light.ttf'], dest: 'dist/'},
+          {src: ['client_config.json'], dest: 'dist/'},
+          {src: ['.htaccess'], dest: 'dist/htaccess'},
           {src: ['img/**'], dest: 'dist/'},
           {src: ['bower_components/font-awesome/fonts/**'], dest: 'dist/',filter:'isFile',expand:true},
-          {src: ['bower_components/bootstrap/fonts/**'], dest: 'dist/',filter:'isFile',expand:true}
+          {src: ['bower_components/bootstrap/fonts/**'], dest: 'dist/',filter:'isFile',expand:true},
+          {cwd:'bower_components/font-awesome/fonts/',src:['**'],dest: 'dist/fonts/',filter:'isFile',expand:true},
+          {cwd:'bower_components/bootstrap/fonts/',src:['**'],dest: 'dist/fonts/',filter:'isFile',expand:true},
+          {cwd:'bower_components/angular-ui-grid/',src:['ui-grid.woff'],dest: 'dist/',filter:'isFile',expand:true},
+          {cwd:'bower_components/angular-ui-grid/',src:['ui-grid.ttf'],dest: 'dist/',filter:'isFile',expand:true}          
           //{src: ['bower_components/angular-ui-utils/ui-utils-ieshiv.min.js'], dest: 'dist/'},
           //{src: ['bower_components/select2/*.png','bower_components/select2/*.gif'], dest:'dist/css/',flatten:true,expand:true},
           //{src: ['bower_components/angular-mocks/angular-mocks.js'], dest: 'dist/'}
@@ -200,12 +264,20 @@ module.exports = function (grunt) {
     }
   });
 
-  grunt.registerTask('build',[//'jshint',
-    'clean:before','dom_munger','ngtemplates','cssmin','concat','ngAnnotate','uglify','copy','htmlmin','clean:after']);
+  grunt.registerTask('build',['jshint',
+    'clean:before','dom_munger','ngtemplates','cssmin','concat','ngAnnotate','uglify','copy','htmlmin','replace','clean:after']);
+  
+  grunt.registerTask('ts',['jshint',
+    'clean:before','dom_munger','ngtemplates','cssmin','concat','ngAnnotate','uglify','copy','htmlmin']);
+  
   grunt.registerTask('serve', ['dom_munger:read',
-    //'jshint',
+    'jshint',
     'connect', 'watch']);
   grunt.registerTask('test',['dom_munger:read','karma:all_tests']);
+
+  grunt.registerTask('deploy_to_dev01',['sftp:dev01','sshexec:rename_dev01_htaccess']);
+
+  grunt.registerTask('test_ssh', ['sshexec:uptime']);
 
   grunt.event.on('watch', function(action, filepath) {
     //https://github.com/gruntjs/grunt-contrib-watch/issues/156

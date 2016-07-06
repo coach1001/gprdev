@@ -1,15 +1,16 @@
 angular.module('appCg').controller('ComplianceSelectCtrl',function(compliances,$state,complianceSection) {
   var vm = this;
   
-  if(complianceSection === 0)
+  if(complianceSection === 0){
     vm.title = 'Admin Compliances';
-  else if (complianceSection === 1)
+  }else if (complianceSection === 1){
     vm.title = 'Relevance Checks';
-  else if (complianceSection === 2)
+  }else if (complianceSection === 2){
     vm.title = 'Assessments';
-  else if (complianceSection === 3)
+  }else if (complianceSection === 3){
     vm.title = 'Due Diligences';
-
+  }
+  
   var unfilteredRows = angular.extend(compliances);
   vm.compliances = vm.rows = angular.extend(compliances);
 
@@ -42,14 +43,19 @@ angular.module('appCg').controller('ComplianceSelectCtrl',function(compliances,$
           complete    : row.entity.complete,
           
         };
-      if(complianceSection === 0)
+      if(complianceSection === 0){
         compliance_packet.compliance_template = row.entity.admin_compliance_template;
-      else if (complianceSection === 1)
+      }
+      else if (complianceSection === 1){
         compliance_packet.compliance_template = row.entity.relevance_compliance_template;
-      else if (complianceSection === 2)
+      }
+      else if (complianceSection === 2){
         compliance_packet.compliance_template = row.entity.assessment_compliance_template;
-      else if (complianceSection === 3)
+      }
+      else if (complianceSection === 3){
         compliance_packet.compliance_template = row.entity.assessment_compliance_template;
+      }
+        
 
         vm.openModal(compliance_packet);
       });}

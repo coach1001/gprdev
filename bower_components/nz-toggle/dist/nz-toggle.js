@@ -1,19 +1,20 @@
 (function() {
     var module = angular.module('nzToggle', []);
 
-    module.directive('nzToggle', ["$timeout", function($timeout) {
+    module.directive('nzToggle', ['$timeout', function($timeout) {
         return {
             restrict: 'E',
             replace: true,
             scope: {
                 config: '=?',
                 ngModel: '=',
-                onToggle: '&'
+                onToggle: '&',
+                ngDisabled: '=',
             },
             template: [
                 '<div class="nz-toggle-wrap" ng-class="getStyle()" ng-style="wrapStyle">',
                 '   <div class="nz-toggle">',
-                '       <div class="nz-toggle-handle">{{$scope}}</div>',
+                '       <div class="nz-toggle-handle"></div>',
                 '   </div>',
                 '   <div class="nz-toggle-tooltip" ng-show="tooltip">',
                 '       <span ng-class="{\'active\': showTooltip1}">',
@@ -128,6 +129,7 @@
                         removeEventListeners(window, 'mousemove touchmove', onToggleMove);
                         removeEventListeners(window, 'mouseup touchend', onToggleRelease);
                         removeEventListeners(el[0], 'click', onClick);
+
                     });
                 }
 
@@ -138,12 +140,13 @@
                 }
 
                 function onToggleTouch(e) {
+                    if (vm.ngDisabled) return;
 
                     e = e ? e : window.event;
 
                     pressed = {
-                        x: e.x,
-                        y: e.y
+                        x: e.pageX || e.touches[0].pageX,
+                        y: e.pageY || e.touches[0].pageY
                     };
 
                     movement = 0;
@@ -153,11 +156,8 @@
                     addEventListeners(window, 'mousemove touchmove', onToggleMove);
                     addEventListeners(window, 'mouseup touchend', onToggleRelease);
 
-                    e.stopImmediatePropagation();
                     e.stopPropagation();
-                    if (e.cancelBubble) {
-                        e.cancelBubble();
-                    }
+                    e.returnValue = false;
                     return false;
                 }
 
@@ -165,8 +165,8 @@
 
                     e = e ? e : window.event;
 
-                    var v = e.y - pressed.y,
-                        h = e.x - pressed.x,
+                    var v = (e.pageY || e.touches[0].pageY) - pressed.y,
+                        h = (e.pageX || e.touches[0].pageX) - pressed.x,
 
                         cHeight = el[0].offsetHeight,
                         cWidth = el[0].offsetWidth,
@@ -188,15 +188,10 @@
                         elToggle.css('left', now + '%');
                     }
 
-                    console.log(cHeight, now);
-
                     movement = Math.max(movement, Math.max(Math.abs(v), Math.abs(h)));
 
-                    e.stopImmediatePropagation();
                     e.stopPropagation();
-                    if (e.cancelBubble) {
-                        e.cancelBubble();
-                    }
+                    e.returnValue = false;
                     return false;
 
                 }
@@ -208,7 +203,11 @@
                     pressed = false;
 
                     vm.$apply(function() {
-                        if (movement < 2) {
+                        if (movement < 1 && e.type == 'mouseup') {
+                            return;
+                        }
+                        if (movement < 1 && e.type == 'touchend') {
+                            toggle();
                             return;
                         }
                         if (vm.triToggle) {
@@ -260,11 +259,8 @@
                     removeEventListeners(window, 'mousemove touchmove', onToggleMove);
                     removeEventListeners(window, 'mouseup touchend', onToggleRelease);
 
-                    e.stopImmediatePropagation();
                     e.stopPropagation();
-                    if (e.cancelBubble) {
-                        e.cancelBubble();
-                    }
+                    e.returnValue = false;
                     return false;
                 }
 
@@ -291,13 +287,23 @@
                         'colorFalse',
                         'colorNull',
                         'colorTrue',
+                    ], function(prop) {
+                        if (has(attrs[prop])) {
+                            vm[prop] = vm.$eval(attrs[prop]);
+                        }
+                    });
+
+                    // Dynamic attribute overrides
+                    angular.forEach([
                         /* ToolTips */
                         'tipTrue',
                         'tipFalse',
                         'tipNull',
                     ], function(prop) {
                         if (has(attrs[prop])) {
-                            vm[prop] = vm.$eval(attrs[prop]);
+                            vm.$watch(attrs[prop], function(val) {
+                                vm[prop] = val;
+                            })
                         }
                     });
 
@@ -331,7 +337,7 @@
                         height: vm.height + 'px',
                     };
 
-                    // Auto Border Radius
+                    // Auto Border Radius 
                     if (!has(vm.outerRadius)) {
                         vm.outerRadius = Math.min(vm.width, vm.height) / 2;
                     }
@@ -384,6 +390,8 @@
                 }
 
                 function toggle(state) {
+                    if (vm.ngDisabled) return;
+
                     $timeout(function() {
                         if (!state) {
                             if (vm.state == 'false') {

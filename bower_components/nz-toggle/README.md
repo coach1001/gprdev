@@ -1,5 +1,7 @@
 # nz-toggle
 
+[![Join the chat at https://gitter.im/tannerlinsley/nz-toggle](https://badges.gitter.im/Join%20Chat.svg)](https://gitter.im/tannerlinsley/nz-toggle?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 __Double and Triple-State Toggle for Angular__
 
 ## Features
@@ -23,27 +25,33 @@ Include Files
 <script type="text/javascript" src=".../nz-toggle/dist/nz-toggle.min.js"></script>
 ```
 
-## Using the directive 
+Add nzToggle in your angular app to your module as a requirement.
+
+```
+var app = angular.module('app', ['nzToggle']);
+```
+
+## Using the directive
 
 ```html
-<nz-toggle 
-  tri-toggle 
-  on-toggle="myFunction()" 
+<nz-toggle
+  tri-toggle
+  on-toggle="myFunction()"
   ng-model="value">
-</nz-toggle> 
+</nz-toggle>
 
 <!-- Default Values : false-val = 0, null-val = null, true-val = true; -->
 ```
 
 ```html
-<nz-toggle 
-  tri-toggle 
-  on-toggle="myFunction()" 
-  ng-model="value" 
-  val-true="'myString'" 
-  val-false="0" 
+<nz-toggle
+  tri-toggle
+  on-toggle="myFunction()"
+  ng-model="value"
+  val-true="'myString'"
+  val-false="0"
   val-null="-1">
-</nz-toggle> 
+</nz-toggle>
 
 ```
 

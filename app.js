@@ -1,35 +1,38 @@
-(function() {
-    
-    angular.module( 'appCg', [
-                    'ui.bootstrap',
-                    'ui.router',
-                    'ngAnimate',
-                    'formly',
-                    'formlyBootstrap',
-                    'ngToast',
-                    'angular-confirm',
-                    'ui.grid', 'ui.grid.selection', 'ui.grid.exporter','ui.grid.edit',
-                    'ui.select', 'ngLoadingSpinner','ui.checkbox'
-                  ]);
+angular.module( 'appCg', [
+                 'ui.bootstrap',
+                 'ui.router',
+                 'ngAnimate',
+                 'formly',
+                 'formlyBootstrap',
+                 'ngToast',
+                 'angular-confirm',
+                 'ui.grid', 'ui.grid.selection', 'ui.grid.exporter','ui.grid.edit',
+                 'ui.select', 'ngLoadingSpinner','ui.checkbox'
+                ]);
 
-    fetchData().then(bootstrapApplication);
+(function() {    
+
+    function bootstrapApplication() {
+        angular.element(document).ready(function() {
+        //angular.element(body).ready(function() {
+            angular.bootstrap(document, ['appCg']);
+        });
+    }
 
     function fetchData() {
-        var initInjector = angular.injector(["ng"]);
-        var $http = initInjector.get("$http");
+        var initInjector = angular.injector(['ng']);
+        var $http = initInjector.get('$http');
 
         return $http.get("client_config.json").then(function(response) {
-            angular.module('appCg').constant("config", response.data);
+            angular.module('appCg').constant('config', response.data);
         }, function(errorResponse) {
             // Handle error case
         });
     }
-    function bootstrapApplication() {
-        angular.element(document).ready(function() {
-            angular.bootstrap(document, ["appCg"]);
-        });
-    }
+
+    fetchData().then(bootstrapApplication);        
 }());
+
 Array.prototype.getIndex = function (prop, value) {
   for (var i = 0; i < this.length; i++) {
     if (this[i][prop] === value) {
@@ -38,10 +41,12 @@ Array.prototype.getIndex = function (prop, value) {
   }
   return -1;
 };
+
 var regexIso8601forDate = /^\d{4}-\d{2}-\d{2}$/;
 var regexIso8601forDateTime = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}$/;
 var regexIso8601forDateTimeWithMS = /^\d{4}-\d{2}-\d{2} \d{2}:\d{2}:\d{2}.\d{3}/;
 var regexUTCforDateTime = /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}.\d{3}Z/;
+
 function convertDateStringsToDates(input) {
   // Ignore things that aren't objects.
   if (typeof input !== "object") {
@@ -55,26 +60,24 @@ function convertDateStringsToDates(input) {
 
     var value = input[key];
     var match;
+    var milliseconds_;
+
     // Check for string properties which look like dates.
     // TODO: Improve this regex to better match ISO 8601 date strings.
     if (typeof value === "string" && (match = value.match(regexIso8601forDate))) {
-      // Assume that Date.parse can parse ISO 8601 strings, or has been shimmed in older browsers to do so.
-      //console.log('Date' + value);
-      var milliseconds = Date.parse(match[0]);
-      if (!isNaN(milliseconds)) {
-        input[key] = new Date(milliseconds);
+      // Assume that Date.parse can parse ISO 8601 strings, or has been shimmed in older browsers to do so.      
+      milliseconds_ = Date.parse(match[0]);
+      if (!isNaN(milliseconds_)) {
+        input[key] = new Date(milliseconds_);
       }
-    } else if (typeof value === "string" && (match = value.match(regexIso8601forDateTime))) {
-      //console.log('Date Time ' + value);
-      var milliseconds_ = Date.parse(match[0]);
+    } else if (typeof value === "string" && (match = value.match(regexIso8601forDateTime))) {      
+      milliseconds_ = Date.parse(match[0]);
       //var milliseconds 
       if (!isNaN(milliseconds_)) {
         input[key] = new Date(milliseconds_);
       }
-    } else if (typeof value === "string" && (match = value.match(regexIso8601forDateTimeWithMS))) {
-      //console.log('MilliSeconds');
-      var milliseconds_ = Date.parse(match[0]);
-      var milliseconds 
+    } else if (typeof value === "string" && (match = value.match(regexIso8601forDateTimeWithMS))) {      
+      milliseconds_ = Date.parse(match[0]);      
       if (!isNaN(milliseconds_)) {
         input[key] = new Date(milliseconds_);
       }
@@ -86,6 +89,7 @@ function convertDateStringsToDates(input) {
     }
   }
 }
+
 angular.module('appCg').config(function ($stateProvider, $urlRouterProvider, $locationProvider) {
 
   $stateProvider.state('home', {
@@ -383,8 +387,6 @@ angular.module('appCg').config(function ($stateProvider, $urlRouterProvider, $lo
         }
     });
 
-
-
   $urlRouterProvider.otherwise('/home');
   $locationProvider.html5Mode(false);
 });
@@ -493,12 +495,13 @@ angular.module('appCg').config(function ($httpProvider) {
       
       for (var ob in obj){
         var attrib = obj[ob];        
-        if(typeof attrib == "string" && (match = attrib.match(regexUTCforDateTime))){
+        if(typeof attrib === 'string' && (match = attrib.match(regexUTCforDateTime))){
           var date_;
           var date_string;
 
           date_ = new Date(attrib);
-          date_string = moment(date_).format('YYYY-MM-DD HH:mm:ss.SSS')
+          date_string = moment(date_).format('YYYY-MM-DD HH:mm:ss.SSS');
+
           obj[ob] = date_string;          
         }                      
       }      
@@ -528,4 +531,15 @@ angular.module('appCg').directive('input', [function() {
     }
   };
 }]);
-
+angular.module('appCg').run(function($rootScope) {
+  $rootScope.safeApply = function(fn) {
+      var phase = $rootScope.$$phase;
+      if (phase === '$apply' || phase === '$digest') {
+          if (fn && (typeof(fn) === 'function')) {
+              fn();
+          }
+      } else {
+          this.$apply(fn);
+      }
+  };
+});

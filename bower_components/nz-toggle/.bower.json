@@ -4,7 +4,7 @@
     "dist/nz-toggle.js",
     "dist/nz-toggle.css"
   ],
-  "version": "2.1.0",
+  "version": "2.2.1",
   "homepage": "https://github.com/nozzle/nz-toggle",
   "authors": [
     "tannerlinsley"
@@ -27,14 +27,14 @@
     "test",
     "tests"
   ],
-  "_release": "2.1.0",
+  "_release": "2.2.1",
   "_resolution": {
     "type": "version",
-    "tag": "2.1.0",
-    "commit": "867979a9be91b83dad4c6aec9a975eb9917c8ca9"
+    "tag": "2.2.1",
+    "commit": "4727b5754d16c0bfa378218141f8339ed4a35c5b"
   },
   "_source": "https://github.com/tannerlinsley/nz-toggle.git",
-  "_target": "^2.1.0",
+  "_target": "^2.2.1",
   "_originalSource": "nz-toggle",
   "_direct": true
 }

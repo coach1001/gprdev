@@ -29,8 +29,7 @@ angular.module('appCg').controller('LoginCtrl',function(authenticationService,ng
           authenticationService.storeCredentials(response.data.token,vm.login.email);
           ngToast.create({content: 'Login Successfull', timeout: 3000});
           $uibModalInstance.close(vm.login.email);
-        } else {
-          console.lo
+        } else {          
           authenticationService.login(vm.login.email,vm.login.password).then(function success(response){
             authenticationService.useCredentials(response.data.token,vm.login.email);
             authenticationService.storeCredentials(response.data.token,vm.login.email);
