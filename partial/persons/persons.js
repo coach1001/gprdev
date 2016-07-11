@@ -37,14 +37,14 @@ angular.module('appCg').controller('PersonsCtrl',function(persons, gprRestApi, $
                 person: function res(gprRestApi) {
                     return gprRestApi.getRow('persons', id);
                 },
-                user:function res(){
-                    return gprRestApi.getRowWithFE_2('users','&email=eq.'+ email_address);
-                },
                 roles:function res(){
                     return gprRestApi.getRows('lookup_roles',false);
                 },                
                 operation: function res() {
                     return operation;
+                },
+                users: function res(gprRestApi){
+                    return gprRestApi.getRows('users',false);
                 }
             }
         }).result.then(function(result) {

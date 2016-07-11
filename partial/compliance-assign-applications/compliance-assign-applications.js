@@ -1,6 +1,21 @@
-angular.module('appCg').controller('AssignAssessorsApplicationsCtrl',function(applications_assessors, gprRestApi, $uibModal) {
+angular.module('appCg').controller('AssignAssessorsApplicationsCtrl',function(applications_assessors, gprRestApi, $uibModal,complianceSection) {
   var vm = this;
   vm.title = 'Application Assessors';
+  complianceSection = Number(complianceSection);
+  
+  vm.complianceSection = angular.copy(complianceSection);
+  vm.buttonText = '';
+
+  if(complianceSection === 2){
+    vm.title = 'Application Admin & Tech Officers';    
+  }else if(complianceSection === 3){
+    vm.title = 'Application Relevance Officers';  
+  }else if(complianceSection === 4){
+    vm.title = 'Application Assessors';
+  }else if(complianceSection === 7){
+    vm.title = 'Application Due Diligence Officers';
+  }
+  
   var unfilteredRows = angular.extend(applications_assessors);
   vm.applications_assessors = vm.rows = angular.extend(applications_assessors);
 
@@ -14,12 +29,15 @@ angular.module('appCg').controller('AssignAssessorsApplicationsCtrl',function(ap
     noUnselect: true,
     enableGridMenu: true,
     columnDefs: [
-      { name: 'application' },
-      { name: 'email_address',displayName:'Assessor Email'},
-      { name: 'first_name' },
-      { name: 'last_name' },
-      { name: 'call_reference'},
-      { name: 'name', displayName: 'Organisation' }
+      { name: 'application', width : 120},
+      { name: 'call_reference' , width : 170},
+      { name: 'email_address',displayName:'Officer Email',width : 170},
+      { name: 'first_names', displayName : 'Officer First Names',width : 180},
+      { name: 'last_name', displayName : 'Officer Last Name',width : 180},
+      { name: 'lead',cellTemplate: '<checkbox disabled="true" ng-model="row.entity.lead"></checkbox>'},
+      { name: 'completed',cellTemplate: '<checkbox disabled="true" ng-model="row.entity.complete"></checkbox>'},
+      { name: 'name', displayName: 'Application Organisation'}
+
     ],
     onRegisterApi : function(gridApi) {
       vm.gridApi = gridApi;
@@ -31,22 +49,32 @@ angular.module('appCg').controller('AssignAssessorsApplicationsCtrl',function(ap
 
   vm.openModal = function(id, operation) {
     $uibModal.open({
-      templateUrl: 'partial/programmes/modal/programme-modal.html',
-      controller: 'ProgrammeModalCtrl as vm',
+      templateUrl: 'partial/compliance-assign-applications/modal/compliance-assign-application-modal.html',
+      controller: 'AssignAssessorModalCtrl as vm',
       resolve: {
-        programme: function res(gprRestApi) {
-          return gprRestApi.getRow('programmes', id);
+        applicationComplianceRecord: function res(gprRestApi) {
+          return gprRestApi.getRow('application_compliance_officers', id);
+        },
+        applicationList: function res(gprRestApi) {
+          return gprRestApi.getRowsWithFEs('lookup_compliance_applications','&application_status=gte.'+vm.complianceSection,false);
+        },
+        officerList: function res(gprRestApi) {
+          return gprRestApi.getRows('lookup_compliance_officers',false);
         },
         operation: function res() {
           return operation;
+        },
+        complianceSection : function res(){
+          return vm.complianceSection;
         }
       }
     }).result.then(function(result) {
         console.log('modal closed');
       }, function(result) {
-        gprRestApi.getRows('grid_assign_assessor_application',false).then(function success(res){
+        gprRestApi.getRowsWithFEs('grid_assigned_applications','&compliance_section=eq.'+vm.complianceSection,false).then(function success(res){
           vm.options.data = vm.applications_assessors = res;
         });
       });
   };
+  
 });

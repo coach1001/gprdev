@@ -44,6 +44,7 @@
 <script src="bower_components/pdfmake/build/pdfmake.js"></script>
 <script src="bower_components/pdfmake/build/vfs_fonts.js"></script>
 <script src="bower_components/angular-bootstrap-checkbox/angular-bootstrap-checkbox.js"></script>
+<script src="bower_components/angular-disable-all/dist/angular-disable-all.js"></script>
 <!-- Add New Bower Component JS Above -->
 <!-- Main App JS -->
 <script src="app.js"></script>
@@ -78,6 +79,8 @@
 <script src="service/login-modal-service.js"></script>
 <script src="service/gpr-rest-api.js"></script>
 <script src="partial/compliance-select/compliance-select.js"></script>
+<script src="partial/compliance-assign-applications/compliance-assign-applications.js"></script>
+<script src="partial/compliance-assign-applications/modal/compliance-assign-application-modal.js"></script>
 <script src="partial/compliance/compliance.js"></script>
 <script src="partial/applications/modal/application-modal.js"></script>
 <script src="partial/persons/persons.js"></script>
@@ -90,7 +93,7 @@
 <script src="partial/evc-meetings/modal/evc-meeting-application-modal.js"></script>
 <script src="formly_templates/formly-config.js"></script>
 <!-- Add New Component JS Above -->
-<toast></toast>
+<toast horizontal-position="'right'" vertical-position="'bottom'"></toast>
 <span us-spinner="{radius:30, width:10, length: 20}"></span>
 
 <div ui-view="topNav">

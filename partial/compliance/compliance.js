@@ -1,17 +1,16 @@
-angular.module('appCg').controller('ComplianceCtrl',function(template,gprRestApi,$stateParams,complianceInfo){
+angular.module('appCg').controller('ComplianceCtrl',function(template,gprRestApi,$stateParams,complianceInfo,ngToast,$confirm,authenticationService,$state){
   var vm=this;
   vm.template = angular.copy(template[0]);
   vm.complianceInfo = angular.extend(complianceInfo[0]);
-
+  console.log(vm.complianceInfo);
   vm.scoring_max = 0;
   vm.current_score = 0;
-  //console.log(complianceInfo);
-
-  /*angular.forEach(vm.template.categories, function(cat, catkey) {
-    vm.template.categories[catkey].questions = cat.questions.sort(function (a,b){
-      return a.id- b.id;
-    });
-  });*/
+  
+  if(vm.complianceInfo.compliance_section === vm.complianceInfo.application_status){
+    vm.disabled = false;
+  }else{
+    vm.disabled = true;
+  }
 
   angular.forEach(vm.template.categories, function(cat, catkey) {
     angular.forEach(cat.questions,function(q,qkey){
@@ -44,10 +43,36 @@ angular.module('appCg').controller('ComplianceCtrl',function(template,gprRestApi
             gprRestApi.updateCreateRow('compliance_answers', q.compliance_answers[0],'Create').then(function success(response){
               vm.template.categories[catkey].questions[qkey].compliance_answers[0].id = response.data.id;
             },function error(response){});
-
           }
         }
-      });
+      });      
+    });
+    ngToast.create({ content: 'Compliance Saved Successfully', timeout: 4000 });
+  };
+
+  vm.promote = function(){
+    vm.saveAnswers();
+  };
+
+  vm.fail =function(){
+    vm.saveAnswers();
+  };
+
+  vm.demote = function(){
+    $confirm(
+      {
+        title : 'Delete Section Data?',
+        text : 'Warning : All Section Data will be Deleted for this Application',
+        ok : 'Yes',
+        cancel : 'No'
+      }).then(function(res){        
+        gprRestApi.runRPC('demote_application',
+          {application : vm.complianceInfo.application , current_section : vm.complianceInfo.compliance_section }).then(function success(res){
+            console.log('Success');
+            $state.go('home.compliance-select',{compliance_section : vm.complianceInfo.compliance_section,email_address : authenticationService.username});  
+        },function error(res){
+          console.log('Error');
+        });
     });
   };
 
@@ -62,4 +87,5 @@ angular.module('appCg').controller('ComplianceCtrl',function(template,gprRestApi
       });
     });
   };
+
 });

@@ -42,6 +42,13 @@ angular.module('appCg').controller('ApplicationModalCtrl', function (application
       options: vm.organisations
     }
   },{
+        key: 'amount',
+        type: 'input',
+        templateOptions: {
+            label: 'Amount Requested',
+            type: 'number'
+        }
+    },{
     key: 'place',
     type: 'select',
     templateOptions: {
@@ -76,4 +83,27 @@ angular.module('appCg').controller('ApplicationModalCtrl', function (application
     });
 
   };
+
+  vm.promote = function () {    
+    vm.application.application_status = 2;    
+    var body = angular.copy(vm.application);
+    gprRestApi.updateCreateRow('call_applications',body,'Update').then(function success(response) {
+      ngToast.create({content: 'Record Promoted Successfully', timeout: 4000});
+      $uibModalInstance.dismiss('Record Promoted');
+    }, function error() {
+      ngToast.warning({content: 'Record Promotion Failed', timeout: 4000});
+    });
+  };
+
+  vm.fail = function () {    
+    vm.application.application_status = 21;    
+    var body = angular.copy(vm.application);
+    gprRestApi.updateCreateRow('call_applications',body,'Update').then(function success(response) {
+      ngToast.warning({content: 'Record Failed Successfully', timeout: 4000});
+      $uibModalInstance.dismiss('Record Failed');
+    }, function error() {
+      ngToast.warning({content: 'Record Failure Failed', timeout: 4000});
+    });
+  };
+
 });

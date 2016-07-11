@@ -86,9 +86,9 @@ angular.module('appCg').controller('CfpModalCtrl', function(programmes,
                 watcher: {
                     listener: function(field, newValue, oldValue, scope) {
                         if (newValue) {
-                            gprRestApi.getRowsFilterColumn('kpi_next_call_reference', 'kpi_id', newValue, false).then(function success(response) {
-                                vm.call.call_reference = response[0].next_call_reference;
-                            });
+                            //gprRestApi.getRowsFilterColumn('kpi_next_call_reference', 'kpi_id', newValue, false).then(function success(response) {
+                            //    vm.call.call_reference = response[0].next_call_reference;
+                            //});
                         }
                     }
                 }
@@ -109,6 +109,14 @@ angular.module('appCg').controller('CfpModalCtrl', function(programmes,
                     label: 'Call Reference',
                     placeholder: 'Call Reference',
                     required: true
+                }
+            },
+            {
+                key: 'call_budget',
+                type: 'input',
+                templateOptions: {
+                    label: 'Call Budget',
+                    type: 'number'
                 }
             } ,{
                 fieldGroup: [{

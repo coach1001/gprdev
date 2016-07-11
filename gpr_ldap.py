@@ -1,11 +1,5 @@
-import os
-# Change working directory so relative paths (and template lookup) work again
-#os.chdir(os.path.dirname(__file__))
-os.chdir(os.path.dirname(__file__))
-
-import ldap,sys,jwt,urllib2,json, bottle
-from bottle import Bottle, run, get, post, request, response
-application = bottle.default_app()
+import ldap,sys,jwt,urllib2,json
+from bottle import run, route, get, post, request, response, hook, default_app
 
 auth_token = None
 server_config = None
@@ -30,9 +24,9 @@ def get_login_role(username):
     req = urllib2.Request(url=url)    
     req.add_header('Authorization','Bearer ' + auth_token)
     response = urllib2.urlopen(req)
-    role_ = response.read()
-    json_data = json.loads(role_)  
-    return json_data[0]['role']
+    user_data_ = response.read()
+    json_data = json.loads(user_data_)  
+    return json_data[0]
 
   except urllib2.HTTPError, e:
     print 'HTTPError = ' + str(e.code)  
@@ -98,19 +92,21 @@ def check_credentials(username, password):
    return { 'status' : -2, 'description' : 'Authentication Failed', 'reason' : 'LDAP Server not Available'}
   
   # all is well
-  role_ = get_login_role(LDAP_USERNAME)
-  if role_:
-    role = role_
+  user_data = get_login_role(LDAP_USERNAME)
+  if user_data:
+    role = user_data['role']
+    person_id = user_data['person_id']
   else:
     create_dbldap_user(LDAP_USERNAME)
     role = 'anon'
+    person_id = 0
 
-  encoded = jwt.encode({'role': role,'email':LDAP_USERNAME}, 'foundationforhumanrights1994_fhrprxy1', algorithm='HS256')
+  encoded = jwt.encode({'role': role,'email':LDAP_USERNAME,'person_id':person_id}, 'foundationforhumanrights1994_fhrprxy1', algorithm='HS256')
   ldap_client.unbind()   
   return { 'status' :  1,'description' : 'Authentication Succeeded', 'reason' : 'Success', 'token' : encoded, 'username' : LDAP_USERNAME, 'role': role, 'email' : LDAP_USERNAME}
 
 
-@application.hook('after_request')
+@hook('after_request')
 def enable_cors():
     """
     You need to add some headers to each request.
@@ -120,22 +116,25 @@ def enable_cors():
     response.headers['Access-Control-Allow-Methods'] = 'PUT, GET, POST, DELETE, OPTIONS'
     response.headers['Access-Control-Allow-Headers'] = 'Origin, Accept, Content-Type, X-Requested-With, X-CSRF-Token'
 
-@application.route('/')
+@route('/')
 def index():
 	return '<h1>LDAP Service</h1>'
 
-@application.route('/login',method=['OPTIONS','POST'])
+@route('/login',method=['OPTIONS','POST'])
 def login():
   if request.method == 'OPTIONS':
-    return {}
+	return {}
   else:
-	 result = check_credentials(request.json.get('email'),request.json.get('pass'))
-	 return result
+	result = check_credentials(request.json.get('email'),request.json.get('pass'))
+	return result
 
-if __name__ == '__main__':  
-  init_server()
-  auth_token = get_application_jwt('ldap@fhr.org.za','Justice##@!1996')
-  run(application,reloader=True, debug=True, port='3003')   
+@route('/test',method=['GET'])
+def test():
+	return '<h1>TEST</h1>'  
+
+init_server()
+auth_token = get_application_jwt('ldap@fhr.org.za','Justice##@!1996')
+#run(app,reloader=True, debug=True, port='3003')		
 
 
 

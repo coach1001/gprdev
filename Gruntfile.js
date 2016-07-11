@@ -54,6 +54,23 @@ module.exports = function (grunt) {
           password : 'Justice##@!1996',
           agent: process.env.SSH_AUTH_SOCK
         }
+      },
+      prod: {
+        files : {
+          './' : 'dist/**',          
+        },
+        options : {
+          dot : true,
+          createDirectories : true,
+          path : '/var/www/html/gpr-prod/',          
+          srcBasePath : 'dist/',
+          showProgress : true,
+          port : 22,
+          host : '10.0.0.111',
+          username : 'administrator',
+          password : 'Justice##@!1996',
+          agent: process.env.SSH_AUTH_SOCK
+        }
       }
     },
     sshexec: {
@@ -68,6 +85,15 @@ module.exports = function (grunt) {
       },
       rename_dev01_htaccess : {
         command : 'cd /var/www/html/gpr-dev01 && mv htaccess .htaccess',
+        options: {
+          host: "10.0.0.111",
+          port: 22,
+          username: "administrator",
+          password: "Justice##@!1996"
+        }        
+      },
+      rename_prod_htaccess : {
+        command : 'cd /var/www/html/gpr-prod && mv htaccess .htaccess',
         options: {
           host: "10.0.0.111",
           port: 22,
@@ -150,9 +176,9 @@ module.exports = function (grunt) {
     copy: {
       main: {
         files: [
-          {src: ['OpenSans-Light.ttf'], dest: 'dist/'},
-          {src: ['client_config.json'], dest: 'dist/'},
+          {src: ['OpenSans-Light.ttf'], dest: 'dist/'},      
           {src: ['.htaccess'], dest: 'dist/htaccess'},
+          {src: ['client_config.json'], dest: 'dist/'},
           {src: ['img/**'], dest: 'dist/'},
           {src: ['bower_components/font-awesome/fonts/**'], dest: 'dist/',filter:'isFile',expand:true},
           {src: ['bower_components/bootstrap/fonts/**'], dest: 'dist/',filter:'isFile',expand:true},
@@ -163,6 +189,16 @@ module.exports = function (grunt) {
           //{src: ['bower_components/angular-ui-utils/ui-utils-ieshiv.min.js'], dest: 'dist/'},
           //{src: ['bower_components/select2/*.png','bower_components/select2/*.gif'], dest:'dist/css/',flatten:true,expand:true},
           //{src: ['bower_components/angular-mocks/angular-mocks.js'], dest: 'dist/'}
+        ]
+      },      
+      dev01:{
+        files : [
+          {src: ['client_config_dev01.json'], dest: 'dist/client_config.json'},
+        ]
+      },
+      prod:{
+        files : [
+          {src: ['client_config_prod.json'], dest: 'dist/client_config.json'},
         ]
       }
     },
@@ -275,7 +311,8 @@ module.exports = function (grunt) {
     'connect', 'watch']);
   grunt.registerTask('test',['dom_munger:read','karma:all_tests']);
 
-  grunt.registerTask('deploy_to_dev01',['sftp:dev01','sshexec:rename_dev01_htaccess']);
+  grunt.registerTask('deploy_to_dev01',['copy:dev01','sftp:dev01','sshexec:rename_dev01_htaccess']);
+  grunt.registerTask('deploy_to_prod' ,['copy:prod', 'sftp:prod' ,'sshexec:rename_prod_htaccess']);
 
   grunt.registerTask('test_ssh', ['sshexec:uptime']);
 

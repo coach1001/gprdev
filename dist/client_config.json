@@ -2,6 +2,6 @@
 	"app_db_base_url": "http://gpr.fhr.org.za:3002",
 	"app_dbrpc_base_url": "/rpc",
 	"app_dbauth_login_url": "/login",
-	"app_ldap_base_url" : "http://localhost:8081",
-	"app_ldap_login_url" : "/ldap_login"
+	"app_ldap_base_url" : "http://gpr.fhr.org.za/ldap/dev01",
+	"app_ldap_login_url" : "/login"
 }

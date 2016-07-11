@@ -1,0 +1,7 @@
+{
+	"app_db_base_url": "http://gpr.fhr.org.za:3004",
+	"app_dbrpc_base_url": "/rpc",
+	"app_dbauth_login_url": "/login",
+	"app_ldap_base_url" : "http://gpr.fhr.org.za/ldap/prod",
+	"app_ldap_login_url" : "/login"
+}

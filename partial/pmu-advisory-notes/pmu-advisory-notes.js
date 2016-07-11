@@ -16,11 +16,12 @@ angular.module('appCg').controller('PmuAdvisoryNotesCtrl',function(applications,
     noUnselect: true,
     enableGridMenu: true,
     columnDefs: [
-      { name:  'id', displayName : 'Reference', sort : {direction:uiGridConstants.ASC}},
-      { name: 'call_reference' },
+      { name:  'id', displayName : 'Reference', sort : {direction:uiGridConstants.ASC}, width : 120},
+      { name: 'call_reference', width : 170 },
       //{ name: 'name', displayName: 'Organisation' },
       //{ name: 'email_address' },
-      { name: 'pmu_advisory'}
+      { name: 'pmu_advisory'},
+      { name: 'application_status_description', displayName: 'Application Status', width: 220}
     ],
     onRegisterApi: function(gridApi) {
       vm.gridApi = gridApi;
@@ -47,7 +48,7 @@ angular.module('appCg').controller('PmuAdvisoryNotesCtrl',function(applications,
     }).result.then(function(result) {
         console.log('modal closed');
       }, function(result) {
-        gprRestApi.getRows('grid_applications',false).then(function success(res){
+        gprRestApi.getRows('grid_pmu_applications',false).then(function success(res){
           vm.options.data = vm.applications = res;
         });
       });

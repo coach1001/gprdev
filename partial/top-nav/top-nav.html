@@ -7,7 +7,7 @@
       <span class="icon-bar"></span>
       <span class="icon-bar"></span>
     </button>
-    <a class="navbar-brand" href="#">GPR</a>
+    <a class="navbar-brand" href="#">Grants</a>
   </div>
   <!-- Collect the nav links, forms, and other content for toggling -->
   <div class="collapse navbar-collapse" uib-collapse="vm.navCollapsed">
@@ -32,14 +32,16 @@
       <li ng-hide="!isAuthenticated" uib-dropdown>
         <a href="#" uib-dropdown-toggle>Admin & Tech <b class="caret"></b></a>
         <ul uib-dropdown-menu>
-          <li><a ui-sref="home.admin-compliance-select">Do Admin Compliance</a></li>          
+          <li><a ui-sref="home.compliance-select({compliance_section : 2})">Do Admin Compliance</a></li>          
+          <li><a ui-sref="home.compliance-assign-applications({compliance_section : 2})">Assign Admin & Tech Officers</a></li>          
           <!--<li><a href="#">Create/Edit Assessment Template</a></li>-->
         </ul>
       </li>
       <li ng-hide="!isAuthenticated" uib-dropdown>
         <a href="#" uib-dropdown-toggle>Relevance Checks <b class="caret"></b></a>
         <ul uib-dropdown-menu>
-          <li><a ui-sref="home.relevance-check-select">Do Relevance</a></li>          
+          <li><a ui-sref="home.compliance-select({compliance_section : 3})">Do Relevance</a></li>          
+          <li><a ui-sref="home.compliance-assign-applications({compliance_section : 3})">Assign Relevance Officers</a></li>          
           <!--<li><a href="#">Create/Edit Assessment Template</a></li>-->
         </ul>
       </li>
@@ -47,7 +49,8 @@
       <li ng-hide="!isAuthenticated" uib-dropdown>
         <a href="#" uib-dropdown-toggle>Assessments <b class="caret"></b></a>
         <ul uib-dropdown-menu>
-          <li><a ui-sref="home.assessment-select">Do Assessment</a></li>          
+          <li><a ui-sref="home.compliance-select({compliance_section : 4})">Do Assessment</a></li>
+          <li><a ui-sref="home.compliance-assign-applications({compliance_section : 4})">Assign Assessors</a></li>                    
           <!--<li><a href="#">Create/Edit Assessment Template</a></li>-->
         </ul>
       </li>
@@ -71,16 +74,16 @@
       <li ng-hide="!isAuthenticated" uib-dropdown>
         <a href="#" uib-dropdown-toggle>Due Diligence <b class="caret"></b></a>
         <ul uib-dropdown-menu>
-          <li><a ui-sref="home.due-diligence-select">Do Due Diligence</a></li>          
-          <!--<li><a href="#">Create/Edit Assessment Template</a></li>-->
+          <li><a ui-sref="home.compliance-select({compliance_section : 7})">Do Due Diligence</a></li>          
+          <li><a ui-sref="home.compliance-assign-applications({compliance_section : 7})">Assign Due Diligence Officers</a></li>                    
         </ul>
       </li>
 
     </ul>
     <ul class="nav navbar-nav navbar-right">
-      <li><a style="font-size: 12px;" ng-hide="isAuthenticated" ng-click="vm.registerFunc()"> Register </a></li>
-      <li><a style="font-size: 12px;" ng-hide="!isAuthenticated" ui-sref="home.persons">Persons</a></li>
-      <li><a style="font-size: 12px;" ng-hide="!isAuthenticated" ui-sref="home.lookups">Lookup Tables</a></li>
+      <li><a style="font-size: 10px;" ng-hide="isAuthenticated" ng-click="vm.registerFunc()"> Register </a></li>
+      <li><a style="font-size: 10px;" ng-hide="!isAuthenticated" ui-sref="home.persons">Persons</a></li>
+      <li><a style="font-size: 10px;" ng-hide="!isAuthenticated" ui-sref="home.lookups">Lookup Tables</a></li>
       <li>
         <a style="cursor:pointer;font-size: 13px;" ng-hide="isAuthenticated" ng-click="vm.loginFunc()">
           <span class="glyphicon glyphicon-log-in" aria-hidden="true"></span> Login</a>

@@ -1,5 +1,5 @@
 angular.module('appCg').controller('PersonModalCtrl', function(person,
-    user,
+    users,
     roles,
     operation,
     gprRestApi,
@@ -8,28 +8,55 @@ angular.module('appCg').controller('PersonModalCtrl', function(person,
     $uibModalInstance) {
 
     var vm = this;
-
+    
+    
     if (operation === 'Create') {
-        vm.person = {};
+        vm.person = {};                
+    
     } else if (operation === 'Update') {
         vm.person = angular.extend(person);
-        vm.person.role = angular.extend(user.role);
-        vm.person.login = angular.extend(user.email);
     }
+    
+    
 
     vm.roles = angular.extend(roles);
+    vm.users = angular.extend(users);
 
     vm.operation = operation;
-    vm.personFields = [{
-        key: 'login',
-        type: 'input',
+    
+    vm.personFields = [
+    {
+        key: 'application_user',
+        type: 'checkbox2',
         templateOptions: {
-            type: 'text',
-            label: 'User Login',
-            placeholder: '',
-            disabled: true
+            label: 'Application User',
+            default : false,
+            required : false
+        },
+        watcher : {
+            listener: function (field, newValue, oldValue, scope) {
+                if(newValue === false){
+                    vm.person.login_email = '';
+                }
+            }
         }
-    }, {
+    },
+    {
+        key: 'login_email',
+        type: 'select',
+        templateOptions: {
+            label: 'Login',
+            valueProp: 'email',
+            labelProp: 'email',
+            placeholder: 'Role',
+            required: true,            
+            options: vm.users,                          
+        },        
+        hideExpression: function($viewValue, $modelValue, scope) {
+             return !vm.person.application_user;
+        }
+    },
+    {
         key: 'first_names',
         type: 'input',
         templateOptions: {
@@ -56,7 +83,8 @@ angular.module('appCg').controller('PersonModalCtrl', function(person,
             placeholder: 'Email Address',
             required: true
         }
-    }, {
+    }/* 
+    {
         key: 'role',
         type: 'select',
         templateOptions: {
@@ -67,18 +95,19 @@ angular.module('appCg').controller('PersonModalCtrl', function(person,
             required: false,
             options: vm.roles
         }
-    }];
+    }
+    */];
 
     vm.updateCreateRow = function() {
         var body = angular.copy(vm.person);
-        console.log(body);
+        //console.log(body);
 
         gprRestApi.updateCreateRow('persons', body, vm.operation).then(function success(response) {
             ngToast.create({ content: vm.operation + ' Record Successfull', timeout: 4000 });
             if (vm.operation === 'Create') {
                 vm.person.id = response.data.id;
             }
-            console.log(vm.person);
+            //console.log(vm.person);
 
             vm.operation = 'Update';
         }, function error(response) {

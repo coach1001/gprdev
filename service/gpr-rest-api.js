@@ -139,6 +139,23 @@ angular.module('appCg').factory('gprRestApi', function ($http, $q,config) {
     req.method = 'DELETE';
     return $http(req);
   };
+
+  gprRestApi.deleteRows = function (table,params){
+    var req = {};
+    req.url = gprRestApi.baseUrl + '/' + table + params;
+    req.headers = {};
+    req.method = 'DELETE';
+    return $http(req);    
+  };
+  
+  gprRestApi.runRPC = function(procedure,data){
+    var req = {};    
+    req.url = req.url = gprRestApi.baseUrl + '/rpc/' + procedure;
+    req.method = 'POST';
+    req.data = data;    
+    return $http(req);
+  };
+
   gprRestApi.getRowsAlternate = function (table) {
     var tableIndex = gprRestApi.getTableIndex(table);
     var foreignEntities = [];

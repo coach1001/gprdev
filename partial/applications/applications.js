@@ -16,10 +16,11 @@ angular.module('appCg').controller('ApplicationsCtrl',function(applications,gprR
     noUnselect: true,
     enableGridMenu: true,
     columnDefs: [
-      { name:  'id', displayName : 'Reference', sort : {direction:uiGridConstants.ASC}},
-      { name: 'call_reference' },
+      { name:  'id', displayName : 'Application', sort : {direction:uiGridConstants.ASC} ,width : 120},
+      { name: 'call_reference' ,width : 170},
       { name: 'name', displayName: 'Organisation' },
       { name: 'email_address' },
+      { name: 'description', displayName : 'Application Status',width : 220}
     ],
     onRegisterApi: function(gridApi) {
       vm.gridApi = gridApi;

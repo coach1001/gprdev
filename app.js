@@ -7,7 +7,7 @@ angular.module( 'appCg', [
                  'ngToast',
                  'angular-confirm',
                  'ui.grid', 'ui.grid.selection', 'ui.grid.exporter','ui.grid.edit',
-                 'ui.select', 'ngLoadingSpinner','ui.checkbox'
+                 'ui.select', 'ngLoadingSpinner','ui.checkbox','disableAll'
                 ]);
 
 (function() {    
@@ -261,67 +261,39 @@ angular.module('appCg').config(function ($stateProvider, $urlRouterProvider, $lo
     }
   });
 
-  $stateProvider.state('home.admin-compliance-select', {
-    url: '/admin-compliance-select',
+  $stateProvider.state('home.compliance-assign-applications', {
+    url: '/compliance-assign-applications?:compliance_section',
+    views: {
+      'mainContent@': {
+        templateUrl: 'partial/compliance-assign-applications/compliance-assign-applications.html',
+        controller: 'AssignAssessorsApplicationsCtrl as vm',
+        resolve: {
+          applications_assessors : function(gprRestApi,authenticationService,$stateParams){
+            return gprRestApi.getRowsWithFEs('grid_assigned_applications','&compliance_section=eq.'+$stateParams.compliance_section);      
+          },
+          complianceSection : function($stateParams){return $stateParams.compliance_section;}
+        }
+      }
+    }
+
+  });
+
+
+  $stateProvider.state('home.compliance-select', {
+    url: '/compliance-select?:compliance_section',
     views: {
       'mainContent@': {
         templateUrl: 'partial/compliance-select/compliance-select.html',
         controller: 'ComplianceSelectCtrl as vm',
         resolve: {
-          compliances: function (gprRestApi, authenticationService) {
-            return gprRestApi.getRowsWithFEs('grid_compliance_applications','&compliance_section=eq.0&email_address=eq.'+authenticationService.username);      
+          compliances : function(gprRestApi,authenticationService,$stateParams){
+            return gprRestApi.getRowsWithFEs('grid_compliance_applications','&compliance_section=eq.'+$stateParams.compliance_section+'&email_address=eq.'+authenticationService.username);      
           },
-          complianceSection : function (){return 0;}
+          complianceSection : function($stateParams){return $stateParams.compliance_section;}
         }
       }
     }
   });
-  $stateProvider.state('home.relevance-check-select', {
-    url: '/relevance-check-select',
-    views: {
-      'mainContent@': {
-        templateUrl: 'partial/compliance-select/compliance-select.html',
-        controller: 'ComplianceSelectCtrl as vm',
-        resolve: {
-          compliances: function (gprRestApi, authenticationService) {
-            return gprRestApi.getRowsWithFEs('grid_compliance_applications','&compliance_section=eq.1&email_address=eq.'+authenticationService.username);      
-          },
-          complianceSection : function (){return 1;}
-        }
-      }
-    }
-  });
-  $stateProvider.state('home.assessment-select', {
-    url: '/assessment-select',
-    views: {
-      'mainContent@': {
-        templateUrl: 'partial/compliance-select/compliance-select.html',
-        controller: 'ComplianceSelectCtrl as vm',
-        resolve: {
-          compliances: function (gprRestApi, authenticationService) {
-            return gprRestApi.getRowsWithFEs('grid_compliance_applications','&compliance_section=eq.2&email_address=eq.'+authenticationService.username);      
-          },
-          complianceSection : function (){return 2;}
-        }
-      }
-    }
-  });
-  $stateProvider.state('home.due-diligence-select', {
-    url: '/due-diligence-select',
-    views: {
-      'mainContent@': {
-        templateUrl: 'partial/compliance-select/compliance-select.html',
-        controller: 'ComplianceSelectCtrl as vm',
-        resolve: {
-          compliances: function (gprRestApi, authenticationService) {
-            return gprRestApi.getRowsWithFEs('grid_compliance_applications','&compliance_section=eq.3&email_address=eq.'+authenticationService.username);      
-          },
-          complianceSection : function (){return 3;}
-        }
-      }
-    }
-  });
-  
 
   $stateProvider.state('home.compliance', {
     url: '/compliance?:templateId&:appId',
@@ -341,6 +313,8 @@ angular.module('appCg').config(function ($stateProvider, $urlRouterProvider, $lo
     }
   });
 
+
+
   $stateProvider.state('home.persons', {
     url: '/persons',
     views: {
@@ -355,7 +329,6 @@ angular.module('appCg').config(function ($stateProvider, $urlRouterProvider, $lo
       }
     }
   });
-
   $stateProvider.state('home.pmu-advisory-notes', {
         url: '/pmu-advisory-notes',        
         views: {
@@ -364,13 +337,12 @@ angular.module('appCg').config(function ($stateProvider, $urlRouterProvider, $lo
             controller: 'PmuAdvisoryNotesCtrl as vm',
             resolve: {
               applications: function res(gprRestApi) {
-                return gprRestApi.getRows('grid_applications', false);
+                return gprRestApi.getRows('grid_pmu_applications', false);
               }
             }
           }
         }
     });
-
   $stateProvider.state('home.evc-meetings', {
         url: 'evc-meetings',        
         views: {
@@ -445,7 +417,7 @@ angular.module('appCg').config(function ($httpProvider) {
             $state.go('home');
             return $q.reject(rejection);
           }
-        } else if (rejection.status === 400 && authenticationService.isAuthenticated) {
+        }/* else if (rejection.status === 400 && authenticationService.isAuthenticated) {
           if (!$rootScope.authorizationError) {
             $rootScope.authorizationError = true;
             authenticationService.logout();
@@ -471,7 +443,7 @@ angular.module('appCg').config(function ($httpProvider) {
             $state.go('home');
             return $q.reject(rejection);
           }
-        }
+        }*/
         return $q.reject(rejection);
       }
 
@@ -543,3 +515,10 @@ angular.module('appCg').run(function($rootScope) {
       }
   };
 });
+
+angular.module('appCg').config(['ngToastProvider', function(ngToast) {
+    ngToast.configure({
+      horizontalPosition: 'right', // right, center, left
+      verticalPosition: 'bottom' 
+    });
+}]);

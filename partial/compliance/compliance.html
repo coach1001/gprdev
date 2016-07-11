@@ -1,18 +1,21 @@
-<div class="row"></div>
+<!-- <div class="column" ng-class="{overlay : vm.complianceInfo.application_status !== vm.complianceInfo.compliance_section}">  -->
+<div class="column">
 
-<h3 ng-if="vm.complianceInfo.compliance_section === 0">
+<h4 ng-if="vm.disabled" style="color: red; font-weight: bold;">View Mode - Application no Longer in Section</h3>
+<div disable-all="vm.disabled">
+<h3 ng-if="vm.complianceInfo.compliance_section === 2">
    Admin Compliance - {{vm.complianceInfo.application}} ({{vm.complianceInfo.name}})
 </h3>
 
-<h3 ng-if="vm.complianceInfo.compliance_section === 1">
+<h3 ng-if="vm.complianceInfo.compliance_section === 3">
    Relevance Check - {{vm.complianceInfo.application}} ({{vm.complianceInfo.name}})
 </h3>
 
-<h3 ng-if="vm.complianceInfo.compliance_section === 2">
+<h3 ng-if="vm.complianceInfo.compliance_section === 4">
    Assessment - {{vm.complianceInfo.application}} ({{vm.complianceInfo.name}})
 </h3>
 
-<h3 ng-if="vm.complianceInfo.compliance_section === 3">
+<h3 ng-if="vm.complianceInfo.compliance_section === 5">
    Due Diligence - {{vm.complianceInfo.application}} ({{vm.complianceInfo.name}})
 </h3>
 
@@ -24,12 +27,20 @@ Completed?
 <h4>
   <button class="btn btn-primary" ng-click="vm.saveAnswers()">Save Changes</button>
     Score : {{vm.current_score || 0}} out of {{vm.scoring_max}}</span>
+  
+  <button class="btn btn-danger pull-right" ng-click="vm.promote()" confirm="Are you sure?">Fail Application</button>
+  <span class="pull-right">&nbsp;</span>
+  <button class="btn btn-default pull-right" ng-click="vm.demote()">Demote Application and Delete Section Data</button>
+  <span class="pull-right">&nbsp;</span>
+  <button ng-disabled="!vm.complianceInfo.complete" class="btn btn-default pull-right" ng-click="vm.fail()" confirm="Are you sure?">Approve and Promote Application</button>
+    
   </h4>
-<div class="row"></div>
-<uib-tabset type="pills">
-  <uib-tab ng-init="catIndex = $index" ng-repeat="cat in vm.template.categories" heading="{{cat.title}}" active="tab.active" disable="tab.disabled">
+  </div>  
 
-    <div ng-repeat="q in cat.questions" ng-init="qIndex = $index">
+<uib-tabset type="pills">
+  <uib-tab ng-init="catIndex = $index" ng-repeat="cat in vm.template.categories" heading="{{cat.title}}" active="tab.active">
+
+    <div ng-repeat="q in cat.questions" ng-init="qIndex = $index" disable-all="vm.disabled">
       <h4>  <span class="badge badge-middle">{{$index+1}}</span>  {{q.question}}</h4>
       <h5>{{q.description}}</h5>
 
@@ -54,4 +65,4 @@ Completed?
   </uib-tab>
 
 </uib-tabset>
-
+</div>

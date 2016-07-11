@@ -31,7 +31,8 @@
     "angular-vs-repeat": "^1.1.7",
     "nz-toggle": "^2.2.1",
     "pdfmake": "^0.1.20",
-    "angular-bootstrap-checkbox": "^0.5.0"
+    "angular-bootstrap-checkbox": "^0.5.0",
+    "angular-disable-all": "^0.0.2"
   },
   "resolutions": {
     "bootstrap": "~3.3.6",
