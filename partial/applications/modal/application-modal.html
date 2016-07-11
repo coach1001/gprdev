@@ -7,12 +7,12 @@
     <form novalidate>
       <formly-form model="vm.application" fields="vm.applicationFields" form="vm.kraForm">
         <button ng-click="vm.updateCreateRow()" class="btn btn-primary" ng-disabled="vm.applicationForm.$invalid">{{vm.operation}}</button>
-        <button type="button" ng-click="vm.deleteRow()" class="btn btn-warning" confirm="Are you sure?" ng-hide="vm.operation === 'Create'">Delete</button>
+        <button ng-if="vm.application.application_status < 2" type="button" ng-click="vm.deleteRow()" class="btn btn-warning" confirm="Are you sure?" ng-hide="vm.operation === 'Create'">Delete</button>
         
         
         <button ng-if="vm.application.application_status < 2" type="button" ng-click="vm.fail()" class="btn btn-danger pull-right" confirm="Are you sure?" ng-hide="vm.operation === 'Create'">Fail Application</button>
         <span class="pull-right">&nbsp;</span>
-        <button ng-if="vm.application.application_status < 2" ng-click="vm.promote()" class="btn btn-default pull-right" confirm="Are you sure?" ng-hide="vm.operation === 'Create'">Promote to Admin and Tech</button>     
+        <button ng-if="vm.application.application_status < 2" ng-click="vm.promote()" class="btn btn-success pull-right" confirm="Are you sure?" ng-hide="vm.operation === 'Create'">Promote to Admin and Tech</button>     
                 
       </formly-form>
     </form>

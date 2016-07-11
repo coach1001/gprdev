@@ -3,7 +3,7 @@ angular.module('appCg').controller('PmuAdvisoryNoteModalCtrl',function(applicati
                                                                    gprRestApi,
                                                                    ngToast,
                                                                    $confirm,
-                                                                   $uibModalInstance) {
+                                                                   $uibModalInstance,$state,authenticationService) {
 
   var vm = this;
 
@@ -22,6 +22,12 @@ angular.module('appCg').controller('PmuAdvisoryNoteModalCtrl',function(applicati
     vm.application.dates.end_date_ = new Date(vm.application.end_date);
   }
 */
+  if(vm.application.application_status === 5){
+    vm.disabled = false;
+  }else{
+    vm.disabled = true;
+  }
+
 
   vm.applicationFields = [{
     key: 'pmu_advisory',
@@ -36,21 +42,18 @@ angular.module('appCg').controller('PmuAdvisoryNoteModalCtrl',function(applicati
   }];
 
   vm.updateCreateRow = function () {
-    var body = angular.copy(vm.application);
-    console.log(body);
-
+    var body = angular.copy(vm.application);    
     gprRestApi.updateCreateRow('call_applications', body, vm.operation).then(function success(response) {
       ngToast.create({content: vm.operation + ' Record Successfull', timeout: 4000});
       if (vm.operation === 'Create') {
         vm.application.id = response.data.id;
-      }
-      console.log(vm.application);
-
+      }      
       vm.operation = 'Update';
     }, function error(response) {
       ngToast.warning({content: vm.operation + ' Record Failed', timeout: 4000});
     });
   };
+
   vm.deleteRow = function () {
     gprRestApi.deleteRow('call_applications', vm.application.id).then(function success(response) {
       ngToast.warning({content: 'Record Deleted Successfully', timeout: 4000});
@@ -59,4 +62,61 @@ angular.module('appCg').controller('PmuAdvisoryNoteModalCtrl',function(applicati
       ngToast.warning({content: 'Record Delete Failed', timeout: 4000});
     });
   };
+
+  vm.promote = function(){    
+    vm.updateCreateRow();
+    $confirm(
+      {
+        title : 'Promote Application?',
+        text : 'Warning : You will only be able to view data from this section after promotion',
+        ok : 'Yes',
+        cancel : 'No'
+      }).then(function(res){        
+        gprRestApi.runRPC('promote_application',
+          {application : vm.application.id , current_section : vm.application.application_status}).then(
+          function success(res){
+            $uibModalInstance.dismiss('');
+            $state.go('home.pmu-advisory-notes');  
+          },function error(res){          
+          
+          });
+    });
+  };
+
+  vm.fail =function(){
+    vm.saveAnswers();
+    $confirm(
+      {
+        title : 'Fail Application',
+        text : 'Are you sure ?',
+        ok : 'Yes',
+        cancel : 'No'
+      }).then(function(res){        
+        gprRestApi.runRPC('fail_application',
+          {application : vm.application.id , current_section : vm.application.application_status }).then(function success(res){            
+            $uibModalInstance.dismiss('');
+            $state.go('home.pmu-advisory-notes');  
+        },function error(res){          
+        });
+    });
+
+  };
+
+  vm.demote = function(){
+    $confirm(
+      {
+        title : 'Delete Section Data?',
+        text : 'Warning : All Section Data will be Deleted for this Application',
+        ok : 'Yes',
+        cancel : 'No'
+      }).then(function(res){        
+        gprRestApi.runRPC('demote_application',
+          {application : vm.application.id , current_section : vm.application.application_status }).then(function success(res){            
+            $uibModalInstance.dismiss('');
+            $state.go('home.pmu-advisory-notes');  
+        },function error(res){          
+        });
+    });
+  };
+
 });

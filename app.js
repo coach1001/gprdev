@@ -26,7 +26,7 @@ angular.module( 'appCg', [
         return $http.get("client_config.json").then(function(response) {
             angular.module('appCg').constant('config', response.data);
         }, function(errorResponse) {
-            // Handle error case
+            // Handle error case4
         });
     }
 
@@ -312,8 +312,6 @@ angular.module('appCg').config(function ($stateProvider, $urlRouterProvider, $lo
       }
     }
   });
-
-
 
   $stateProvider.state('home.persons', {
     url: '/persons',

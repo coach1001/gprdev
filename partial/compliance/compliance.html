@@ -1,10 +1,11 @@
 <!-- <div class="column" ng-class="{overlay : vm.complianceInfo.application_status !== vm.complianceInfo.compliance_section}">  -->
 <div class="column">
-
-<h4 ng-if="vm.disabled" style="color: red; font-weight: bold;">View Mode - Application no Longer in Section</h3>
+    <h4 ng-if="vm.disabled" style="color: red; font-weight: bold;">View Mode - Application no Longer in Section, Currently in {{vm.current_status}}</h3>
+<button class="btn btn-primary pull-right" ui-sref="home.compliance-select({compliance_section : vm.complianceInfo.compliance_section})">Return to Select</button>
 <div disable-all="vm.disabled">
+
 <h3 ng-if="vm.complianceInfo.compliance_section === 2">
-   Admin Compliance - {{vm.complianceInfo.application}} ({{vm.complianceInfo.name}})
+   Admin Compliance - {{vm.complianceInfo.application}} ({{vm.complianceInfo.name}})   
 </h3>
 
 <h3 ng-if="vm.complianceInfo.compliance_section === 3">
@@ -15,7 +16,7 @@
    Assessment - {{vm.complianceInfo.application}} ({{vm.complianceInfo.name}})
 </h3>
 
-<h3 ng-if="vm.complianceInfo.compliance_section === 5">
+<h3 ng-if="vm.complianceInfo.compliance_section === 7">
    Due Diligence - {{vm.complianceInfo.application}} ({{vm.complianceInfo.name}})
 </h3>
 
@@ -24,45 +25,41 @@
 Completed?
   <checkbox ng-model="vm.complianceInfo.complete"></checkbox>
 </h4>
-<h4>
+    <h4>  
   <button class="btn btn-primary" ng-click="vm.saveAnswers()">Save Changes</button>
-    Score : {{vm.current_score || 0}} out of {{vm.scoring_max}}</span>
+    <span ng-if="!vm.complianceInfo.lead">Score : {{vm.current_score || 0}} out of {{vm.scoring_max}}</span>
   
-  <button class="btn btn-danger pull-right" ng-click="vm.promote()" confirm="Are you sure?">Fail Application</button>
+  <button class="btn btn-danger pull-right" ng-if="vm.complianceInfo.compliance_section !== 4 || (vm.complianceInfo.compliance_section == 4 && vm.complianceInfo.lead === true)" ng-click="vm.fail()">Fail Application</button>
+
   <span class="pull-right">&nbsp;</span>
-  <button class="btn btn-default pull-right" ng-click="vm.demote()">Demote Application and Delete Section Data</button>
+  
+  <button class="btn btn-warning pull-right" ng-if="vm.complianceInfo.compliance_section !== 4 || (vm.complianceInfo.compliance_section == 4 && vm.complianceInfo.lead === true)"  ng-click="vm.demote()">Demote Application and Delete Section Data</button>
+  
   <span class="pull-right">&nbsp;</span>
-  <button ng-disabled="!vm.complianceInfo.complete" class="btn btn-default pull-right" ng-click="vm.fail()" confirm="Are you sure?">Approve and Promote Application</button>
+  <button ng-disabled="!vm.complianceInfo.complete" ng-if="vm.complianceInfo.compliance_section !== 4 || (vm.complianceInfo.compliance_section == 4 && vm.complianceInfo.lead === true)" class="btn btn-success pull-right" ng-click="vm.promote()">Approve and Promote Application</button>
     
   </h4>
-  </div>  
-
+</div>
 <uib-tabset type="pills">
-  <uib-tab ng-init="catIndex = $index" ng-repeat="cat in vm.template.categories" heading="{{cat.title}}" active="tab.active">
+    <uib-tab ng-init="catIndex = $index" ng-repeat="cat in vm.template.categories" heading="{{cat.title}}" active="tab.active" ng-if="cat.lead === vm.complianceInfo.lead ">
+        
+        <div ng-repeat="q in cat.questions" ng-init="qIndex = $index" disable-all="vm.disabled" ng-if="q.lead_question === vm.complianceInfo.lead ">
+            <h4>  <span class="badge badge-middle">{{$index+1}}</span>  {{q.question}}</h4>
+            <h5>{{q.description}}</h5>
+            <div ng-if="q.question_types.code==='boolean'">
+                <select class="form-control" ng-blur="vm.updateModelAnswer(catIndex,qIndex,q.compliance_answers[0].answer)" style="width:25%;" ng-model="q.compliance_answers[0].answer">
+                    <option value="null">Undecided</option>
+                    <option value="true">Yes</option>
+                    <option value="false">No</option>
+                </select>
+            </div>
+            <textarea ng-blur="vm.updateModelAnswer(catIndex,qIndex,q.compliance_answers[0].answer)" ng-model="q.compliance_answers[0].answer" label="" spellcheck="true" style="width:50%;height:150px;" ng-if="(q.question_types.code === 'textarea')"></textarea>
+            <h6 ng-if="(q.question_types.code === 'number' && q.is_scoring)">Rating Score for Above Question 0 (min) - {{q.max_scoring}} (max)</h6>
+            <input ng-blur="vm.updateModelAnswer(catIndex,qIndex,q.compliance_answers[0].answer)" ng-model="q.compliance_answers[0].answer" type="number" ng-change="vm.updateCurrScore(q.compliance_answers[0].answer)" value="0" style="width:15%;" ng-if="(q.question_types.code === 'number')" step="0.5" min="0" max="{{q.max_scoring}}">
+            <h5 ng-if="(q.has_motivation)">Comment/Justification</h5>
+            <textarea ng-blur="vm.updateModelMotivation(catIndex,qIndex,q.compliance_answers[0].motivation)" ng-model="q.compliance_answers[0].motivation" label="" style="width:50%;height:120px;" ng-if="(q.has_motivation)"></textarea>
+        </div>
 
-    <div ng-repeat="q in cat.questions" ng-init="qIndex = $index" disable-all="vm.disabled">
-      <h4>  <span class="badge badge-middle">{{$index+1}}</span>  {{q.question}}</h4>
-      <h5>{{q.description}}</h5>
-
-      <div ng-if="q.question_types.code==='boolean'" >
-        <select class="form-control" ng-blur="vm.updateModelAnswer(catIndex,qIndex,q.compliance_answers[0].answer)" style="width:25%;" ng-model="q.compliance_answers[0].answer">
-          <option value="null">Undecided</option>
-          <option value="true">Yes</option>
-          <option value="false">No</option>
-        </select>
-      </div>
-
-      <textarea ng-blur="vm.updateModelAnswer(catIndex,qIndex,q.compliance_answers[0].answer)" ng-model="q.compliance_answers[0].answer" label="" spellcheck="true" style="width:50%;height:150px;" ng-if="(q.question_types.code === 'textarea')"></textarea>
-      <h6 ng-if="(q.question_types.code === 'number' && q.is_scoring)">Rating Score for Above Question 0 (min) - {{q.max_scoring}} (max)</h6>
-      <input ng-blur="vm.updateModelAnswer(catIndex,qIndex,q.compliance_answers[0].answer)" ng-model="q.compliance_answers[0].answer" type="number" ng-change="vm.updateCurrScore(q.compliance_answers[0].answer)" value="0" style="width:15%;" ng-if="(q.question_types.code === 'number')" step="0.5" min="0" max="{{q.max_scoring}}">
-
-      <h5 ng-if="(q.has_motivation)">Comment/Justification</h5>
-      <textarea ng-blur="vm.updateModelMotivation(catIndex,qIndex,q.compliance_answers[0].motivation)" ng-model="q.compliance_answers[0].motivation" label="" style="width:50%;height:120px;" ng-if="(q.has_motivation)"></textarea>
-
-
-    </div>
-
-  </uib-tab>
-
+    </uib-tab>
 </uib-tabset>
 </div>

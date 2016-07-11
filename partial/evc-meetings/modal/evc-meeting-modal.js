@@ -32,10 +32,11 @@ angular.module('appCg').controller('EvcMeetingModalCtrl', function(evcMeeting,
     noUnselect: true,
     enableGridMenu: true,
     columnDefs: [
-      {name: 'application', displayName: 'Application #'},      
+      {name: 'application', displayName: 'Application'},      
       {name: 'organisation'},
       {name: 'amount_approved',type : 'number'},
-      {name: 'approved',type: 'boolean',cellTemplate: '<checkbox disabled="true" ng-model="row.entity.approved"></checkbox>'}
+      {name: 'approved',type: 'boolean',cellTemplate: '<checkbox disabled="true" ng-model="row.entity.approved"></checkbox>'},
+      {name: 'application_status_description', displayName: 'Application'}
     ],
     onRegisterApi: function (gridApi) {
       vm.gridApiApplications = gridApi;
@@ -44,7 +45,8 @@ angular.module('appCg').controller('EvcMeetingModalCtrl', function(evcMeeting,
         vm.gridApiApplications.core.handleWindowResize();
       },200,500);      
       vm.gridApiApplications.selection.on.rowSelectionChanged(null, function (row) {
-        vm.openModalApplication(row.entity.id, 'Update');
+        //console.log(row.entity);
+        vm.openModalApplication(row.entity.id, 'Update',row.entity.application);
       });
     }
   };
@@ -70,6 +72,7 @@ angular.module('appCg').controller('EvcMeetingModalCtrl', function(evcMeeting,
       },200,500);
 
       vm.gridApiAttendees.selection.on.rowSelectionChanged(null, function (row) {
+        //console.log(row.entity);
         vm.openModalAttendee(row.entity.id, 'Update');
       });
     }
@@ -122,11 +125,17 @@ angular.module('appCg').controller('EvcMeetingModalCtrl', function(evcMeeting,
 
   };
 
-  vm.openModalApplication = function (id, operation) {
+  vm.openModalApplication = function (id, operation,application) {
+    //console.log(application);
     $uibModal.open({
+
       templateUrl: 'partial/evc-meetings/modal/evc-meeting-application-modal.html',
       controller: 'EvcMeetingApplicationModalCtrl as vm',
+      size : 'lg',
       resolve: {
+        application : function res(gprRestApi){
+          return gprRestApi.getRow('call_applications', application, false);
+        },
         evcApplication: function res(gprRestApi) {
           return gprRestApi.getRow('evc_applications', id, false);
         },

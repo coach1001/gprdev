@@ -1,4 +1,4 @@
-angular.module('appCg').controller('EvcMeetingApplicationModalCtrl', function(evcApplication,
+angular.module('appCg').controller('EvcMeetingApplicationModalCtrl', function(evcApplication,application,
     evcApplicationLookup,
     evcId,
     operation,
@@ -14,8 +14,16 @@ angular.module('appCg').controller('EvcMeetingApplicationModalCtrl', function(ev
         vm.evcApplication.evc = angular.extend(evcId);
     } else if (operation === 'Update') {
         vm.evcApplication = angular.extend(evcApplication);
-    }    
+    }
     vm.evcApplicationLookup = angular.extend(evcApplicationLookup);
+    vm.application = angular.extend(application);
+    
+    
+    if (application.application_status === 6) {
+        vm.disabled = false;
+    } else {
+        vm.disabled = true;
+    }
 
     vm.operation = operation;
     vm.evcApplicationFields = [{
@@ -26,8 +34,8 @@ angular.module('appCg').controller('EvcMeetingApplicationModalCtrl', function(ev
             ngOptions: 'option[to.valueProp] as option in to.options | filter: $select.search',
             label: 'Application',
             valueProp: 'application',
-            labelProp: 'application',       
-            showDetails : true,     
+            labelProp: 'application',
+            showDetails: true,
             options: vm.evcApplicationLookup
 
         }
@@ -59,15 +67,15 @@ angular.module('appCg').controller('EvcMeetingApplicationModalCtrl', function(ev
             rows: 4,
             required: false
         }
-    } ];
+    }];
 
     vm.updateCreateRow = function() {
-        var body = angular.copy(vm.evcApplication);        
+        var body = angular.copy(vm.evcApplication);
         //console.log(body);
         gprRestApi.updateCreateRow('evc_applications', body, vm.operation).then(function success(response) {
             ngToast.create({ content: vm.operation + ' Record Successfull', timeout: 4000 });
             if (vm.operation === 'Create') {
-                vm.evcApplication.id = response.data.id;                
+                vm.evcApplication.id = response.data.id;
             }
 
             vm.operation = 'Update';
@@ -84,4 +92,45 @@ angular.module('appCg').controller('EvcMeetingApplicationModalCtrl', function(ev
             ngToast.warning({ content: 'Record Delete Failed', timeout: 4000 });
         });
     };
+
+
+    vm.promote = function(dd){    
+    vm.updateCreateRow();
+    console.log(vm.application);
+    $confirm(
+      {
+        title : 'Promote Application?',
+        text : 'Warning : You will only be able to view data from this section after promotion',
+        ok : 'Yes',
+        cancel : 'No'
+      }).then(function(res){        
+        gprRestApi.runRPC('promote_application',
+          {application : vm.application.id , current_section : vm.application.application_status + dd}).then(
+          function success(res){
+            console.log('Here');
+            $uibModalInstance.dismiss('');            
+          },function error(res){                    
+          });
+        });
+    };
+
+    vm.fail =function(){
+    vm.updateCreateRow();
+    $confirm(
+      {
+        title : 'Fail Application',
+        text : 'Are you sure ?',
+        ok : 'Yes',
+        cancel : 'No'
+      }).then(function(res){        
+        gprRestApi.runRPC('fail_application',
+          {application : vm.application.id , current_section : vm.application.application_status }).then(function success(res){            
+            $uibModalInstance.dismiss('');
+            //$state.go('home.home.evc-meetings');  
+        },function error(res){          
+        });
+    });
+
+  };
+
 });

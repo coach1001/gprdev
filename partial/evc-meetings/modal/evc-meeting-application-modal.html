@@ -1,15 +1,22 @@
-<div>
-    <div class="modal-header">
-        <button type="button" class="close pull-right" ng-click="$dismiss()" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">EVC Application Details <span class="badge">{{vm.evcApplication.application}}</h4>
-    </div>
-    <div class="modal-body">
-        <form novalidate>
-        	<timepicker></timepicker>
-            <formly-form model="vm.evcApplication" fields="vm.evcApplicationFields" form="vm.evcApplicationForm">
-                <button ng-click="vm.updateCreateRow()" class="btn btn-primary" ng-disabled="vm.evcApplicationForm.$invalid">{{vm.operation}}</button>
-                <button type="button" ng-click="vm.deleteRow()" class="btn btn-warning" confirm="Are you sure?" ng-hide="vm.operation === 'Create'">Delete</button>
-            </formly-form>
-        </form>
-    </div>
+<div disable-all="vm.disabled">
+ <div class="modal-header">
+   <button type="button" class="close pull-right" ng-click="$dismiss()" aria-hidden="true">&times;</button>
+   <h4 class="modal-title">EVC Application Details <span class="badge">{{vm.evcApplication.application}}</span></h4>
+ </div>
+ <div class="modal-body">
+   <form novalidate>
+     <timepicker></timepicker>
+       <formly-form model="vm.evcApplication" fields="vm.evcApplicationFields" form="vm.evcApplicationForm">
+         <button ng-click="vm.updateCreateRow()" class="btn btn-primary" ng-disabled="vm.evcApplicationForm.$invalid">{{vm.operation}}</button>
+         <button type="button" ng-click="vm.deleteRow()" class="btn btn-warning" confirm="Are you sure?" ng-hide="vm.operation === 'Create'">Delete</button>
+
+          <button ng-click="vm.fail()" class="btn btn-danger pull-right" confirm="Are you sure?" ng-hide="vm.operation === 'Create'">Fail Application</button>
+          <span class="pull-right">&nbsp;</span>
+
+         <button ng-hide="!vm.evcApplication.approved" ng-click="vm.promote(1)" class="btn btn-success pull-right" ng-hide="vm.operation === 'Create'">Promote to Contract</button>     
+         <span class="pull-right">&nbsp;</span>
+         <button ng-hide="!vm.evcApplication.approved" ng-click="vm.promote(0)" class="btn btn-success pull-right" ng-hide="vm.operation === 'Create'">Promote to Due Diligence</button>                                     
+       </formly-form>
+     </form>
+  </div>
 </div>
