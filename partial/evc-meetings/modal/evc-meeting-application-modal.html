@@ -13,9 +13,9 @@
           <button ng-click="vm.fail()" class="btn btn-danger pull-right" confirm="Are you sure?" ng-hide="vm.operation === 'Create'">Fail Application</button>
           <span class="pull-right">&nbsp;</span>
 
-         <button ng-hide="!vm.evcApplication.approved" ng-click="vm.promote(1)" class="btn btn-success pull-right" ng-hide="vm.operation === 'Create'">Promote to Contract</button>     
+         <button ng-hide="!vm.evcApplication.approved || vm.operation === 'Create'" ng-click="vm.promote(1)" class="btn btn-success pull-right">Promote to Contract</button>     
          <span class="pull-right">&nbsp;</span>
-         <button ng-hide="!vm.evcApplication.approved" ng-click="vm.promote(0)" class="btn btn-success pull-right" ng-hide="vm.operation === 'Create'">Promote to Due Diligence</button>                                     
+         <button ng-hide="!vm.evcApplication.approved || vm.operation === 'Create'" ng-click="vm.promote(0)" class="btn btn-success pull-right" ng-hide="vm.operation === 'Create'">Promote to Due Diligence</button>                                     
        </formly-form>
      </form>
   </div>

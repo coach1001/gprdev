@@ -1,4 +1,4 @@
-angular.module('appCg').controller('ComplianceSelectCtrl',function(compliances,$state,complianceSection,uiGridConstants,$confirm) {
+angular.module('appCg').controller('ComplianceSelectCtrl',function(compliances,$state,complianceSection,uiGridConstants,$confirm,lookup_calls_uigrid) {
   var vm = this;
   complianceSection = Number(complianceSection);
   if(complianceSection === 2){
@@ -25,10 +25,11 @@ angular.module('appCg').controller('ComplianceSelectCtrl',function(compliances,$
     enableGridMenu: true,
     columnDefs: [
       { name: 'application', displayName : 'Application' ,sort : {direction:uiGridConstants.ASC}},
-      { name: 'call_reference' },
+      { name: 'call_reference' ,filter: {selectOptions: lookup_calls_uigrid, type: uiGridConstants.filter.SELECT} },
       { name: 'name', displayName : 'Organisation' },
       { name: 'province'},
       //{ name: 'complete', displayName: 'Completed?', type: 'boolean',cellTemplate: '<input disabled="true" type="checkbox" ng-model="row.entity.complete">'}
+      { name: 'lead',type: 'boolean',cellTemplate: '<checkbox disabled="true" ng-model="row.entity.lead"></checkbox>'},
       { name: 'complete', displayName: 'Completed?', type: 'boolean',cellTemplate: '<checkbox disabled="true" ng-model="row.entity.complete"></checkbox>'},
       { name: 'application_status_description', displayName : 'Application Status'}
     ],
@@ -40,8 +41,7 @@ angular.module('appCg').controller('ComplianceSelectCtrl',function(compliances,$
           appId    : row.entity.id,
           application : row.entity.application,
           compliance_officer    : row.compliance_officer,
-          complete    : row.entity.complete,
-          
+          complete    : row.entity.complete,          
         };
       if(complianceSection === 2){
         compliance_packet.compliance_template = row.entity.admin_compliance_template;
@@ -69,6 +69,6 @@ angular.module('appCg').controller('ComplianceSelectCtrl',function(compliances,$
   };
 
   vm.openModal = function(compliance_packet) {    
-      $state.go('home.compliance',{templateId : compliance_packet.compliance_template, appId : compliance_packet.appId});  
+      $state.go('home.compliance',{templateId : compliance_packet.compliance_template, appId : compliance_packet.appId,application : compliance_packet.application});  
   };
 });

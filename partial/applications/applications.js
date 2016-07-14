@@ -1,5 +1,5 @@
-angular.module('appCg').controller('ApplicationsCtrl',function(applications,gprRestApi,$uibModal,uiGridConstants){
-	var vm = this;
+angular.module('appCg').controller('ApplicationsCtrl', function(applications, gprRestApi, $uibModal, uiGridConstants,lookup_calls_uigrid) {
+  var vm = this;
 
   var unfilteredRows = angular.extend(applications);
   vm.applications = vm.rows = angular.extend(applications);
@@ -16,11 +16,11 @@ angular.module('appCg').controller('ApplicationsCtrl',function(applications,gprR
     noUnselect: true,
     enableGridMenu: true,
     columnDefs: [
-      { name:  'id', displayName : 'Application', sort : {direction:uiGridConstants.ASC} ,width : 120},
-      { name: 'call_reference' ,width : 170},
+      { name: 'id', displayName: 'Application', sort: { direction: uiGridConstants.ASC }, width: 120 },
+      { name: 'call_reference', width: 200, filter: {selectOptions: lookup_calls_uigrid, type: uiGridConstants.filter.SELECT }},
       { name: 'name', displayName: 'Organisation' },
       { name: 'email_address' },
-      { name: 'description', displayName : 'Application Status',width : 220}
+      { name: 'description', displayName: 'Application Status', width: 220 }
     ],
     onRegisterApi: function(gridApi) {
       vm.gridApi = gridApi;
@@ -36,30 +36,30 @@ angular.module('appCg').controller('ApplicationsCtrl',function(applications,gprR
     $uibModal.open({
       templateUrl: 'partial/applications/modal/application-modal.html',
       controller: 'ApplicationModalCtrl as vm',
-      size : 'lg',
+      size: 'lg',
       resolve: {
         operation: function res() {
           return operation;
         },
         application: function res(gprRestApi) {
-          return gprRestApi.getRow('call_applications',id);
+          return gprRestApi.getRow('call_applications', id);
         },
         organisations: function res(gprRestApi) {
-          return gprRestApi.getRows('grid_organisations',false);
+          return gprRestApi.getRows('grid_organisations', false);
         },
         places: function res(gprRestApi) {
-          return gprRestApi.getRows('grid_places',false);
+          return gprRestApi.getRows('grid_places', false);
         },
         calls: function res(gprRestApi) {
-          return gprRestApi.getRows('grid_calls',false);
+          return gprRestApi.getRows('grid_calls', false);
         }
       }
     }).result.then(function(result) {
-        console.log('modal closed');
-      }, function(result) {
-        gprRestApi.getRows('grid_applications',false).then(function success(res){
-          vm.options.data = vm.applications = res;
-        });
+      console.log('modal closed');
+    }, function(result) {
+      gprRestApi.getRows('grid_applications', false).then(function success(res) {
+        vm.options.data = vm.applications = res;
       });
+    });
   };
 });

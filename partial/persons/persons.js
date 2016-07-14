@@ -45,7 +45,11 @@ angular.module('appCg').controller('PersonsCtrl',function(persons, gprRestApi, $
                 },
                 users: function res(gprRestApi){
                     return gprRestApi.getRows('users',false);
+                },
+                contact : function res(){
+                    return false;
                 }
+
             }
         }).result.then(function(result) {
             console.log('modal closed');

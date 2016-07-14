@@ -1,12 +1,13 @@
-angular.module('appCg').controller('ComplianceCtrl',function(template,gprRestApi,$stateParams,complianceInfo,ngToast,$confirm,authenticationService,$state){
+angular.module('appCg').controller('ComplianceCtrl',function(template,gprRestApi,$stateParams,complianceInfo,ngToast,$confirm,authenticationService,$state,score_for_template){
   var vm=this;
+  
   vm.template = angular.copy(template[0]);
-  vm.complianceInfo = angular.extend(complianceInfo[0]);
+  vm.complianceInfo = angular.copy(complianceInfo[0]);
+  vm.score_for_template = angular.copy(score_for_template[0]);
   vm.scoring_max = 0;
   vm.current_score = 0;
+  vm.question_counter = 0;
   
-  console.log(complianceInfo);
-
   if(vm.complianceInfo.compliance_section === vm.complianceInfo.application_status){
     vm.disabled = false;
   }else{
@@ -97,7 +98,6 @@ angular.module('appCg').controller('ComplianceCtrl',function(template,gprRestApi
 
   vm.fail =function(){
     vm.saveAnswers();
-
     $confirm(
       {
         title : 'Fail Application',
@@ -125,11 +125,9 @@ angular.module('appCg').controller('ComplianceCtrl',function(template,gprRestApi
         cancel : 'No'
       }).then(function(res){        
         gprRestApi.runRPC('demote_application',
-          {application : vm.complianceInfo.application , current_section : vm.complianceInfo.compliance_section }).then(function success(res){
-            //console.log('Success');
+          {application : vm.complianceInfo.application , current_section : vm.complianceInfo.compliance_section }).then(function success(res){          
             $state.go('home.compliance-select',{compliance_section : vm.complianceInfo.compliance_section,email_address : authenticationService.username});  
-        },function error(res){
-          //console.log('Error');
+        },function error(res){          
         });
     });
   };

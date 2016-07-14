@@ -1,4 +1,4 @@
-angular.module('appCg').controller('AssignAssessorsApplicationsCtrl',function(applications_assessors, gprRestApi, $uibModal,complianceSection) {
+angular.module('appCg').controller('AssignAssessorsApplicationsCtrl',function(applications_assessors, gprRestApi,uiGridConstants, $uibModal,complianceSection,lookup_calls_uigrid) {
   var vm = this;
   vm.title = 'Application Assessors';
   complianceSection = Number(complianceSection);
@@ -30,7 +30,7 @@ angular.module('appCg').controller('AssignAssessorsApplicationsCtrl',function(ap
     enableGridMenu: true,
     columnDefs: [
       { name: 'application', width : 120},
-      { name: 'call_reference' , width : 170},
+      { name: 'call_reference' , width : 200,filter: {selectOptions: lookup_calls_uigrid, type: uiGridConstants.filter.SELECT }},
       { name: 'email_address',displayName:'Officer Email',width : 170},
       { name: 'first_names', displayName : 'Officer First Names',width : 180},
       { name: 'last_name', displayName : 'Officer Last Name',width : 180},
@@ -56,7 +56,8 @@ angular.module('appCg').controller('AssignAssessorsApplicationsCtrl',function(ap
           return gprRestApi.getRow('application_compliance_officers', id);
         },
         applicationList: function res(gprRestApi) {
-          return gprRestApi.getRowsWithFEs('lookup_compliance_applications','&application_status=gte.'+vm.complianceSection,false);
+          //return gprRestApi.getRowsWithFEs('lookup_compliance_applications','&application_status=gte.'+vm.complianceSection,false);
+          return gprRestApi.getRowsWithFEs('lookup_compliance_applications','&application_status=eq.'+vm.complianceSection,false);
         },
         officerList: function res(gprRestApi) {
           return gprRestApi.getRows('lookup_compliance_officers',false);

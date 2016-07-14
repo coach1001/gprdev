@@ -1,4 +1,4 @@
-angular.module('appCg').controller('PmuAdvisoryNotesCtrl',function(applications,gprRestApi,$uibModal,uiGridConstants){
+angular.module('appCg').controller('PmuAdvisoryNotesCtrl',function(applications,gprRestApi,$uibModal,uiGridConstants,lookup_calls_uigrid){
 	var vm = this;
 
   var unfilteredRows = angular.extend(applications);
@@ -17,7 +17,7 @@ angular.module('appCg').controller('PmuAdvisoryNotesCtrl',function(applications,
     enableGridMenu: true,
     columnDefs: [
       { name:  'id', displayName : 'Reference', sort : {direction:uiGridConstants.ASC}, width : 120},
-      { name: 'call_reference', width : 170 },
+      { name: 'call_reference', width : 200,filter: {selectOptions: lookup_calls_uigrid, type: uiGridConstants.filter.SELECT } },
       //{ name: 'name', displayName: 'Organisation' },
       //{ name: 'email_address' },
       { name: 'pmu_advisory'},
