@@ -1,4 +1,4 @@
-angular.module('appCg').controller('ComplianceCtrl',function(template,gprRestApi,$stateParams,complianceInfo,ngToast,$confirm,authenticationService,$state,score_for_template){
+angular.module('appCg').controller('ComplianceCtrl',function(template,gprRestApi,$stateParams,complianceInfo,ngToast,$confirm,authenticationService,$state,score_for_template,gu,la){
   var vm=this;
   
   vm.template = angular.copy(template[0]);
@@ -14,6 +14,20 @@ angular.module('appCg').controller('ComplianceCtrl',function(template,gprRestApi
     vm.disabled = true;
   }
 
+  if(gu){
+    vm.gu = angular.copy(gu);
+  }else{
+    vm.gu = false;
+  } 
+
+  if(la){
+    vm.la = angular.copy(la);
+  }else{
+    vm.la = false;
+  } 
+
+  console.log(score_for_template);
+  
   if(vm.complianceInfo.application_status === 2){
     vm.current_status = 'Admin & Tech';
   }else if(vm.complianceInfo.application_status === 3){
@@ -23,9 +37,9 @@ angular.module('appCg').controller('ComplianceCtrl',function(template,gprRestApi
   }else if(vm.complianceInfo.application_status === 5){
     vm.current_status = 'PMU Advisory';      
   }else if(vm.complianceInfo.application_status === 6){
-    vm.current_status = 'EVC Meeting';
-  }else if(vm.complianceInfo.application_status === 7){
     vm.current_status = 'Due Diligence';
+  }else if(vm.complianceInfo.application_status === 7){
+    vm.current_status = 'Approval Meeting';
   }else if(vm.complianceInfo.application_status === 8){
     vm.current_status = 'Contract';
   }else if(vm.complianceInfo.application_status === 9){
@@ -90,7 +104,13 @@ angular.module('appCg').controller('ComplianceCtrl',function(template,gprRestApi
       }).then(function(res){        
         gprRestApi.runRPC('promote_application',
           {application : vm.complianceInfo.application , current_section : vm.complianceInfo.compliance_section }).then(function success(res){            
-            $state.go('home.compliance-select',{compliance_section : vm.complianceInfo.compliance_section,email_address : authenticationService.username});  
+
+            if(vm.gu === 'false'){
+              $state.go('home.compliance-select',{compliance_section : vm.complianceInfo.compliance_section,email_address : authenticationService.username});    
+            }else{
+              $state.go('home.compliance-select-pmu',{compliance_section : vm.complianceInfo.compliance_section});    
+            }
+
         },function error(res){          
         });
     });
@@ -107,10 +127,15 @@ angular.module('appCg').controller('ComplianceCtrl',function(template,gprRestApi
       }).then(function(res){        
         gprRestApi.runRPC('fail_application',
           {application : vm.complianceInfo.application , current_section : vm.complianceInfo.compliance_section }).then(function success(res){
-            //console.log('Success');
-            $state.go('home.compliance-select',{compliance_section : vm.complianceInfo.compliance_section,email_address : authenticationService.username});  
+            
+            if(vm.gu === 'false'){
+              $state.go('home.compliance-select',{compliance_section : vm.complianceInfo.compliance_section,email_address : authenticationService.username});    
+            }else{
+              $state.go('home.compliance-select-pmu',{compliance_section : vm.complianceInfo.compliance_section});    
+            }
+                    
         },function error(res){
-          //console.log('Error');
+          
         });
     });
 
@@ -126,7 +151,13 @@ angular.module('appCg').controller('ComplianceCtrl',function(template,gprRestApi
       }).then(function(res){        
         gprRestApi.runRPC('demote_application',
           {application : vm.complianceInfo.application , current_section : vm.complianceInfo.compliance_section }).then(function success(res){          
-            $state.go('home.compliance-select',{compliance_section : vm.complianceInfo.compliance_section,email_address : authenticationService.username});  
+
+            if(vm.gu === 'false'){
+              $state.go('home.compliance-select',{compliance_section : vm.complianceInfo.compliance_section,email_address : authenticationService.username});    
+            }else{
+              $state.go('home.compliance-select-pmu',{compliance_section : vm.complianceInfo.compliance_section});    
+            }
+
         },function error(res){          
         });
     });

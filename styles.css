@@ -22,6 +22,10 @@ div.navbar-collapse.collapse {
   border-radius: 15px;
 }
 
+div.big-modal  div.modal-dialog {
+  width: 1200px !important;
+}
+
 @font-face {
   font-family: 'OpenSans';
   src: url("OpenSans-Light.ttf");
@@ -71,6 +75,9 @@ div.navbar-collapse.collapse.in {
     -moz-osx-font-smoothing: grayscale;
     text-rendering: optimizeLegibility;
 }*/
+.navbar-default .navbar-nav>li>a {
+    padding-right: 5px;
+}
 
 .navbar {
     margin-bottom: 0px;

@@ -1,4 +1,4 @@
-angular.module('appCg').controller('ApplicationModalCtrl', function(application,
+angular.module('appCg').controller('ApplicationModalCtrl', function($scope,$uibModal,application,
     organisations,
     places,
     calls,
@@ -21,63 +21,65 @@ angular.module('appCg').controller('ApplicationModalCtrl', function(application,
     vm.places = angular.extend(places);
     vm.calls = angular.extend(calls);
 
-    vm.applicationFields = [
-        {
-            key: 'call',
-            type : 'select',
-            //type: 'ui-select-single',
-            templateOptions: {
+    vm.applicationFields = [{
+        key: 'call',
+        type: 'select',
+        //type: 'ui-select-single',
+        templateOptions: {
             //    optionsAttr: 'bs-options',
-           //     ngOptions: 'option[to.valueProp] as option in to.options | filter: $select.search',
-                label: 'Call Reference',
-                valueProp: 'id',
-                labelProp: 'call_reference',
-                options: vm.calls
-            }
-        },
-        {
-            key: 'applicant',
-            //type: 'ui-select-single',
-            type : 'select',
-            templateOptions: {
-                //optionsAttr: 'bs-options',
-                //ngOptions: 'option[to.valueProp] as option in to.options | filter: $select.search',
-                label: 'Applicant',
-                valueProp: 'id',
-                labelProp: 'name',
-                required: true,
-                options: vm.organisations
-            }
-        }, {
-            key: 'title',
-            type: 'textarea',
-            className: 'nopadding',
-            templateOptions: {
-                label: 'Project Title',
-                placeholder: 'Project Title',
-                rows: 3,
-                required: false
-            }
-        }, {
-            key: 'amount',
-            type: 'input',
-            templateOptions: {
-                label: 'Amount Requested',
-                type: 'number',
-                required : true
-            }
-        }, {
-            key: 'place',
-            type: 'select',
-            templateOptions: {
-                label: 'Place',
-                valueProp: 'id',
-                labelProp: 'name',
-                required: false,
-                options: vm.places
-            }
+            //     ngOptions: 'option[to.valueProp] as option in to.options | filter: $select.search',
+            label: 'Call Reference',
+            valueProp: 'id',
+            labelProp: 'call_reference',
+            options: vm.calls
         }
-    ];
+    }, {
+        key: 'applicant',        
+        type: 'select',
+        templateOptions: {
+            label: 'Applicant',
+            valueProp: 'id',                        
+            labelProp: 'name',
+            required: true,
+            options: vm.organisations
+        }
+    }, {
+        key: 'title',
+        type: 'textarea',
+        className: 'nopadding',
+        templateOptions: {
+            label: 'Project Title',
+            placeholder: 'Project Title',
+            rows: 3,            
+            required: false
+        }
+    }, {
+        key: 'amount',
+        type: 'input',
+        templateOptions: {
+            label: 'Amount Requested',
+            type: 'number',
+            required: true
+        }
+    }, {
+        template: '<button class="btn btn-success" ng-click="openPersonsSelectModal()">Edit Main Contact Person Details</button><br></br>',
+        templateOptions: {},
+        controller: ['$scope', function($scope) {
+            $scope.openPersonsSelectModal = function() {
+                vm.openPersonsSelectModal();
+            };
+        }]
+    }, {
+        key: 'place',
+        type: 'select',
+        templateOptions: {
+            label: 'Place',
+            valueProp: 'id',
+            labelProp: 'name',
+            required: false,
+            options: vm.places
+        }
+    }];
 
     vm.updateCreateRow = function() {
         var body = angular.copy(vm.application);
@@ -123,6 +125,37 @@ angular.module('appCg').controller('ApplicationModalCtrl', function(application,
         }, function error() {
             ngToast.warning({ content: 'Record Failure Failed', timeout: 4000 });
         });
+    };
+
+    vm.openPersonsSelectModal = function() {
+        var operation = null;
+
+        if (vm.application.contact_person) {
+            operation = 'Update';
+        } else {
+            operation = 'Create';
+        }
+
+        $uibModal.open({
+            templateUrl: 'partial/persons/modal/person-select-modal.html',
+            controller: 'PersonSelectModalCtrl as vm',
+            scope: $scope,
+            size: 'lg',
+            resolve: {
+                persons: function res(gprRestApi) {
+                    return gprRestApi.getRows('grid_persons',false);
+                },
+                id : function res(){
+                    return vm.application.contact_person;
+                }
+            }
+        }).result.then(function(result) {            
+            vm.application.contact_person = result.id;
+            vm.updateCreateRow();
+        }, function(result) {
+            
+        });
+
     };
 
 });

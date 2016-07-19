@@ -7,7 +7,7 @@
         <form novalidate>
             <formly-form model="vm.person" fields="vm.personFields" form="vm.personForm">
                 <button ng-click="vm.updateCreateRow()" class="btn btn-primary" ng-disabled="vm.personForm.$invalid">{{vm.operation}}</button>
-                <button type="button" ng-click="vm.deleteRow()" class="btn btn-warning" confirm="Are you sure?" ng-hide="vm.operation === 'Create'">Delete</button>
+                <button type="button" ng-click="vm.deleteRow()" class="btn btn-warning" confirm="Are you sure?" ng-hide="vm.operation === 'Create'">Delete</button>              
             </formly-form>
         </form>
     </div>

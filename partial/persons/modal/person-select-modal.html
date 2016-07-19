@@ -1,0 +1,16 @@
+<div>
+  <div class="modal-header">
+    <button type="button" class="close pull-right" ng-click="$dismiss()" aria-hidden="true">&times;</button>
+    <h4>{{vm.title}} <span class="badge">{{vm.gridApi.core.getVisibleRows().length}} of {{vm.persons.length}}</span></h4>
+  </div>
+  <div class="modal-body">
+  
+      <div class="form-group">
+        <button class="btn btn-primary" ng-click="vm.openModal(0,'Create')">Add Person</button>
+      </div>
+      <div ui-grid="vm.options" ui-grid-exporter ui-grid-selection></div>
+  
+  
+  </div>
+</div>
+

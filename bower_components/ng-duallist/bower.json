@@ -1,0 +1,25 @@
+{
+  "name": "ng-duallist",
+  "description": "ng-duallist",
+  "version": "0.0.13",
+  "authors": [
+    "Tushar Borole <tushariscoolster@gmail.com>"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/tushariscoolster/ng-duallist"
+  },
+  "homepage": "http://tushariscoolster.github.io/ng-duallist/",
+  "license": "MIT",
+  "main": "ngduallist.js",
+  "keywords": ["ng-duallist",
+               "angular",
+               "duallist"
+  ],
+  "ignore": [
+    "gh-pages",
+    "node_modules",
+    "bower_components"
+  ],
+  "dependencies": {}
+}

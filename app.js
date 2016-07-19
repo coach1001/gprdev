@@ -7,7 +7,7 @@ angular.module('appCg', [
 	'ngToast',
 	'angular-confirm',
 	'ui.grid', 'ui.grid.selection', 'ui.grid.exporter', 'ui.grid.edit',
-	'ui.select', 'ngLoadingSpinner', 'ui.checkbox', 'disableAll'
+	'ui.select', 'ngLoadingSpinner', 'ui.checkbox', 'disableAll','ng-duallist'
 ]);
 
 (function() {
@@ -301,6 +301,39 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider, $loc
 					},
 					lookup_calls_uigrid: function res(gprRestApi) {
 						return gprRestApi.getRows('lookup_calls_uigrid', false);
+					},
+					gu : function (){
+						return false;
+					},
+					la : function(){
+						return false;
+					}					
+				}
+			}
+		}
+	});
+
+	$stateProvider.state('home.compliance-select-pmu', {
+		url: '/compliance-select-pmu?:compliance_section',
+		views: {
+			'mainContent@': {
+				templateUrl: 'partial/compliance-select/compliance-select.html',
+				controller: 'ComplianceSelectCtrl as vm',
+				resolve: {
+					compliances: function(gprRestApi, authenticationService, $stateParams) {
+						return gprRestApi.getRowsWithFEs('grid_compliance_applications', '&compliance_section=eq.' + $stateParams.compliance_section);
+					},
+					complianceSection: function($stateParams) {
+						return $stateParams.compliance_section;
+					},
+					lookup_calls_uigrid: function res(gprRestApi) {
+						return gprRestApi.getRows('lookup_calls_uigrid', false);
+					},
+					gu : function (){
+						return true;
+					},
+					la : function(){
+						return false;
 					}
 
 				}
@@ -308,8 +341,36 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider, $loc
 		}
 	});
 
+	$stateProvider.state('home.compliance-select-la', {
+		url: '/compliance-select-la?:compliance_section',
+		views: {
+			'mainContent@': {
+				templateUrl: 'partial/compliance-select/compliance-select.html',
+				controller: 'ComplianceSelectCtrl as vm',
+				resolve: {
+					compliances: function(gprRestApi, authenticationService, $stateParams) {
+						return gprRestApi.getRowsWithFEs('grid_compliance_applications_with_lead', '&compliance_section=eq.' + $stateParams.compliance_section + '&lead_assessor=eq.' + authenticationService.username + '&has_lead=eq.true');
+					},
+					complianceSection: function($stateParams) {
+						return $stateParams.compliance_section;
+					},
+					lookup_calls_uigrid: function res(gprRestApi) {
+						return gprRestApi.getRows('lookup_calls_uigrid', false);
+					},
+					gu : function (){
+						return false;
+					},
+					la : function(){
+						return true;
+					}
+				}
+			}
+		}
+	});
+
+
 	$stateProvider.state('home.compliance', {
-		url: '/compliance?:templateId&:appId&:application',
+		url: '/compliance?:templateId&:appId&:application&:grants_unit&:la',
 		views: {
 			'mainContent@': {
 				templateUrl: 'partial/compliance/compliance.html',
@@ -323,7 +384,14 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider, $loc
 					},
 					complianceInfo: function res(gprRestApi, $stateParams) {
 						return gprRestApi.getRowsWithFEs('grid_compliance_applications', '&id=eq.' + $stateParams.appId);
+					},
+					gu : function res($stateParams){						
+						return $stateParams.grants_unit;
+					},
+					la : function res($stateParams){						
+						return $stateParams.la;
 					}
+
 				}
 			}
 		}
@@ -343,6 +411,7 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider, $loc
 			}
 		}
 	});
+	
 	$stateProvider.state('home.pmu-advisory-notes', {
 		url: '/pmu-advisory-notes',
 		views: {
@@ -360,15 +429,15 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider, $loc
 			}
 		}
 	});
-	$stateProvider.state('home.evc-meetings', {
-		url: 'evc-meetings',
+	$stateProvider.state('home.approval-meetings', {
+		url: 'approval-meetings',
 		views: {
 			'mainContent@': {
 				templateUrl: 'partial/evc-meetings/evc-meetings.html',
 				controller: 'EvcMeetingsCtrl as vm',
 				resolve: {
 					evcMeetings: function res(gprRestApi) {
-						return gprRestApi.getRows('grid_evc', false);
+						return gprRestApi.getRows('grid_approval_meetings', false);
 					},
 					lookup_calls_uigrid: function res(gprRestApi) {
 						return gprRestApi.getRows('lookup_calls_uigrid', false);

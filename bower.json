@@ -32,7 +32,9 @@
     "nz-toggle": "^2.2.1",
     "pdfmake": "^0.1.20",
     "angular-bootstrap-checkbox": "^0.5.0",
-    "angular-disable-all": "^0.0.2"
+    "angular-disable-all": "^0.0.2",
+    "angular-bootstrap-duallistbox": "^0.1.0",
+    "ng-duallist": "^0.0.13"
   },
   "resolutions": {
     "bootstrap": "~3.3.6",

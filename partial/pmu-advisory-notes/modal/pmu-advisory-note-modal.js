@@ -30,6 +30,16 @@ angular.module('appCg').controller('PmuAdvisoryNoteModalCtrl',function(applicati
 
 
   vm.applicationFields = [{
+    key: 'pm_advisory',
+    type: 'textarea',
+    className: 'nopadding',
+    templateOptions: {
+      label: 'PM Advisory Note',
+      placeholder: 'Note',
+      rows: 7,
+      required: true
+    }
+  },{
     key: 'pmu_advisory',
     type: 'textarea',
     className: 'nopadding',

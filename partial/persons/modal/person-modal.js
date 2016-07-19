@@ -6,7 +6,8 @@ angular.module('appCg').controller('PersonModalCtrl', function($scope,person,
     gprRestApi,
     ngToast,
     $confirm,
-    $uibModalInstance) {
+    $uibModalInstance,
+    assign) {
 
     var vm = this;
 
@@ -20,7 +21,7 @@ angular.module('appCg').controller('PersonModalCtrl', function($scope,person,
         vm.person = angular.extend(person);
     }
 
-
+    vm.assign = angular.copy(assign);
 
     vm.roles = angular.extend(roles);
     vm.users = angular.extend(users);

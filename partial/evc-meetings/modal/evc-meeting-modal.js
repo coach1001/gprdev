@@ -7,7 +7,8 @@ angular.module('appCg').controller('EvcMeetingModalCtrl', function(evcMeeting,
                                                              $confirm,
                                                              $uibModalInstance,
                                                              $uibModal,
-                                                             $filter, $interval) {
+                                                             $filter, $interval,
+                                                             meetingTypes) {
 
   var vm = this;
 
@@ -17,10 +18,10 @@ angular.module('appCg').controller('EvcMeetingModalCtrl', function(evcMeeting,
     vm.evcMeeting = angular.copy(evcMeeting);  
   }
   
-  vm.operation = angular.extend(operation);
-  
-  vm.applicationRows = angular.extend(evcApplications);
-  vm.attendeeRows = angular.extend(evcAttendees);  
+  vm.operation = angular.copy(operation);  
+  vm.applicationRows = angular.copy(evcApplications);
+  vm.attendeeRows = angular.copy(evcAttendees);  
+  vm.meetingTypes = angular.copy(meetingTypes);
 
   vm.applicationOptions = {
     data: vm.applicationRows,
@@ -87,6 +88,16 @@ angular.module('appCg').controller('EvcMeetingModalCtrl', function(evcMeeting,
         datepickerPopup: 'yyyy-MM-dd',
         required : true
       }
+    },{
+        key: 'approval_meeting_type',
+        type: 'select',
+        templateOptions: {
+            label: 'Approval Meeting Type',
+            valueProp: 'id',
+            labelProp: 'name',
+            required : true,
+            options: vm.meetingTypes
+        }
     },
     {     
       key: 'name',
@@ -104,7 +115,7 @@ angular.module('appCg').controller('EvcMeetingModalCtrl', function(evcMeeting,
     var body = angular.copy(vm.evcMeeting);
     delete body.key_result_areas;
 
-    gprRestApi.updateCreateRow('evaluation_committee_meeting', body, vm.operation).then(function success(response) {
+    gprRestApi.updateCreateRow('approval_meetings', body, vm.operation).then(function success(response) {
       ngToast.create({content: vm.operation + ' Record Successfull', timeout: 4000});
       if (vm.operation === 'Create') {
         vm.evcMeeting.id = response.data.id;
@@ -116,7 +127,7 @@ angular.module('appCg').controller('EvcMeetingModalCtrl', function(evcMeeting,
   };
 
   vm.deleteRow = function () {
-    gprRestApi.deleteRow('evaluation_committee_meeting', vm.evcMeeting.id).then(function success(response) {
+    gprRestApi.deleteRow('approval_meetings', vm.evcMeeting.id).then(function success(response) {
       ngToast.warning({content: 'Record Deleted Successfully', timeout: 4000});
       $uibModalInstance.dismiss('Record Deleted');
     }, function error(response) {
@@ -125,13 +136,13 @@ angular.module('appCg').controller('EvcMeetingModalCtrl', function(evcMeeting,
 
   };
 
-  vm.openModalApplication = function (id, operation,application) {
-    //console.log(application);
+  vm.openModalApplication = function (id, operation,application) {    
     $uibModal.open({
 
       templateUrl: 'partial/evc-meetings/modal/evc-meeting-application-modal.html',
       controller: 'EvcMeetingApplicationModalCtrl as vm',
       size : 'lg',
+      windowClass : 'big-modal',
       resolve: {
         application : function res(gprRestApi){
           return gprRestApi.getRow('call_applications', application, false);

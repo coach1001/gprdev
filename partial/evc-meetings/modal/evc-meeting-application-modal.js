@@ -18,7 +18,7 @@ angular.module('appCg').controller('EvcMeetingApplicationModalCtrl', function(ev
 	vm.evcApplicationLookup = angular.extend(evcApplicationLookup);
 	if (application) {
 		vm.application = angular.extend(application);
-		if (application.application_status === 6) {
+		if (application.application_status === 7) {
 			vm.disabled = false;
 		} else {
 			vm.disabled = true;
@@ -103,27 +103,23 @@ angular.module('appCg').controller('EvcMeetingApplicationModalCtrl', function(ev
 	};
 
 
-	vm.promote = function(dd) {		
+	vm.promote = function() {		
 		vm.updateCreateRow();		
-				
-		var status = Number(vm.application.application_status)  + Number(dd);
-			
-		//console.log(vm.application);
+									
 		$confirm({
 			title: 'Promote Application?',
 			text: 'Warning : You will only be able to view data from this section after promotion',
 			ok: 'Yes',
 			cancel: 'No'
 		}).then(function(res) {
-			gprRestApi.runRPC('promote_application', { application: vm.application.id, current_section: status }).then(
-				function success(res) {
-					//console.log('Here');
+			gprRestApi.runRPC('promote_application', { application: vm.application.id, current_section: vm.application.application_status }).then(
+				function success(res) {					
 					$uibModalInstance.dismiss('');
 				},
 				function error(res) {});
 		});
 	};
-
+	
 	vm.fail = function() {
 		vm.updateCreateRow();
 		$confirm({

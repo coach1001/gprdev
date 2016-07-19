@@ -93,11 +93,11 @@ angular.module('appCg').controller('OrganisationModalCtrl', function($scope,orga
             fields: [{
                 template: '<button class="btn btn-success" ng-click="openMcpDetails()">Edit Main Contact Person Details</button><br></br>',
                 templateOptions: {},
-                controller: function($scope) {
+                controller: ['$scope',function($scope) {
                     $scope.openMcpDetails = function() {
                         vm.openMcpDetails();
                     };
-                }
+                }]
             }, {
                 key: 'email_address',
                 type: 'input',
@@ -293,6 +293,9 @@ angular.module('appCg').controller('OrganisationModalCtrl', function($scope,orga
                     return gprRestApi.getRows('users', false);
                 },
                 contact : function res(){
+                    return true;
+                },
+                assign : function res(){
                     return true;
                 }
             }

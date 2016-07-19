@@ -1,4 +1,7 @@
+
 <h3>{{vm.title}} <span class="badge">{{vm.gridApi.core.getVisibleRows().length}} of {{vm.compliances.length}}</span></h3>
+<h4 ng-if="vm.gu.state" style="color: blue;">{{vm.gu.title}}</h4>
+<h4 ng-if="vm.la" style="color: blue;">Lead Assessor - Review</h4>
 <div class="grid">
   <div class="form-group">
   </div>

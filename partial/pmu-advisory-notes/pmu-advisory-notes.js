@@ -37,6 +37,7 @@ angular.module('appCg').controller('PmuAdvisoryNotesCtrl',function(applications,
       templateUrl: 'partial/pmu-advisory-notes/modal/pmu-advisory-note-modal.html',
       controller: 'PmuAdvisoryNoteModalCtrl as vm',
       size : 'lg',
+      windowClass : 'big-modal',      
       resolve: {
         operation: function res() {
           return operation;

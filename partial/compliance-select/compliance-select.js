@@ -1,4 +1,4 @@
-angular.module('appCg').controller('ComplianceSelectCtrl',function(compliances,$state,complianceSection,uiGridConstants,$confirm,lookup_calls_uigrid) {
+angular.module('appCg').controller('ComplianceSelectCtrl',function(compliances,$state,complianceSection,uiGridConstants,$confirm,lookup_calls_uigrid,gu,la) {
   var vm = this;
   complianceSection = Number(complianceSection);
   if(complianceSection === 2){
@@ -7,10 +7,22 @@ angular.module('appCg').controller('ComplianceSelectCtrl',function(compliances,$
     vm.title = 'Relevance Checks';
   }else if (complianceSection === 4){
     vm.title = 'Assessments';
-  }else if (complianceSection === 7){
+  }else if (complianceSection === 6){
     vm.title = 'Due Diligences';
   }
+  vm.gu = {};
   
+  vm.gu.state = angular.copy(gu);
+
+  if(vm.gu.state === true){    
+    vm.gu.title = 'Promote/Demote/Fail';
+  }else{
+    vm.gu.state = false;
+  }
+
+  vm.la = angular.copy(la);
+  console.log(vm.la);
+
   var unfilteredRows = angular.extend(compliances);
   vm.compliances = vm.rows = angular.extend(compliances);
 
@@ -29,6 +41,8 @@ angular.module('appCg').controller('ComplianceSelectCtrl',function(compliances,$
       { name: 'name', displayName : 'Organisation' },
       { name: 'province'},
       //{ name: 'complete', displayName: 'Completed?', type: 'boolean',cellTemplate: '<input disabled="true" type="checkbox" ng-model="row.entity.complete">'}
+      { name : 'first_names', displayName : 'Officer First Name'},
+      { name : 'last_name', displayName : 'Officer Last Name'},
       { name: 'lead',type: 'boolean',cellTemplate: '<checkbox disabled="true" ng-model="row.entity.lead"></checkbox>'},
       { name: 'complete', displayName: 'Completed?', type: 'boolean',cellTemplate: '<checkbox disabled="true" ng-model="row.entity.complete"></checkbox>'},
       { name: 'application_status_description', displayName : 'Application Status'}
@@ -52,7 +66,7 @@ angular.module('appCg').controller('ComplianceSelectCtrl',function(compliances,$
       else if (complianceSection === 4){
         compliance_packet.compliance_template = row.entity.assessment_compliance_template;
       }
-      else if (complianceSection === 7){
+      else if (complianceSection === 6){
         compliance_packet.compliance_template = row.entity.due_diligence_compliance_template;
         
       }
@@ -63,12 +77,11 @@ angular.module('appCg').controller('ComplianceSelectCtrl',function(compliances,$
       }else{
         $confirm({text:'This Section has No Assigned Template!',title : 'No Template Assigned'});
         vm.gridApi.selection.clearSelectedRows();
-      }
-          
+      }          
     });}
   };
 
-  vm.openModal = function(compliance_packet) {    
-      $state.go('home.compliance',{templateId : compliance_packet.compliance_template, appId : compliance_packet.appId,application : compliance_packet.application});  
+  vm.openModal = function(compliance_packet) {            
+    $state.go('home.compliance',{templateId : compliance_packet.compliance_template, appId : compliance_packet.appId,application : compliance_packet.application, grants_unit : vm.gu.state, la : vm.la});            
   };
 });

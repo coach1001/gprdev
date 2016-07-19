@@ -48,6 +48,9 @@ angular.module('appCg').controller('PersonsCtrl',function(persons, gprRestApi, $
                 },
                 contact : function res(){
                     return false;
+                },
+                assign : function res(){
+                    return false;
                 }
 
             }
