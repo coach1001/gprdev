@@ -1,4 +1,4 @@
-angular.module('appCg').controller('ApplicationsCtrl', function(applications, gprRestApi, $uibModal, uiGridConstants,lookup_calls_uigrid) {
+angular.module('appCg').controller('ApplicationsCtrl', function(applications, gprRestApi, $uibModal, uiGridConstants,lookup_calls_uigrid,reporting) {
   var vm = this;
 
   var unfilteredRows = angular.extend(applications);
@@ -31,6 +31,16 @@ angular.module('appCg').controller('ApplicationsCtrl', function(applications, gp
       });
     }
   };
+  
+  vm.generateFrontPage = function(){
+
+    var params = [];
+    angular.forEach(vm.gridApi.core.getVisibleRows(),function(value,key){
+      params.push({ name : 'application_id_list', value : value.entity.id});
+    });
+    reporting.generateReport(0,params);
+
+  };
 
   vm.openModal = function(id, operation) {
     $uibModal.open({
@@ -47,9 +57,9 @@ angular.module('appCg').controller('ApplicationsCtrl', function(applications, gp
         organisations: function res(gprRestApi) {
           return gprRestApi.getRows('grid_organisations', false);
         },
-        places: function res(gprRestApi) {
-          return gprRestApi.getRows('grid_places', false);
-        },
+        //places: function res(gprRestApi) {
+        //  return gprRestApi.getRows('grid_places', false);
+        //},
         calls: function res(gprRestApi) {
           return gprRestApi.getRows('grid_calls', false);
         }

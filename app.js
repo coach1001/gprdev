@@ -7,7 +7,7 @@ angular.module('appCg', [
 	'ngToast',
 	'angular-confirm',
 	'ui.grid', 'ui.grid.selection', 'ui.grid.exporter', 'ui.grid.edit',
-	'ui.select', 'ngLoadingSpinner', 'ui.checkbox', 'disableAll','ng-duallist'
+	'ui.select', 'ngLoadingSpinner', 'ui.checkbox', 'disableAll'
 ]);
 
 (function() {
@@ -451,7 +451,13 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider, $loc
 	$locationProvider.html5Mode(false);
 });
 
-angular.module('appCg').run(function($rootScope, $state, loginModalService, authenticationService) {
+angular.module('appCg').run(function($rootScope, $state, loginModalService, authenticationService,gprRestApi,config) {
+	
+	gprRestApi.baseUrl = config.app_db_base_url;
+	
+	authenticationService.baseUrl = config.app_db_base_url + config.app_dbrpc_base_url;
+  	authenticationService.ldapLoginUrl = config.app_ldap_base_url + config.app_ldap_login_url;
+  	  	
 	$rootScope.authorizationError = false;
 
 	$rootScope.$on('$stateChangeStart', function(event, toState, toParams) {

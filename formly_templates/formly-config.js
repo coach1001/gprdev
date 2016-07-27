@@ -205,4 +205,15 @@ angular.module('appCg').run(function(formlyConfig) {
     }
   });
 
+  formlyConfig.setType({
+    name: 'select-list',
+    extends : 'select',    
+    template:'<select class="form-control" ng-model="model[options.key]" size="7"></select>',    
+    wrapper: ['bootstrapLabel', 'bootstrapHasError'],
+    defaultOptions :{
+      templateOptions : {}
+    }
+  });
+  
 });
+

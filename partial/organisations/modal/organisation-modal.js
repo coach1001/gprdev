@@ -91,11 +91,11 @@ angular.module('appCg').controller('OrganisationModalCtrl', function($scope,orga
             options: {},
             model: vm.organisation,
             fields: [{
-                template: '<button class="btn btn-success" ng-click="openMcpDetails()">Edit Main Contact Person Details</button><br></br>',
+                template: '<button class="btn btn-success" ng-click="openPersonsSelectModal()">Edit Main Contact Person Details</button><br></br>',
                 templateOptions: {},
                 controller: ['$scope',function($scope) {
-                    $scope.openMcpDetails = function() {
-                        vm.openMcpDetails();
+                    $scope.openPersonsSelectModal = function() {
+                        vm.openPersonsSelectModal();
                     };
                 }]
             }, {
@@ -265,8 +265,8 @@ angular.module('appCg').controller('OrganisationModalCtrl', function($scope,orga
     vm.openBankDetails = function() {
         console.log('Open Bank Details');
     };
-
-    vm.openMcpDetails = function() {        
+    
+    /*vm.openMcpDetails = function() {        
         var operation = null;
         
         if(vm.organisation.main_contact_person){
@@ -305,6 +305,36 @@ angular.module('appCg').controller('OrganisationModalCtrl', function($scope,orga
             vm.updateCreateRow();
         });
 
+    };*/
+
+    vm.openPersonsSelectModal = function() {
+        var operation = null;
+
+        if (vm.organisation.main_contact_person) {
+            operation = 'Update';
+        } else {
+            operation = 'Create';
+        }
+
+        $uibModal.open({
+            templateUrl: 'partial/persons/modal/person-select-modal.html',
+            controller: 'PersonSelectModalCtrl as vm',
+            scope: $scope,
+            size: 'lg',
+            resolve: {
+                persons: function res(gprRestApi) {
+                    return gprRestApi.getRows('grid_persons',false);
+                },
+                id : function res(){
+                    return vm.organisation.main_contact_person;
+                }
+            }
+        }).result.then(function(result) {            
+            vm.organisation.main_contact_person = result.id;
+            vm.updateCreateRow();
+        }, function(result) {
+            
+        });
     };
 
     vm.updateCreateRow = function() {

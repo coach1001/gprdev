@@ -1,12 +1,12 @@
 angular.module('appCg').controller('ApplicationModalCtrl', function($scope,$uibModal,application,
     organisations,
-    places,
+    //places,
     calls,
     operation,
     gprRestApi,
     ngToast,
     $confirm,
-    $uibModalInstance) {
+    $uibModalInstance,reporting) {
 
     var vm = this;
 
@@ -18,30 +18,44 @@ angular.module('appCg').controller('ApplicationModalCtrl', function($scope,$uibM
 
     vm.operation = angular.extend(operation);
     vm.organisations = angular.extend(organisations);
-    vm.places = angular.extend(places);
+    //vm.places = angular.extend(places);
     vm.calls = angular.extend(calls);
-
+    
+    vm.applicationOptions = {
+        formState :{
+            orgName: ''
+        }
+    };
+    
+        
     vm.applicationFields = [{
         key: 'call',
-        type: 'select',
-        //type: 'ui-select-single',
+        type: 'select',        
         templateOptions: {
-            //    optionsAttr: 'bs-options',
-            //     ngOptions: 'option[to.valueProp] as option in to.options | filter: $select.search',
             label: 'Call Reference',
             valueProp: 'id',
             labelProp: 'call_reference',
             options: vm.calls
         }
-    }, {
-        key: 'applicant',        
-        type: 'select',
+    },{
+        key: 'orgName',
+        type: 'input',
+        model: 'formState', // <-- this is available starting in 6.6.0... Normally this must be assigned to a literal object.
         templateOptions: {
+          label: 'Search Organizations',
+          placeholder: 'Search Organizations'
+        }      
+    },{
+        key: 'applicant',        
+        type: 'select-list',        
+        templateOptions: {            
             label: 'Applicant',
             valueProp: 'id',                        
             labelProp: 'name',
-            required: true,
-            options: vm.organisations
+            required: true,            
+            options: vm.organisations,
+            filterPlaceholder : 'Search Organizations',            
+            ngOptions: 'option.id as option.name for option in to.options | filter:formState.orgName'
         }
     }, {
         key: 'title',
@@ -49,8 +63,8 @@ angular.module('appCg').controller('ApplicationModalCtrl', function($scope,$uibM
         className: 'nopadding',
         templateOptions: {
             label: 'Project Title',
-            placeholder: 'Project Title',
-            rows: 3,            
+            placeholder: 'Project Name',
+            rows: 2,            
             required: false
         }
     }, {
@@ -69,7 +83,7 @@ angular.module('appCg').controller('ApplicationModalCtrl', function($scope,$uibM
                 vm.openPersonsSelectModal();
             };
         }]
-    }, {
+    },/* {
         key: 'place',
         type: 'select',
         templateOptions: {
@@ -79,7 +93,11 @@ angular.module('appCg').controller('ApplicationModalCtrl', function($scope,$uibM
             required: false,
             options: vm.places
         }
-    }];
+    }*/];
+
+    vm.generateFrontPage = function(){
+        reporting.generateReport(0,[{name : 'application_id_list', value : vm.application.id}]);
+    };
 
     vm.updateCreateRow = function() {
         var body = angular.copy(vm.application);
@@ -157,5 +175,5 @@ angular.module('appCg').controller('ApplicationModalCtrl', function($scope,$uibM
         });
 
     };
-
+    //console.log(vm);
 });

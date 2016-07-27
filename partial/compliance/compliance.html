@@ -1,24 +1,14 @@
 <div class="column">
   <h4 ng-if="vm.disabled" style="color: red; font-weight: bold;">View Mode - Application no Longer in Section, Currently in {{vm.current_status}}</h4>
   <h4 ng-if="vm.la === 'true' " style="color: red; font-weight: bold;">View Mode - Lead Assesor Review</h4>
-
-  <button ng-if="(vm.gu === 'false' || vm.complianceInfo.lead === true) && vm.la === 'false' " 
-          class="btn btn-primary pull-right" 
-          ui-sref="home.compliance-select({compliance_section : vm.complianceInfo.compliance_section})">
-          Return to Select</button>
-
-<button ng-if="(vm.gu === 'false' || vm.complianceInfo.lead === true) && vm.la === 'true' " 
-          class="btn btn-primary pull-right" 
-          ui-sref="home.compliance-select-la({compliance_section : vm.complianceInfo.compliance_section})">
-          Return to Select</button>
-
-  <button ng-if="vm.gu === 'true' && vm.complianceInfo.lead === false" 
-          class="btn btn-primary pull-right" 
-          ui-sref="home.compliance-select-pmu({compliance_section : vm.complianceInfo.compliance_section})">
-          Return to Grants Unit - Select</button>
-
-  <div disable-all="vm.disabled || vm.la === 'true' ">
+  <button ng-if="(vm.gu === 'false' || vm.complianceInfo.lead === true) && vm.la === 'false' " class="btn btn-primary pull-right" ui-sref="home.compliance-select({compliance_section : vm.complianceInfo.compliance_section})">
+    Return to Select</button>
+  <button ng-if="(vm.gu === 'false' || vm.complianceInfo.lead === true) && vm.la === 'true' " class="btn btn-primary pull-right" ui-sref="home.compliance-select-la({compliance_section : vm.complianceInfo.compliance_section})">
+    Return to Select</button>
+  <button ng-if="vm.gu === 'true' && vm.complianceInfo.lead === false" class="btn btn-primary pull-right" ui-sref="home.compliance-select-pmu({compliance_section : vm.complianceInfo.compliance_section})">
+    Return to Grants Unit - Select</button>
   
+  <div disable-all="vm.disabled || vm.la === 'true' ">
     <h3 ng-if="vm.complianceInfo.compliance_section === 2">
       Admin Compliance - {{vm.complianceInfo.application}} ({{vm.complianceInfo.name}})   
     </h3>
@@ -31,44 +21,14 @@
     <h3 ng-if="vm.complianceInfo.compliance_section === 6">
       Due Diligence - {{vm.complianceInfo.application}} ({{vm.complianceInfo.name}})
     </h3>
-    
     <h6>Call Reference - {{vm.complianceInfo.call_reference}}</h6>
-    
-    <h4>Completed? <checkbox ng-model="vm.complianceInfo.complete"></checkbox></h4>
-    
-    <button class="btn btn-primary" ng-click="vm.saveAnswers()">Save Changes</button>
-    <span ng-if="!vm.complianceInfo.lead">Score : {{vm.current_score || 0}} out of {{vm.scoring_max}}</span>
-    <span ng-if="vm.complianceInfo.lead">Average Score : {{vm.score_for_template.average_score || 0}} out of {{vm.score_for_template.max_score || 0}}</span>
-    
-    <!-- <h4 ng-if="vm.gu === 'true' || vm.complianceInfo.lead === true || vm.la === 'true' ">   -->
-      
-    <button ng-disabled="!vm.complianceInfo.complete || vm.disabled" 
-            class="btn btn-danger pull-right" 
-            ng-if="(vm.complianceInfo.compliance_section === 4 && vm.complianceInfo.lead === true) || vm.gu === 'true'" 
-            ng-click="vm.fail()">
-            Fail Application</button>
-
-    <span class="pull-right">&nbsp;</span>
-  
-    <button ng-disabled="!vm.complianceInfo.complete || vm.disabled" 
-            class="btn btn-warning pull-right" 
-            ng-if="(vm.complianceInfo.compliance_section === 4 && vm.complianceInfo.lead === true) || vm.gu === 'true'"  
-            ng-click="vm.demote()">
-            Demote Application and Delete Section Data</button>
-  
-    <span class="pull-right">&nbsp;</span>
-    
-    <button ng-disabled="!vm.complianceInfo.complete || vm.disabled" 
-            ng-if="(vm.complianceInfo.compliance_section === 4 && vm.complianceInfo.lead === true) || vm.gu === 'true'" 
-            class="btn btn-success pull-right" ng-click="vm.promote()">
-            Approve and Promote Application</button>
-    
-  <!-- </h4> -->  
   </div>
-  </br>
+  
   <uib-tabset type="pills">
-    <uib-tab ng-init="catIndex = $index" ng-repeat="cat in vm.template.categories" heading="{{cat.title}}" active="tab.active" ng-if="cat.lead === vm.complianceInfo.lead ">
+    
+    <uib-tab ng-init="catIndex = $index" ng-repeat="cat in vm.template.categories" heading="{{cat.title}}" active="tab.active" ng-if="cat.lead === vm.complianceInfo.lead ">    
       </br>
+      <form novalidate>  
       <pre ng-if="cat.subtitle" style="font-style: italic;color:red; font-weight:bold;">{{cat.subtitle}}</pre>
       <div ng-repeat="q in cat.questions" ng-init="qIndex = $index" disable-all="vm.disabled || vm.la === 'true' " ng-if="q.lead_question === vm.complianceInfo.lead">
         <h4>  <span class="badge badge-middle">{{q.question_number}}</span>  {{q.question}}</h4>
@@ -92,8 +52,25 @@
         <h5 ng-if="(q.has_motivation)">Comment/Justification</h5>
         <textarea ng-blur="vm.updateModelMotivation(catIndex,qIndex,q.compliance_answers[0].motivation)" ng-model="q.compliance_answers[0].motivation" label="" style="width:50%;height:120px;" ng-if="(q.has_motivation)"></textarea>
       </div>
-      <h5 ng-if="q.question_types.code==='place_holder'" style="font-weight:bold;">{{q.question}}</h5>
+      <h5 ng-if="q.question_types.code==='place_holder'" style="font-weight:bold;">{{q.question}}</h5>        
+      </form> 
     </uib-tab>
+   
   </uib-tabset>
-  </uib-timepicker></br>
+
+  <h4>Completed? <checkbox ng-model="vm.complianceInfo.complete"></checkbox></h4>
+  <button class="btn btn-primary" ng-click="vm.saveAnswers()">Save Changes</button>
+  <span ng-if="!vm.complianceInfo.lead">Score : {{vm.current_score || 0}} out of {{vm.scoring_max}}</span>
+  <span ng-if="vm.complianceInfo.lead">Average Score : {{vm.score_for_template.average_score || 0}} out of {{vm.score_for_template.max_score || 0}}</span>
+  <!-- <h4 ng-if="vm.gu === 'true' || vm.complianceInfo.lead === true || vm.la === 'true' ">   -->
+  <button ng-disabled="!vm.complianceInfo.complete || vm.disabled" class="btn btn-danger pull-right" ng-if="(vm.complianceInfo.compliance_section === 4 && vm.complianceInfo.lead === true) || vm.gu === 'true'" ng-click="vm.fail()">
+    Fail Application</button>
+  <span class="pull-right">&nbsp;</span>
+  <button ng-disabled="!vm.complianceInfo.complete || vm.disabled" class="btn btn-warning pull-right" ng-if="(vm.complianceInfo.compliance_section === 4 && vm.complianceInfo.lead === true) || vm.gu === 'true'" ng-click="vm.demote()">
+    Demote Application and Delete Section Data</button>
+  <span class="pull-right">&nbsp;</span>
+  <button ng-disabled="!vm.complianceInfo.complete || vm.disabled" ng-if="(vm.complianceInfo.compliance_section === 4 && vm.complianceInfo.lead === true) || vm.gu === 'true'" class="btn btn-success pull-right" ng-click="vm.promote()">
+   Approve and Promote Application</button></br></br>  
+   
+
 </div>
