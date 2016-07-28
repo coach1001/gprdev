@@ -21,7 +21,7 @@ angular.module('appCg').controller('ComplianceSelectCtrl',function(compliances,$
   }
 
   vm.la = angular.copy(la);
-  console.log(vm.la);
+  //console.log(vm.la);
 
   var unfilteredRows = angular.extend(compliances);
   vm.compliances = vm.rows = angular.extend(compliances);

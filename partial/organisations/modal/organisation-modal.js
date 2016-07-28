@@ -25,11 +25,17 @@ angular.module('appCg').controller('OrganisationModalCtrl', function($scope,orga
     vm.operation = angular.extend(operation);
     vm.referees = angular.extend(referees);
     vm.auditors = angular.extend(auditors);
-    vm.provinces = angular.extend(provinces);
+    
     vm.orgTypes = angular.extend(orgTypes);
     vm.orgStatuses = angular.extend(orgStatuses);
-    vm.suburbs = [];
-    vm.places = [];
+    
+    vm.street_provinces = angular.extend(provinces);
+    vm.street_suburbs = [];
+    vm.street_places = [];
+
+    vm.postal_provinces = angular.extend(provinces);
+    vm.postal_suburbs = [];
+    vm.postal_places = [];
 
     vm.tabs = [{
         title: 'General',
@@ -153,39 +159,24 @@ angular.module('appCg').controller('OrganisationModalCtrl', function($scope,orga
                         placeholder: 'Line 2',
                         required: false
                     }
-                }, {
-                    key: 'postal_first_line',
-                    type: 'input',
-                    templateOptions: {
-                        label: 'Postal Address',
-                        placeholder: 'Line 1',
-                        required: false
-                    }
-                }, {
-                    key: 'postal_second_line',
-                    type: 'input',
-                    templateOptions: {
-                        placeholder: 'Line 2',
-                        required: false
-                    }
                 }, { //13 14 15
                     fieldGroup: [{
                         className: 'col-xs-4 nopadding',
-                        key: 'province',
+                        key: 'street_province',
                         type: 'ui-select-single',
                         templateOptions: {
                             optionsAttr: 'bs-options',
                             ngOptions: 'option[to.valueProp] as option in to.options | filter: $select.search',
-                            label: 'Province',
+                            label: 'Street Province',
                             valueProp: 'id',
                             labelProp: 'name',
-                            options: vm.provinces
+                            options: vm.street_provinces
                         },
                         watcher: {
                             listener: function(field, newValue, oldValue, scope) {
                                 if (newValue !== oldValue) {
-                                    vm.organisation.place = undefined;
-                                    vm.organisation.suburb = undefined;
+                                    vm.organisation.street_place = undefined;
+                                    vm.organisation.street_suburb = undefined;
                                 }
                                 if (newValue) {
                                     //scope.fields[1].templateOptions.options = $filter('filter')(vm.places, {province: newValue});
@@ -202,20 +193,20 @@ angular.module('appCg').controller('OrganisationModalCtrl', function($scope,orga
                         }
                     }, {
                         className: 'col-xs-4 nopadding',
-                        key: 'place',
+                        key: 'street_place',
                         type: 'ui-select-single',
                         templateOptions: {
                             optionsAttr: 'bs-options',
                             ngOptions: 'option[to.valueProp] as option in to.options | filter: $select.search',
-                            label: 'Place',
+                            label: 'Street Place',
                             valueProp: 'id',
                             labelProp: 'name',
-                            options: vm.places
+                            options: vm.street_places
                         },
                         watcher: {
                             listener: function(field, newValue, oldValue, scope) {
                                 if (newValue !== oldValue) {
-                                    vm.organisation.suburb = undefined;
+                                    vm.organisation.street_suburb = undefined;
                                 }
                                 if (newValue) {
                                     //scope.fields[2].templateOptions.options = $filter('filter')(vm.suburbs, {place: newValue});
@@ -230,7 +221,7 @@ angular.module('appCg').controller('OrganisationModalCtrl', function($scope,orga
                         }
                     }, {
                         className: 'col-xs-4 nopadding',
-                        key: 'suburb',
+                        key: 'street_suburb',
                         type: 'select',
                         templateOptions: {
 
@@ -240,12 +231,98 @@ angular.module('appCg').controller('OrganisationModalCtrl', function($scope,orga
                         }
                     }]
 
+                }, {
+                    key: 'postal_first_line',
+                    type: 'input',
+                    templateOptions: {
+                        label: 'Postal Address',
+                        placeholder: 'Line 1',
+                        required: false
+                    }
+                }, {
+                    key: 'postal_second_line',
+                    type: 'input',
+                    templateOptions: {
+                        placeholder: 'Line 2',
+                        required: false
+                    }
+                },
+                { //13 14 15
+                    fieldGroup: [{
+                        className: 'col-xs-4 nopadding',
+                        key: 'postal_province',
+                        type: 'ui-select-single',
+                        templateOptions: {
+                            optionsAttr: 'bs-options',
+                            ngOptions: 'option[to.valueProp] as option in to.options | filter: $select.search',
+                            label: 'Postal Province',
+                            valueProp: 'id',
+                            labelProp: 'name',
+                            options: vm.postal_provinces
+                        },
+                        watcher: {
+                            listener: function(field, newValue, oldValue, scope) {
+                                if (newValue !== oldValue) {
+                                    vm.organisation.postal_place = undefined;
+                                    vm.organisation.postal_suburb = undefined;
+                                }
+                                if (newValue) {
+                                    //scope.fields[1].templateOptions.options = $filter('filter')(vm.places, {province: newValue});
+                                    gprRestApi.getRowsFilterColumn('places', 'province', newValue).then(function success(response) {
+                                        scope.fields[1].templateOptions.options = response;
+                                    }, function error(response) {
+
+                                    });
+
+                                } else {
+                                    scope.fields[1].templateOptions.options = [];
+                                }
+                            }
+                        }
+                    }, {
+                        className: 'col-xs-4 nopadding',
+                        key: 'postal_place',
+                        type: 'ui-select-single',
+                        templateOptions: {
+                            optionsAttr: 'bs-options',
+                            ngOptions: 'option[to.valueProp] as option in to.options | filter: $select.search',
+                            label: 'Postal Place',
+                            valueProp: 'id',
+                            labelProp: 'name',
+                            options: vm.postal_places
+                        },
+                        watcher: {
+                            listener: function(field, newValue, oldValue, scope) {
+                                if (newValue !== oldValue) {
+                                    vm.organisation.postal_suburb = undefined;
+                                }
+                                if (newValue) {
+                                    //scope.fields[2].templateOptions.options = $filter('filter')(vm.suburbs, {place: newValue});
+                                    gprRestApi.getRowsFilterColumn('suburbs', 'place', newValue).then(function success(response) {
+                                        scope.fields[2].templateOptions.options = response;
+                                        //console.log(scope);
+                                    }, function error(response) {});
+                                } else {
+                                    scope.fields[2].templateOptions.options = [];
+                                }
+                            }
+                        }
+                    }, {
+                        className: 'col-xs-4 nopadding',
+                        key: 'postal_suburb',
+                        type: 'select',
+                        templateOptions: {
+
+                            label: 'Postal Suburb',
+                            valueProp: 'id',
+                            labelProp: 'name'
+                        }
+                    }]
+
                 }
-
-
             ]
         }
-    }, {
+    }/*, {
         title: 'Banking Details',
         form: {
             options: {},
@@ -260,7 +337,7 @@ angular.module('appCg').controller('OrganisationModalCtrl', function($scope,orga
                 }
             }]
         }
-    }];
+    }*/];
 
     vm.openBankDetails = function() {
         console.log('Open Bank Details');

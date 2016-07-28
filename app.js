@@ -24,6 +24,7 @@ angular.module('appCg', [
 		var $http = initInjector.get('$http');
 
 		return $http.get("client_config.json").then(function(response) {
+			console.log('client_config',response.data);
 			angular.module('appCg').constant('config', response.data);
 		}, function(errorResponse) {
 			// Handle error case4
