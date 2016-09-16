@@ -286,6 +286,33 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider, $loc
 
 	});
 
+	$stateProvider.state('home.compliance-assessment-select', {
+		url: '/compliance-select?:compliance_section',
+		views: {
+			'mainContent@': {
+				templateUrl: 'partial/compliance-select/compliance-select.html',
+				controller: 'ComplianceSelectCtrl as vm',
+				resolve: {
+					compliances: function(gprRestApi, authenticationService, $stateParams) {
+						return gprRestApi.getRowsWithFEs('grid_compliance_applications_for_assessors', '&compliance_section=eq.' + $stateParams.compliance_section + '&email_address=eq.' + authenticationService.username);
+						/*return gprRestApi.getRowsWithFEs('grid_compliance_applications', '&application_status=eq.' + $stateParams.compliance_section + '&email_address=eq.' + authenticationService.username);*/
+					},
+					complianceSection: function($stateParams) {
+						return $stateParams.compliance_section;
+					},
+					lookup_calls_uigrid: function res(gprRestApi) {
+						return gprRestApi.getRows('lookup_calls_uigrid', false);
+					},
+					gu : function (){
+						return false;
+					},
+					la : function(){
+						return false;
+					}					
+				}
+			}
+		}
+	});
 
 	$stateProvider.state('home.compliance-select', {
 		url: '/compliance-select?:compliance_section',
@@ -296,6 +323,7 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider, $loc
 				resolve: {
 					compliances: function(gprRestApi, authenticationService, $stateParams) {
 						return gprRestApi.getRowsWithFEs('grid_compliance_applications', '&compliance_section=eq.' + $stateParams.compliance_section + '&email_address=eq.' + authenticationService.username);
+						/*return gprRestApi.getRowsWithFEs('grid_compliance_applications', '&application_status=eq.' + $stateParams.compliance_section + '&email_address=eq.' + authenticationService.username);*/
 					},
 					complianceSection: function($stateParams) {
 						return $stateParams.compliance_section;
@@ -384,7 +412,7 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider, $loc
 						return gprRestApi.getRowsWithFEs('compliance_templates', ',categories{*,questions{*,question_types{*},question_options{*},compliance_answers{*}}}', '&id=eq.' + $stateParams.templateId + '&categories.order=id.asc&categories.questions.compliance_answers.application_compliance_officer=eq.' + $stateParams.appId + '&categories.questions.order=id.asc');
 					},
 					complianceInfo: function res(gprRestApi, $stateParams) {
-						return gprRestApi.getRowsWithFEs('grid_compliance_applications', '&id=eq.' + $stateParams.appId);
+						return gprRestApi.getRowsWithFEs('grid_compliance_applications_for_assessors', '&id=eq.' + $stateParams.appId);
 					},
 					gu : function res($stateParams){						
 						return $stateParams.grants_unit;
@@ -397,6 +425,35 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider, $loc
 			}
 		}
 	});
+
+/*	$stateProvider.state('home.compliance-assessment', {
+		url: '/compliance?:templateId&:appId&:application&:grants_unit&:la',
+		views: {
+			'mainContent@': {
+				templateUrl: 'partial/compliance/compliance.html',
+				controller: 'ComplianceCtrl as vm',
+				resolve: {
+					score_for_template: function res(gprRestApi, $stateParams) {
+						return gprRestApi.getRowsWithFEs('application_compliance_average_score', '&application=eq.' + $stateParams.application + '&template_id=eq.' + $stateParams.templateId);
+					},
+					template: function res(gprRestApi, $stateParams) {
+						return gprRestApi.getRowsWithFEs('compliance_templates', ',categories{*,questions{*,question_types{*},question_options{*},compliance_answers{*}}}', '&id=eq.' + $stateParams.templateId + '&categories.order=id.asc&categories.questions.compliance_answers.application_compliance_officer=eq.' + $stateParams.appId + '&categories.questions.order=id.asc');
+					},
+					complianceInfo: function res(gprRestApi, $stateParams) {
+						console.log('Getting ...');
+						return gprRestApi.getRowsWithFEs('grid_compliance_applications_for_assessors', '&id=eq.' + $stateParams.appId);
+					},
+					gu : function res($stateParams){						
+						return $stateParams.grants_unit;
+					},
+					la : function res($stateParams){						
+						return $stateParams.la;
+					}
+
+				}
+			}
+		}
+	});*/
 
 	$stateProvider.state('home.persons', {
 		url: '/persons',

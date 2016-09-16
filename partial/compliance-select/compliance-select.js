@@ -81,7 +81,7 @@ angular.module('appCg').controller('ComplianceSelectCtrl',function(compliances,$
     });}
   };
 
-  vm.openModal = function(compliance_packet) {            
-    $state.go('home.compliance',{templateId : compliance_packet.compliance_template, appId : compliance_packet.appId,application : compliance_packet.application, grants_unit : vm.gu.state, la : vm.la});            
+  vm.openModal = function(compliance_packet) {
+    $state.go('home.compliance',{templateId : compliance_packet.compliance_template, appId : compliance_packet.appId,application : compliance_packet.application, grants_unit : vm.gu.state, la : vm.la});                 
   };
 });

@@ -71,7 +71,25 @@ module.exports = function (grunt) {
           password : 'Justice##@!1996',
           agent: process.env.SSH_AUTH_SOCK
         }
+      },
+      prod_ext: {
+        files : {
+          './' : 'dist/**',          
+        },
+        options : {
+          dot : true,
+          createDirectories : true,
+          path : '/var/www/html/gpr-prod-ext/',          
+          srcBasePath : 'dist/',
+          showProgress : true,
+          port : 22,
+          host : '10.0.0.111',
+          username : 'administrator',
+          password : 'Justice##@!1996',
+          agent: process.env.SSH_AUTH_SOCK
+        }
       }
+
     },
     sshexec: {
       uptime: {
@@ -100,7 +118,17 @@ module.exports = function (grunt) {
           username: "administrator",
           password: "Justice##@!1996"
         }        
+      },
+     rename_prod_ext_htaccess : {
+        command : 'cd /var/www/html/gpr-prod-ext && mv htaccess .htaccess',
+        options: {
+          host: "10.0.0.111",
+          port: 22,
+          username: "administrator",
+          password: "Justice##@!1996"
+        }        
       }
+
     },  
     connect: {
       main: {
@@ -177,6 +205,7 @@ module.exports = function (grunt) {
       main: {
         files: [
           {src: ['OpenSans-Light.ttf'], dest: 'dist/'},      
+          {src: ['Raleway-Regular.ttf'], dest: 'dist/'},      
           {src: ['.htaccess'], dest: 'dist/htaccess'},
           {src: ['client_config.json'], dest: 'dist/'},
           {src: ['img/**'], dest: 'dist/'},
@@ -199,6 +228,11 @@ module.exports = function (grunt) {
       prod:{
         files : [
           {src: ['client_config_prod.json'], dest: 'dist/client_config.json'},
+        ]
+      },
+      prod_ext:{
+        files : [
+          {src: ['client_config_ext.json'], dest: 'dist/client_config.json'},
         ]
       }
     },
@@ -313,6 +347,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('deploy_to_dev01',['copy:dev01','sftp:dev01','sshexec:rename_dev01_htaccess']);
   grunt.registerTask('deploy_to_prod' ,['copy:prod', 'sftp:prod' ,'sshexec:rename_prod_htaccess']);
+  grunt.registerTask('deploy_to_prod_ext' ,['copy:prod_ext', 'sftp:prod_ext' ,'sshexec:rename_prod_ext_htaccess']);
 
   grunt.registerTask('test_ssh', ['sshexec:uptime']);
 

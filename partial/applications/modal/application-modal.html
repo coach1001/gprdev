@@ -1,6 +1,9 @@
 <div>
   <div class="modal-header">    
-    <button type="button" class="close pull-right" ng-click="$dismiss()" aria-hidden="true">&times;</button>
+    <button type="button" class="close pull-right" ng-click="$dismiss()"  aria-hidden="true">&times;</button>
+    <span class="pull-right">&nbsp;</span>
+    <span class="pull-right">&nbsp;</span>
+    <button type="button" class="btn btn-default pull-right disabled" ng-hide="vm.operation === 'Create'" ng-click="vm.sendLetter()" aria-hidden="true">Send Acknowledgment Letter</button>
     <h4 class="modal-title">Application  <span class="badge">{{vm.application.id}}</span> </h4>
   </div>
   <div class="modal-body">
@@ -11,7 +14,7 @@
         <button ng-if="vm.application.application_status < 2" type="button" ng-click="vm.deleteRow()" class="btn btn-warning" confirm="Are you sure?" ng-hide="vm.operation === 'Create'">Delete</button>
         <button ng-if="vm.application.application_status < 2" type="button" ng-click="vm.fail()" class="btn btn-danger pull-right" confirm="Are you sure?" ng-hide="vm.operation === 'Create'">Fail Application</button>
         <span class="pull-right">&nbsp;</span>
-        <button ng-if="vm.application.application_status < 2" ng-click="vm.promote()" class="btn btn-success pull-right" confirm="Are you sure?" ng-hide="vm.operation === 'Create'">Promote to Admin and Tech</button>
+        <button ng-if="vm.application.application_status < 2" ng-click="vm.promote()" class="btn btn-success pull-right" confirm="Are you sure?" ng-hide="vm.operation === 'Create'">Promote to Admin and Tech</button>        
       </formly-form>
     </form>
   </div>

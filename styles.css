@@ -29,8 +29,15 @@ div.big-modal  div.modal-dialog {
 @font-face {
   font-family: 'OpenSans';
   src: url("OpenSans-Light.ttf");
-/*  src: url("Arcon-Regular.otf");*/
 }
+
+
+/*@font-face {
+  font-family: 'RW';
+  src: url("Raleway-Regular.ttf");
+}
+*/
+
 
 h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     font-family: "OpenSans";
@@ -39,7 +46,8 @@ h1, h2, h3, h4, h5, h6, .h1, .h2, .h3, .h4, .h5, .h6 {
     color: inherit;
 }
 *{
-  font-family: 'OpenSans';
+  font-family: 'OpenSans', sans-serif;
+  
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-rendering: optimizeLegibility;

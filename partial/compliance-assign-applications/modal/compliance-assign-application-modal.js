@@ -23,12 +23,17 @@ angular.module('appCg').controller('AssignAssessorModalCtrl',function(
     {
         key: 'application',
         type: 'ui-select-single',
+        /*type : 'select',*/
         templateOptions: {
             optionsAttr: 'bs-options',
             ngOptions: 'option[to.valueProp] as option in to.options | filter: $select.search',
             label: 'Application',
             valueProp: 'application',
             labelProp: 'application',       
+            
+            /*valueProp: 'application',
+            labelProp: 'application',       
+*/
             required : true,
             showDetails : true,     
             options: vm.applicationList

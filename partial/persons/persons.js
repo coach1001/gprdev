@@ -16,6 +16,7 @@ angular.module('appCg').controller('PersonsCtrl',function(persons, gprRestApi, $
         columnDefs: [            
             { name: 'id'},
             { name: 'user_login' },
+            { name : 'title'},
             { name: 'first_names' },
             { name: 'last_name' },
             { name: 'role'},
@@ -51,6 +52,9 @@ angular.module('appCg').controller('PersonsCtrl',function(persons, gprRestApi, $
                 },
                 assign : function res(){
                     return false;
+                },
+                p_titles : function res(gprRestApi){
+                    return gprRestApi.getRows('personal_titles',false);
                 }
 
             }

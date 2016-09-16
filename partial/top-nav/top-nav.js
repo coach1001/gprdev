@@ -1,6 +1,7 @@
 angular.module('appCg').controller('TopNavCtrl', function ($uibModal, authenticationService,$state,loginModalService,$rootScope) {
   var vm = this;
   vm.navbarCollapsed = true;
+  vm.section = false;
 
   vm.loginFunc = function () {
 
@@ -9,6 +10,15 @@ angular.module('appCg').controller('TopNavCtrl', function ($uibModal, authentica
     }).catch(function (){
 
     });
+  };
+
+  vm.toggleSection = function(){
+    if(vm.section === true){
+      vm.section = false;
+    }else{
+      vm.section = true;
+    }
+    console.log(vm.section);
   };
 
   vm.logoutFunc = function () {

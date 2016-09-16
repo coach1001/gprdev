@@ -1,11 +1,18 @@
 <div class="column">
   <h4 ng-if="vm.disabled" style="color: red; font-weight: bold;">View Mode - Application no Longer in Section, Currently in {{vm.current_status}}</h4>
   <h4 ng-if="vm.la === 'true' " style="color: red; font-weight: bold;">View Mode - Lead Assesor Review</h4>
-  <button ng-if="(vm.gu === 'false' || vm.complianceInfo.lead === true) && vm.la === 'false' " class="btn btn-primary pull-right" ui-sref="home.compliance-select({compliance_section : vm.complianceInfo.compliance_section})">
+  
+
+  <button ng-if="(vm.gu === 'false' || vm.complianceInfo.lead === true) && vm.la === 'false' &&  vm.complianceInfo.compliance_section !== 4" class="btn btn-primary pull-right" ui-sref="home.compliance-select({compliance_section : vm.complianceInfo.compliance_section})">
     Return to Select</button>
+
+  <button ng-if="(vm.gu === 'false' || vm.complianceInfo.lead === true) && vm.la === 'false' &&  vm.complianceInfo.compliance_section === 4" class="btn btn-primary pull-right" ui-sref="home.compliance-assessment-select({compliance_section : vm.complianceInfo.compliance_section})">
+    Return to Select</button>
+
   <button ng-if="(vm.gu === 'false' || vm.complianceInfo.lead === true) && vm.la === 'true' " class="btn btn-primary pull-right" ui-sref="home.compliance-select-la({compliance_section : vm.complianceInfo.compliance_section})">
     Return to Select</button>
-  <button ng-if="vm.gu === 'true' && vm.complianceInfo.lead === false" class="btn btn-primary pull-right" ui-sref="home.compliance-select-pmu({compliance_section : vm.complianceInfo.compliance_section})">
+
+  <button ng-if="vm.gu === 'true' && vm.complianceInfo.lead === false" class="btn btn-primary pull-right" ui-sref="home.compliance-select-pmu({compliance_section : vm.complianceInfo.compliance_section})">  
     Return to Grants Unit - Select</button>
   
   <div disable-all="vm.disabled || vm.la === 'true' ">
@@ -58,8 +65,8 @@
    
   </uib-tabset>
 
-  <h4>Completed? <checkbox ng-model="vm.complianceInfo.complete"></checkbox></h4>
-  <button class="btn btn-primary" ng-click="vm.saveAnswers()">Save Changes</button>
+  <h4 ng-hide="vm.la === 'true'">Completed? <checkbox ng-hide="vm.la === 'true'" ng-model="vm.complianceInfo.complete"></checkbox></h4>
+  <button class="btn btn-primary" ng-hide="vm.la === 'true'" ng-click="vm.saveAnswers()">Save Changes</button>
   <span ng-if="!vm.complianceInfo.lead">Score : {{vm.current_score || 0}} out of {{vm.scoring_max}}</span>
   <span ng-if="vm.complianceInfo.lead">Average Score : {{vm.score_for_template.average_score || 0}} out of {{vm.score_for_template.max_score || 0}}</span>
   <!-- <h4 ng-if="vm.gu === 'true' || vm.complianceInfo.lead === true || vm.la === 'true' ">   -->

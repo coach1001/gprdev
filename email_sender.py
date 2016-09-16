@@ -3,6 +3,7 @@ import psycopg2
 import psycopg2.extras
 import json
 import time
+import urllib2
 from validate_email import validate_email
 
 try :
@@ -18,7 +19,8 @@ try:
 	server.login(data["app_mail_user"],data["app_mail_password"])		
 	print "SMTP Connected..."
 	server.close()
-except:
+except Exception,e:
+	print str(e)
 	print "Unable to connect to the SMTP Server"
 
 try:
@@ -26,15 +28,17 @@ try:
     curS = conn.cursor()
     curU = conn.cursor()
     print "Postgres Connected..."
-except:
+except Exception,f:
+    print str(f)
     print "Unable to connect to the PostgreSQL Server"
 
 while 1:	
 	curS.execute('SELECT * FROM email_notifications_to_json')
 	rs = curS.fetchall()
 	
-	if not rs:
-		print "No Email Notifications!..."
+	if not rs:		
+		#print "No Email Notifications!..."
+		pass
 	else:				
 		
 		server = smtplib.SMTP(data["app_mail_host"],data["app_mail_port"])
@@ -51,6 +55,7 @@ while 1:
 				receiver = email_notification["email_to"]			
 				body = email_notification["body"]			
 			
+
 				if email_notification["token_email"]:				
 					
 					if email_notification["token_type"] == "validation":					
@@ -63,9 +68,10 @@ while 1:
 						body = email_notification["body"]+data["app_reset_password_url"]+email_notification["token"]+"&user_email="+email_notification["email_to"]  
 			
 				else:
-					header = 'To:'+receiver+ '\n'+'From:'+sender+'\n'+"Subject:"+data["app_email_subject_prefix"]++email_notification["subject"]+'\n'+'\n'								
+					header = 'To:'+receiver+ '\n'+'From:'+sender+'\n'+"Subject:"+data["app_email_subject_prefix"]+email_notification["subject"]+'\n'+'\n'								
 					body = email_notification["body"]			
-								
+													
+
 				try:
 					server.sendmail(sender,receiver, header + body)
  					
@@ -85,6 +91,8 @@ while 1:
  						conn.commit() 			 					
  					
  					print exc
+
+
 			else:
 				curU.execute("UPDATE email_notifications SET failed=(%s),status_message=(%s) WHERE id = (%s)", (True,"Invalid Email Address!",email_notification["id"])) 			 			
  				conn.commit() 			 				

@@ -1,0 +1,26 @@
+<div class="row">
+   	
+   	<div class="col-sm-6">
+   		<button type="button" class="btn btn-primary" ng-click="selectAll()">Select All</button>
+		</br>
+		</br>
+   		<input type="text" class="form-control" ng-model="ofilter" placeholder="{{config.optionSearchPlaceholder}}" />   		   		
+   		<h5>Options</h5>
+   		<ul class="list-group" style="height: 40vh;display: block;overflow-y: scroll;border-color: #ddd;border-style: solid;border-width: 1px;">
+   			<li class="list-group-item" ng-repeat="oItem in edita | orderBy : 'label' | filter : ofilter" ng-click="addToSelected(oItem)" style="cursor:pointer;">{{oItem.label}}</li>    
+   		</ul>   		
+   		<button type="button" class="btn btn-default" ng-click="resetSelectedList()">Reset Selection</button>
+   	</div> 
+    
+    <div class="col-sm-6">
+   		<button type="button" class="btn btn-warning" ng-click="deselectAll()">Deselect All</button>
+		</br>
+		</br>
+   		<input type="text" class="form-control" ng-model="sfilter" placeholder="{{config.selectedSearchPlaceholder}}" />   		   	   		
+   		<h5>Selected</h5>
+   		<ul class="list-group" style="height: 40vh;display: block;overflow-y: scroll;border-color: #ddd;border-style: solid;border-width: 1px;">
+    		<li class="list-group-item" ng-repeat="sItem in edits | orderBy : 'label' | filter : sfilter" ng-click="removeFromSelected(sItem)" style="cursor:pointer;">{{sItem.label}}</li>    
+    	</ul>      
+    	
+    </div>
+<div>

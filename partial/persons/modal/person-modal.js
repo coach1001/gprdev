@@ -7,7 +7,7 @@ angular.module('appCg').controller('PersonModalCtrl', function($scope,person,
     ngToast,
     $confirm,
     $uibModalInstance,
-    assign) {
+    assign,p_titles) {
 
     var vm = this;
 
@@ -27,6 +27,7 @@ angular.module('appCg').controller('PersonModalCtrl', function($scope,person,
     vm.users = angular.extend(users);
 
     vm.operation = operation;
+    vm.p_titles = angular.copy(p_titles);
 
     vm.personFields = [{
             key: 'application_user',
@@ -64,6 +65,15 @@ angular.module('appCg').controller('PersonModalCtrl', function($scope,person,
                 else {return !vm.person.application_user;}
             }
         }, {
+            key : 'personal_title',
+            type : 'select',
+            templateOptions : {
+                label : 'Personal Title',
+                valueProp : 'id',
+                labelProp : 'title',
+                options : vm.p_titles
+            }
+        },{
             key: 'first_names',
             type: 'input',
             templateOptions: {
@@ -132,7 +142,7 @@ angular.module('appCg').controller('PersonModalCtrl', function($scope,person,
                 
                 if(vm.contact){
                     $scope.$parent.vm.organisation.main_contact_person = vm.person.id;
-                    console.log('The Fuck');                    
+                    //console.log('The Fuck');                    
                 }            
             
             }

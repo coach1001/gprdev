@@ -1,0 +1,14 @@
+<div>
+
+	<div class="modal-header">
+		<button type="button" class="close pull-right" ng-click="$dismiss()" aria-hidden="true">&times;</button>
+		<h4 class="modal-title">{{configManyToManyh.modalTitle}}</h4>
+	</div>
+	<div class="modal-body">
+		<many-to-many edita="editAvailableOptions" edits="editSelectedOptions" originala="originalAvailableOptions" originals="originalSelectedOptions" fulla="allOptions" config="configManyToMany"></many-to-many>
+		</br>
+		<button type="button" class="btn btn-primary" ng-click="Update()" aria-hidden="true">Update</button>
+	
+	</div>
+
+</div>

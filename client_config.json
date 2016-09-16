@@ -1,10 +1,10 @@
 {
-	"app_db_base_url": "http://10.0.0.111:3002",
+	"app_db_base_url": "http://gpr.fhr.org.za:3002",
 	"app_dbrpc_base_url": "/rpc",
 	"app_dbauth_login_url": "/login",
-	"app_ldap_base_url" : "http://10.0.0.111/ldap/dev01",
-	"app_ldap_login_url" : "/login",	
-	"app_report_base_url" : "http://10.0.0.111:8080/jasperserver/flow.html?_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2FGPR%2FReports&reportUnit=%2FGPR%2FReports%2F",	
+	"app_ldap_base_url" : "http://gpr.fhr.org.za/ldap/dev01",
+	"app_ldap_login_url" : "/login",
+	"app_report_base_url" : "http://gpr.fhr.org.za:8080/jasperserver/flow.html?_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2FGPR%2FReports&reportUnit=%2FGPR%2FReports%2F",	
 	"app_report_url_add" : "&standAlone=true&output=pdf&j_username=reportConsumer&j_password=password",
-	"alfresco_endpoints_base_url" : "https://alfresco.fhr.org.za/alfresco/s/fhr/fhrguestservice"
+	"alfresco_endpoints_base_url" : "https://alfresco-development-01.fhr.org.za/alfresco/s/fhr/fhrguestservice"
 }

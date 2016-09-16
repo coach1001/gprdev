@@ -1,0 +1,4 @@
+-- schemaType: GRANT_ATTRIBUTE
+-- db1: {gpr-dev01 10.0.0.111 5432 postgres Justice##@!1996 sslmode=disable}
+-- db2: {gpr-prod 10.0.0.111 5432 postgres Justice##@!1996 sslmode=disable}
+-- Run the following SQL against db2:

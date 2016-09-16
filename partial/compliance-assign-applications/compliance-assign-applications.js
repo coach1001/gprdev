@@ -56,8 +56,8 @@ angular.module('appCg').controller('AssignAssessorsApplicationsCtrl',function(ap
           return gprRestApi.getRow('application_compliance_officers', id);
         },
         applicationList: function res(gprRestApi) {
-          return gprRestApi.getRowsWithFEs('lookup_compliance_applications','&application_status=gte.'+vm.complianceSection,false);
-          //return gprRestApi.getRowsWithFEs('lookup_compliance_applications','&application_status=eq.'+vm.complianceSection,false);
+          /*return gprRestApi.getRowsWithFEs('lookup_compliance_applications','&application_status=gte.'+vm.complianceSection,false);*/
+          return gprRestApi.getRowsWithFEs('lookup_compliance_applications','&application_status=eq.'+vm.complianceSection,false);
         },
         officerList: function res(gprRestApi) {
           return gprRestApi.getRows('lookup_compliance_officers',false);

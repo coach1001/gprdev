@@ -205,15 +205,11 @@ angular.module('appCg').controller('CfpModalCtrl', function(programmes, alfresco
 
 			if (vm.operation === 'Create') {
 				vm.call.id = response.data.id;
-				
-				//alfresco.createCall(vm.call.key_performance_indicators.key_result_areas.programmes.code,response.data.call_reference_path_safe);				
-			}			
-			//console.log(body.id,body.call_reference_path_safe);
-			//alfresco.createCall(vm.call.key_performance_indicators.key_result_areas.programmes.code,vm.call.call_reference_path_safe).then(function success(response) {
-			//	console.log('Success',response);
-			//}, function error(response) {
-			//	console.log('Failed',response);
-			//});
+				alfresco.createCall(vm.call.key_performance_indicators.key_result_areas.programmes.code,response.data.call_reference_path_safe);				
+			}						
+			
+			alfresco.createCall(vm.call.key_performance_indicators.key_result_areas.programmes.code,vm.call.call_reference_path_safe);
+			
 			vm.operation = 'Update';
 		}, function error(response) {
 			ngToast.warning({ content: vm.operation + ' Record Failed', timeout: 4000 });

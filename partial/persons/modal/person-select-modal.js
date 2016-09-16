@@ -18,6 +18,7 @@ angular.module('appCg').controller('PersonSelectModalCtrl',function($scope,perso
         columnDefs: [            
             { name: 'id'},
             { name: 'user_login' },
+            { name: 'title'},
             { name: 'first_names' },
             { name: 'last_name' },
             { name: 'role'},
@@ -53,6 +54,9 @@ angular.module('appCg').controller('PersonSelectModalCtrl',function($scope,perso
                 },
                 assign : function res(){
                     return true;
+                },
+                p_titles : function res(gprRestApi){
+                    return gprRestApi.getRows('personal_titles',false);
                 }
 
             }

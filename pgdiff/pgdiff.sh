@@ -64,7 +64,7 @@ function rundiff() {
 
 #        if [[ $(cat "$sqlFile" | wc -l) -gt 4 ]]; then
 #            vi "$sqlFile"
-#            read -p "Do you wish to run this against ${NAME2}? [yN]: " yn 
+#            read -p "Do you wish to run this against ${NAME2}? [yN]: " yn
 #            if [[ $yn =~ ^y ]]; then
 #                PGPASSWORD="$PASS2" ./pgrun -U $USER2 -h $HOST2 -p $PORT2 -d $NAME2 -O "$OPT2" -f "$sqlFile"
 #                read -p "Rerun diff for $TYPE? [yN]: " yn
@@ -92,6 +92,13 @@ rundiff TRIGGER
 
 rm "$sqlFile"
 cat "$sqlFileAll"
+
+read -p "Do you wish to run this against ${NAME2}? [yN]: " yn
+
+if [[ $yn =~ ^y ]]; then
+	PGPASSWORD="$PASS2" ./pgrun -U $USER2 -h $HOST2 -p $PORT2 -d $NAME2 -O "$OPT2" -f "$sqlFileAll"
+fi
+
 
 echo "Done!"
 

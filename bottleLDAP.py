@@ -8,10 +8,10 @@ server_config = None
 def create_dbldap_user(username):
   global auth_token
   global server_config
-
+  token_header = 'Bearer %s' % (auth_token) 
   url = '%s%s' % (server_config['app_rest_base_url'],server_config['app_rest_create_ldap_user'])
   values = {'email' : '%s' % username}
-  req = urllib2.Request(url, json.dumps(values), headers={'Content-type': 'application/json', 'Accept': 'application/json'})
+  req = urllib2.Request(url, json.dumps(values), headers={'Content-type': 'application/json', 'Accept': 'application/json', 'Authorization' : token_header})
   urllib2.urlopen(req)
   print 'created LDAP User in DB'
 
@@ -130,7 +130,7 @@ def login():
 if __name__ == '__main__':  
   init_server()
   auth_token = get_application_jwt('ldap@fhr.org.za','Justice##@!1996')
-  run(app,reloader=True, debug=True, port='3003')		
+  run(app,reloader=True, debug=True, port='3004')		
 
 
 

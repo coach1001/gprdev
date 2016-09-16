@@ -18,11 +18,12 @@ angular.module('appCg').controller('OrganisationsCtrl', function(organisations, 
             {name: 'code'},
             { name: 'name' },
             { name: 'web_site' },
+            { name: 'npo_no',displayName: 'NPO Number'},
             { name: 'email_address' },
             { name: 'referee' },
             { name: 'auditor' },
-            { name: 'province' },
-            { name: 'organisation_type' }
+            { name: 'province' }
+            //{ name: 'organisation_type' }
         ],
         onRegisterApi: function(gridApi) {
             vm.gridApi = gridApi;

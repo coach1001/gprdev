@@ -175,4 +175,8 @@ angular.module('appCg').controller('ComplianceCtrl',function(template,gprRestApi
     });
   };
 
+  vm.returnToSelect = function(){    
+    //$state.go('home.compliance',{templateId : compliance_packet.compliance_template, appId : compliance_packet.appId,application : compliance_packet.application, grants_unit : vm.gu.state, la : vm.la});                 
+  };
+
 });

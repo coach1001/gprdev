@@ -62,6 +62,9 @@ angular.module('appCg').controller('ApplicationsCtrl', function(applications, gp
         //},
         calls: function res(gprRestApi) {
           return gprRestApi.getRows('grid_calls', false);
+        },
+        letterDetail : function res(gprRestApi){
+          return gprRestApi.getRowWithFE_2('rpt_ack_letter_data', '&application_ref=eq.'+id);
         }
       }
     }).result.then(function(result) {
