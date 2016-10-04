@@ -148,6 +148,37 @@ export class BodyController{
   }
 
   /**
+   * Recursively calculate row depth for unsorted backend data
+   * @param row
+   * @param depth
+   * @return {Integer}
+  */
+  calculateDepth(row, depth=0){
+    var parentProp = this.treeColumn ? this.treeColumn.relationProp : this.groupColumn.prop;
+    var prop = this.treeColumn.prop;
+    if (!row[parentProp]){
+      return depth;
+    }
+    if (row.$$depth) {
+      return row.$$depth + depth;
+    }
+    /* Get data from cache, if exists*/
+    var cachedParent = this.index[row[parentProp]];
+    if (cachedParent) {
+      depth += 1;
+      return this.calculateDepth(cachedParent, depth);
+    }
+    for (var i=0, len = this.rows.length; i < len;  i++){
+      var parent = this.rows[i];
+      if (parent[prop] == row[parentProp]){
+        depth+=1;
+        return this.calculateDepth(parent, depth);
+      }
+    }
+    return depth;
+  }
+
+  /**
    * Matches groups to their respective parents by index.
    *
    * Example:
@@ -191,6 +222,17 @@ export class BodyController{
           row.$$depth = 0;
         } else {
           var parent = this.index[row[parentProp]];
+          if (parent === undefined){
+            for (var j=0; j < len; j++){
+              if (this.rows[j][prop] == relVal){
+                parent = this.rows[j];
+                break;
+              }
+            }
+          }
+          if (parent.$$depth === undefined) {
+            parent.$$depth = this.calculateDepth(parent);
+          }
           row.$$depth = parent.$$depth + 1;
           if (parent.$$children){
             parent.$$children.push(row[prop]);
@@ -248,28 +290,27 @@ export class BodyController{
    * @return {array} the built tree
    */
   buildTree(){
-    var count = 0,
-        temp = [];
+    var temp = [],
+        self = this;
 
-    for(var i = 0, len = this.rows.length; i < len; i++) {
-      var row = this.rows[i],
-          relVal = row[this.treeColumn.relationProp],
-          keyVal = row[this.treeColumn.prop],
-          rows = this.rowsByGroup[keyVal],
-          expanded = this.expanded[keyVal];
+    function addChildren(fromArray, toArray, level) {
+      fromArray.forEach(function (row) {
+        var relVal = row[self.treeColumn.relationProp],
+            key = row[self.treeColumn.prop],
+            groupRows = self.rowsByGroup[key],
+            expanded = self.expanded[key];
 
-      if(!relVal){
-        count++;
-        temp.push(row);
-      }
-
-      if(rows && rows.length){
-        if(expanded){
-          temp.push(...rows);
-          count = count + rows.length;
+        if (level > 0 || !relVal) {
+          toArray.push(row);
+          if (groupRows && groupRows.length > 0 && expanded) {
+            addChildren(groupRows, toArray, level + 1);
+          }
         }
-      }
+
+      });
     }
+
+    addChildren(this.rows, temp, 0);
 
     return temp;
   }

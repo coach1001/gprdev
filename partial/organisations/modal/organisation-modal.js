@@ -130,7 +130,7 @@ angular.module('appCg').controller('OrganisationModalCtrl', function($scope, org
             label: 'Email Address',
             placeholder: 'Email Address',
             type: 'email',
-            required: false
+            required: true
           }
         }, {
           key: 'cell_phone',

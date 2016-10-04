@@ -4,7 +4,7 @@
 
 It was engineered from its conception to handle thousands of rows without sacrificing performance.  It was built for modern browsers using _ES6, CSS3 and HTML5_ and only supports [Evergreen Browsers](http://eisenbergeffect.bluespire.com/evergreen-browsers/) and >= 1.4.x Angular.
 
-Sadly, this project is **not Angular2 upgrade compatible**...but we are in the progress of building a [angular2-data-table](https://github.com/swimlane/angular2-data-table) successor. Stay tuned for more info!
+Sadly, this project is **not Angular2 upgrade compatible**. Fortunately, we have authored [angular2-data-table](https://github.com/swimlane/angular2-data-table) which is the successor to this project. **We are going to slowly be transitioning this project maintenance mode**. We will continue to provide feedback to the community and accept PRs but we won't be doing any major new development.
 
 See live demos [here]( http://swimlane.github.io/angular-data-table/).
 
@@ -97,38 +97,6 @@ then using expressive markup in your template:
     </dtable>
 
 and your off to the races! See live demos [here](http://swimlane.github.io/angular-data-table/).
-
-## Research
-
-#### Alternatives
-
-I looked over all the alternatives out there agnostic to any particular platform to find the best solution.  Heres what I came up with:
-
-- [Handsome Table](http://handsontable.github.io/ngHandsontable/) - A great execl-like but lacked the ability to handle 100s of thousands of rows.
-
-- [Angular Grid](http://www.angulargrid.com/) - A great project by a talented developer, however, lacked many of the core features I needed.  Implementing the ones I needed was huge undertaking as some of the core would need to be re-worked.
-
-- [React Fixed Data Table](https://facebook.github.io/fixed-data-table/) - This is probably the BEST table alternative out there.  Its extremely smooth, handles millions of rows flawlessly, has a great API but lacked a few features I needed ( nor am I a react'er ).
-
-- [React Data Grid](https://github.com/zippyui/react-datagrid) - Another great alternative out there for react.
-
-- [Kendo UI Grid](http://demos.telerik.com/kendo-ui/grid/index) - Extremely full featured but EXTREMELY HEAVY( 600kb )!
-
-- [UI Grid](http://ui-grid.info) - By far the most popular grid for Angular and has a LOT of features. Problem was I found several bugs ( I'm on a mac, the main devs are windows users ), it supports a ton of browsers ( hacky code and bloat ) and it has a ton of features ( bloat ).
-
-- [Vaadin Poylmer Grid](http://demo.vaadin.com/sampler/#ui/grids-and-trees/grid) - A nice poylmer project but beta-ish.
-
-- [Ember Table](http://addepar.github.io/ember-table/) - A very nice table for Ember but doesn't handle large data sets very nicely and scrolling can be a bit 'janky' sometimes.
-
-#### Design
-
-The core CSS for the table has no assumptions about the styling of your application and therefore you can easily style it.  I provided a out-of-the-box style based on Google Material design.  Here is where I got some of the ideas:
-
-- [Angular Material Github Issue](https://github.com/angular/material/issues/796)
-- [Material Table](https://github.com/daniel-nagy/md-data-table)
-- [Material Table 2](http://danielnagy.me/md-data-table/)
-- [Material Table 3](http://codepen.io/zavoloklom/pen/IGkDz)
-- [Material Design Spec](http://www.google.com/design/spec/components/data-tables.html#data-tables-tables-within-cards)
 
 ## Credits
 

@@ -383,12 +383,15 @@ function CellDirective($rootScope, $compile, $log, $timeout){
 
           // extend the outer scope onto our new cell scope
           if(ctrl.column.template || ctrl.column.cellRenderer){
-            cellScope = ctrl.options.$outer.$new(false);
-            cellScope.getValue = ctrl.getValue;
+            createCellScope();
           }
 
           $scope.$watch('cell.row', () => {
             if(cellScope){
+              cellScope.$destroy();
+
+              createCellScope();
+
               cellScope.$cell = ctrl.value;
               cellScope.$row = ctrl.row;
               cellScope.$column = ctrl.column;
@@ -406,7 +409,13 @@ function CellDirective($rootScope, $compile, $log, $timeout){
             } else {
               content[0].innerHTML = ctrl.getValue();
             }
+            
           }, true);
+
+          function createCellScope(){
+            cellScope = ctrl.options.$outer.$new(false);
+            cellScope.getValue = ctrl.getValue;
+          }
         }
       }
     }
@@ -774,7 +783,7 @@ class SelectionController {
    */
   rowClicked(event, index, row){
     if(!this.options.checkboxSelection){
-      event.preventDefault();
+      // event.preventDefault();
       this.selectRow(event, index, row);
     }
 
@@ -1163,6 +1172,37 @@ class BodyController{
   }
 
   /**
+   * Recursively calculate row depth for unsorted backend data
+   * @param row
+   * @param depth
+   * @return {Integer}
+  */
+  calculateDepth(row, depth=0){
+    var parentProp = this.treeColumn ? this.treeColumn.relationProp : this.groupColumn.prop;
+    var prop = this.treeColumn.prop;
+    if (!row[parentProp]){
+      return depth;
+    }
+    if (row.$$depth) {
+      return row.$$depth + depth;
+    }
+    /* Get data from cache, if exists*/
+    var cachedParent = this.index[row[parentProp]];
+    if (cachedParent) {
+      depth += 1;
+      return this.calculateDepth(cachedParent, depth);
+    }
+    for (var i=0, len = this.rows.length; i < len;  i++){
+      var parent = this.rows[i];
+      if (parent[prop] == row[parentProp]){
+        depth+=1;
+        return this.calculateDepth(parent, depth);
+      }
+    }
+    return depth;
+  }
+
+  /**
    * Matches groups to their respective parents by index.
    *
    * Example:
@@ -1206,6 +1246,17 @@ class BodyController{
           row.$$depth = 0;
         } else {
           var parent = this.index[row[parentProp]];
+          if (parent === undefined){
+            for (var j=0; j < len; j++){
+              if (this.rows[j][prop] == relVal){
+                parent = this.rows[j];
+                break;
+              }
+            }
+          }
+          if (parent.$$depth === undefined) {
+            parent.$$depth = this.calculateDepth(parent);
+          }
           row.$$depth = parent.$$depth + 1;
           if (parent.$$children){
             parent.$$children.push(row[prop]);
@@ -1263,28 +1314,27 @@ class BodyController{
    * @return {array} the built tree
    */
   buildTree(){
-    var count = 0,
-        temp = [];
+    var temp = [],
+        self = this;
 
-    for(var i = 0, len = this.rows.length; i < len; i++) {
-      var row = this.rows[i],
-          relVal = row[this.treeColumn.relationProp],
-          keyVal = row[this.treeColumn.prop],
-          rows = this.rowsByGroup[keyVal],
-          expanded = this.expanded[keyVal];
+    function addChildren(fromArray, toArray, level) {
+      fromArray.forEach(function (row) {
+        var relVal = row[self.treeColumn.relationProp],
+            key = row[self.treeColumn.prop],
+            groupRows = self.rowsByGroup[key],
+            expanded = self.expanded[key];
 
-      if(!relVal){
-        count++;
-        temp.push(row);
-      }
-
-      if(rows && rows.length){
-        if(expanded){
-          temp.push(...rows);
-          count = count + rows.length;
+        if (level > 0 || !relVal) {
+          toArray.push(row);
+          if (groupRows && groupRows.length > 0 && expanded) {
+            addChildren(groupRows, toArray, level + 1);
+          }
         }
-      }
+
+      });
     }
+
+    addChildren(this.rows, temp, 0);
 
     return temp;
   }
@@ -2478,6 +2528,10 @@ const ColumnDefaults = {
   // Default sort asecending/descending for the column
   sort: undefined,
 
+  // If you want to sort a column by a special property
+  // See an example in demos/sort.html
+  sortBy: undefined,
+
   // The cell renderer that returns content for table column header
   headerRenderer: undefined,
 
@@ -2747,7 +2801,11 @@ class DataTableController {
         var c = sorts[i];
         if(c.comparator !== false){
           var dir = c.sort === 'asc' ? '' : '-';
-          clientSorts.push(dir + c.prop);
+          if (c.sortBy !== undefined) {
+            clientSorts.push(dir + c.sortBy);
+          } else {
+            clientSorts.push(dir + c.prop);
+          }
         }
       }
 

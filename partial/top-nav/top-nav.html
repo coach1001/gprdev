@@ -93,23 +93,25 @@
       <li ng-hide="!isAuthenticated" uib-dropdown  ng-if="vm.section">
         <a href="#" uib-dropdown-toggle>Project<b class="caret"></b></a>
         <ul uib-dropdown-menu>
-          <li><a ui-sref="home.cfps">Create Project</a></li>
+          <li><a ui-sref="home.projects">Create/Edit Project</a></li>
         </ul>
       </li>
 
       <li ng-hide="!isAuthenticated" uib-dropdown  ng-if="vm.section">
         <a href="#" uib-dropdown-toggle>Project-Partners<b class="caret"></b></a>
         <ul uib-dropdown-menu>
-          <li><a ui-sref="home.cfps">Create/Edit Project Partners</a></li>
+          <li><a ui-sref="home.project-partners">Create/Edit Project Partners</a></li>
           <li><a ui-sref="home.cfps">Create/Edit Partner Contracts</a></li>
           <li><a ui-sref="home.cfps">Create/Edit Partner Budgets</a></li>
+          <li><a ui-sref="home.cfps">Create/Edit Partner Implementation Plan</a></li>
+          <li><a ui-sref="home.cfps">Create/Edit Partner Reporting Schedule</a></li>
         </ul>
       </li>
 
       <li ng-hide="!isAuthenticated" uib-dropdown  ng-if="vm.section">
         <a href="#" uib-dropdown-toggle>Project-Reviews<b class="caret"></b></a>
         <ul uib-dropdown-menu>
-          <li><a ui-sref="home.cfps">Create Project</a></li>
+          <li><a ui-sref="home.cfps">Create/Edit Review</a></li>
         </ul>
       </li>
 
@@ -117,7 +119,8 @@
       <li ng-hide="!isAuthenticated" uib-dropdown  ng-if="vm.section">
         <a href="#" uib-dropdown-toggle>Project Expenses<b class="caret"></b></a>
         <ul uib-dropdown-menu>
-          <li><a ui-sref="home.cfps">Create Project</a></li>
+          <li><a ui-sref="home.cfps">Create/Edit Project Payment</a></li>
+          <li><a ui-sref="home.cfps">Review Project Expenses</a></li>
         </ul>
       </li>
 

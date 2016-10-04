@@ -1,5 +1,5 @@
 
-  <ui-select data-ng-model="model[options.key]" data-required="{{to.required}}" data-disabled="{{to.disabled}}"
+  <ui-select data-ng-model="model[options.key]" ng-required="{{to.required}}" ng-disabled="{{to.disabled}}"
              theme="bootstrap" size="20">
     <ui-select-match placeholder="{{to.placeholder}}" data-allow-clear="true">{{$select.selected[to.labelProp]}}
     </ui-select-match>

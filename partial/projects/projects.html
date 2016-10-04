@@ -1,0 +1,8 @@
+<h3>{{vm.title}} <span class="badge">{{vm.gridApi.core.getVisibleRows().length}} of {{vm.projects.length}}</span></h3>
+<div class="grid">
+         <div class="form-group">
+        <button class="btn btn-primary" ng-click="vm.openModal(0,'Create')" >Add Project</button>
+        </div>
+        <div ui-grid="vm.options" ui-grid-exporter ui-grid-selection class="grid"></div>
+</div>
+

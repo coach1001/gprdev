@@ -1,0 +1,18 @@
+<h3>{{vm.title}} <span class="btn-default badge">{{vm.gridApi.core.getVisibleRows().length}} of {{vm.projects.length}}</span></h3>
+<div class="grid-half">
+    
+        <h4>Projects</h4>
+        
+        <div ui-grid="vm.options" ui-grid-exporter ui-grid-selection class="grid-half"></div>      
+</div>
+<div style="height: 4vh;"></div>
+
+<h4><span class="badge">{{vm.selectedProject || 'No Project Selected'}}</span> Partners</h4>
+<div class="grid-half">
+         <div class="form-group">
+        <button class="btn btn-primary" ng-click="vm.openModal(0,'Create')" ng-if="vm.selectedProject">Add Partner</button>
+        </div>
+        <div ui-grid="vm.optionsPartners" ui-grid-exporter ui-grid-selection class="grid-half"></div>
+</div>
+
+
