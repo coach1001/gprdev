@@ -7,7 +7,7 @@ angular.module('appCg', [
     'formlyBootstrap',
     'ngToast',
     'angular-confirm',
-    'ui.grid', 'ui.grid.selection', 'ui.grid.exporter', 'ui.grid.edit',
+    'ui.grid', 'ui.grid.selection', 'ui.grid.exporter', 'ui.grid.edit','ui.grid.autoResize',
     'ui.select', 'ngLoadingSpinner', 'ui.checkbox', 'disableAll'
 ]);
 
@@ -531,11 +531,94 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider, $loc
                 resolve: {
                     projects: function res(gprRestApi) {
                         return gprRestApi.getRows('grid_projects', false);                    
+                    },
+                    option : function res(){
+                        return 1;
                     }
                 }
             }
         }
     });
+
+    $stateProvider.state('home.project-partners-contracts', {
+        url: '/project-partners-contracts',
+        templateUrl: 'partial/project-partners/project-partners.html',
+        views: {
+            'mainContent@': {
+                templateUrl: 'partial/project-partners/project-partners.html',
+                controller: 'ProjectPartnersCtrl as vm',
+                resolve: {
+                    projects: function res(gprRestApi) {
+                        return gprRestApi.getRows('grid_projects', false);                    
+                    },
+                    option : function res(){
+                        return 2;
+                    }
+                }
+            }
+        }
+    });
+
+    $stateProvider.state('home.project-partners-budgets', {
+        url: '/project-partners-budgets',
+        templateUrl: 'partial/project-partners/project-partners.html',
+        views: {
+            'mainContent@': {
+                templateUrl: 'partial/project-partners/project-partners.html',
+                controller: 'ProjectPartnersCtrl as vm',
+                resolve: {
+                    projects: function res(gprRestApi) {
+                        return gprRestApi.getRows('grid_projects', false);                    
+                    },
+                    option : function res(){
+                        return 3;
+                    }
+                }
+            }
+        }
+    });
+
+    $stateProvider.state('home.project-partners-implementation-plans', {
+        url: '/project-partners-implementation-plans',
+        templateUrl: 'partial/project-partners/project-partners.html',
+        views: {
+            'mainContent@': {
+                templateUrl: 'partial/project-partners/project-partners.html',
+                controller: 'ProjectPartnersCtrl as vm',
+                resolve: {
+                    projects: function res(gprRestApi) {
+                        return gprRestApi.getRows('grid_projects', false);                    
+                    },
+                    option : function res(){
+                        return 4;
+                    }
+                }
+            }
+        }
+    });
+
+    $stateProvider.state('home.project-partners-report-schedules', {
+        url: '/project-partners-report-schedules',
+        templateUrl: 'partial/project-partners/project-partners.html',
+        views: {
+            'mainContent@': {
+                templateUrl: 'partial/project-partners/project-partners.html',
+                controller: 'ProjectPartnersCtrl as vm',
+                resolve: {
+                    projects: function res(gprRestApi) {
+                        return gprRestApi.getRows('grid_projects', false);                    
+                    },
+                    option : function res(){
+                        return 5;
+                    }
+                }
+            }
+        }
+    });
+
+
+
+
 
     $urlRouterProvider.otherwise('/home');
     $locationProvider.html5Mode(false);

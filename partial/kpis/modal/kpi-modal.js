@@ -42,10 +42,6 @@ angular.module('appCg').controller('KpiModalCtrl', function (kpi,
     onRegisterApi: function (gridApi) {
       vm.gridApi = gridApi;
 
-      $interval(function () {
-        gridApi.core.handleWindowResize();
-      }, 10, 500);
-
       gridApi.selection.on.rowSelectionChanged(null, function (row) {
         console.log(row.entity.id);
         vm.openModal(row.entity.id, 'Update');

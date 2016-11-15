@@ -2,7 +2,7 @@ angular.module('appCg').controller('ProjectModalCtrl', function(project, kpis, p
     gprRestApi,
     ngToast,
     $confirm,
-    $uibModalInstance) {
+    $uibModalInstance,$uibModal) {
 
     var vm = this;
 
@@ -26,36 +26,46 @@ angular.module('appCg').controller('ProjectModalCtrl', function(project, kpis, p
             options: {},
             model: vm.project,
             fields: [{
-                    key: 'name',
-                    type: 'input',
-                    templateOptions: {
-                        type: 'text',
-                        label: 'Project Name',
-                        placeholder: 'Project Name',
-                        required: true
-                    }
-                }, {
-
-                    key: 'description',
-                    type: 'textarea',
-                    templateOptions: {
-                        type: 'text',
-                        label: 'Description',
-                        rows: 3,
-                        placeholder: 'Project Description',
-                        required: true
-                    }
-                },             ]
+                key: 'name',
+                type: 'input',
+                templateOptions: {
+                    type: 'text',
+                    label: 'Project Name',
+                    placeholder: 'Project Name',
+                    required: true
+                }
+            }, {
+                key: 'description',
+                type: 'textarea',
+                templateOptions: {
+                    type: 'text',
+                    label: 'Description',
+                    rows: 3,
+                    placeholder: 'Project Description',
+                    required: true
+                }
+            },{
+                    template: '<button class="btn btn-success" ng-click="openProjBen()">Edit Project Beneficiaries</button><br></br>',
+                    hideExpression: function($viewValue, $modelValue, scope) {
+                        if (vm.operation === 'Create') {
+                            return true;
+                        } else {}
+                    },
+                    controller: ['$scope', function($scope) {
+                        $scope.openProjBen = function() {
+                            vm.openProjBen();
+                        };
+                    }]
+                }, 
+            ]
         }
-    },
-    {
+    }, {
         title: 'Details',
         active: false,
         form: {
             options: {},
             model: vm.project,
-            fields: [
-                {
+            fields: [{
                     key: 'project_type',
                     type: 'ui-select-single',
                     templateOptions: {
@@ -123,10 +133,11 @@ angular.module('appCg').controller('ProjectModalCtrl', function(project, kpis, p
 
                 {
                     key: 'project_officer',
-                    type: 'ui-select-single',
+                    //type: 'ui-select-single',
+                    type:'select',
                     templateOptions: {
-                        optionsAttr: 'bs-options',
-                        ngOptions: 'option[to.valueProp] as option in to.options | filter: $select.search',
+                        //optionsAttr: 'bs-options',
+                        //ngOptions: 'option[to.valueProp] as option in to.options | filter: $select.search',
                         label: 'Project Officer',
                         valueProp: 'id',
                         labelProp: 'full_name',
@@ -157,8 +168,38 @@ angular.module('appCg').controller('ProjectModalCtrl', function(project, kpis, p
                 }
             ]
         }
-    }
-    ];
+    }];
+
+    vm.openProjBen = function() {
+
+        $uibModal.open({
+            templateUrl: 'partial/many-to-many-modal/many-to-many-modal.html',
+            controller: 'ManyToManyModalCtrl',
+            resolve: {
+                configManyToMany: function() {
+                    return {
+                        modalTitle: 'Project Beneficiaries Types',
+
+                        optionSearchPlaceholder: 'Search Beneficiary Types',
+                        selectedSearchPlaceholder: 'Search Selected Beneficiary Types',
+
+                        hybridTable: 'project_beneficiaries',
+                        lookupHybridColumn: 'beneficiary',
+
+                        singularColumn: 'project',
+                        singularValue: vm.project.id,
+
+                        lookupTable: 'beneficiaries',
+                        lookupValueProp: 'id',
+                        lookupLabelProp: 'type'
+                    };
+                }
+            }
+        }).result.then(function(result) {
+            //do something with the result
+        });
+
+    };
 
     vm.updateCreateRow = function() {
         var body = angular.copy(vm.project);
@@ -166,9 +207,9 @@ angular.module('appCg').controller('ProjectModalCtrl', function(project, kpis, p
 
         gprRestApi.updateCreateRow('projects', body, vm.operation).then(function success(response) {
             ngToast.create({ content: vm.operation + ' Record Successfull', timeout: 4000 });
-            if (vm.operation === 'Create') {            
-                vm.project.id = response.data.id;                
-            }else if (vm.operation === 'Update'){
+            if (vm.operation === 'Create') {
+                vm.project.id = response.data.id;
+            } else if (vm.operation === 'Update') {
                 vm.project.id = response.data[0].id;
             }
 

@@ -1,4 +1,4 @@
-angular.module('appCg').controller('ProjectsCtrl', function(projects, gprRestApi, $uibModal) {
+angular.module('appCg').controller('ProjectsCtrl', function(projects, gprRestApi, $uibModal,uiGridConstants) {
     var vm = this;
     vm.title = 'Projects';
     var unfilteredRows = angular.extend(projects);
@@ -14,7 +14,7 @@ angular.module('appCg').controller('ProjectsCtrl', function(projects, gprRestApi
         noUnselect: true,
         enableGridMenu: true,
         columnDefs: [
-            { name: 'project_code' },
+            { name: 'project_code', sort: { direction: uiGridConstants.ASC} },
             { name: 'name' },
             { name: 'description' },
             { name: 'call_reference'},
@@ -45,7 +45,7 @@ angular.module('appCg').controller('ProjectsCtrl', function(projects, gprRestApi
                     return gprRestApi.getRows('lookup_call_applications_for_projects',false);
                 },
                 persons: function res(gprRestApi) {
-                    return gprRestApi.getRows('lookup_compliance_officers', false);
+                    return gprRestApi.getRows('grid_persons', false);
                 },
                 project_statuses: function res(gprRestApi) {
                     return gprRestApi.getRows('project_statuses', false);
@@ -53,7 +53,6 @@ angular.module('appCg').controller('ProjectsCtrl', function(projects, gprRestApi
                 project_types: function res(gprRestApi) {
                     return gprRestApi.getRows('project_types', false);
                 },
-
                 operation: function res() {
                     return operation;
                 }

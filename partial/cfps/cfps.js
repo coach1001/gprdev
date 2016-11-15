@@ -6,6 +6,7 @@ angular.module('appCg').controller('CfpsCtrl', function(cfps, gprRestApi, $uibMo
 
     vm.calls = vm.rows = angular.extend(cfps);
 
+
     vm.options = {
         data: vm.rows,
         enableFiltering: true,
@@ -53,6 +54,7 @@ angular.module('appCg').controller('CfpsCtrl', function(cfps, gprRestApi, $uibMo
                 call: function(gprRestApi) {
                     return gprRestApi.getRowWithFEs('calls', id, 'key_performance_indicators{*,key_result_areas{*,programmes{*}}}');
                 }
+
             }
         }).result.then(function(result) {
             console.log('modal closed');

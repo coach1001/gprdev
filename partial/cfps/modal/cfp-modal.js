@@ -7,7 +7,8 @@ angular.module('appCg').controller('CfpModalCtrl', function(programmes, alfresco
 	gprRestApi,
 	ngToast,
 	$confirm,
-	$uibModalInstance, $filter) {
+	$uibModalInstance, $filter
+	) {
 
 	var vm = this;
 
@@ -27,7 +28,7 @@ angular.module('appCg').controller('CfpModalCtrl', function(programmes, alfresco
 	if (!vm.compliance_templates) {
 		vm.compliance_templates = [];
 	}
-
+	
 	vm.tabs = [{
 		title: 'General',
 		active: true,

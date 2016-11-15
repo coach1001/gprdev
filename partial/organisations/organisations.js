@@ -67,6 +67,9 @@ angular.module('appCg').controller('OrganisationsCtrl', function(organisations, 
                     return gprRestApi.getRows('places',false);
                 },
 */
+                main_contact_person: function res(gprRestApi) {
+                    return gprRestApi.getRow('lookup_organisation_contact_person',id);
+                },
                 operation: function res() {
                     return operation;
                 }

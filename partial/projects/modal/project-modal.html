@@ -1,14 +1,10 @@
 <div>
     <div class="modal-header">
         <button type="button" class="close pull-right" ng-click="$dismiss()" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">Projects</h4>
+        <h4 class="modal-title">Project <span class="badge">{{vm.project.id}}</span> </h4>
     </div>
     <div class="modal-body">
         <form novalidate>
-<!--             <formly-form model="vm.project" fields="vm.projectFields" form="vm.projectForm">
-                <button ng-click="vm.updateCreateRow()" class="btn btn-primary" ng-disabled="vm.projectForm.$invalid">{{vm.operation}}</button>
-                <button type="button" ng-click="vm.deleteRow()" class="btn btn-warning" confirm="Are you sure?" ng-hide="vm.operation === 'Create'">Delete</button>
-            </formly-form> -->
             <uib-tabset type="pills">
                 <uib-tab ng-repeat="tab in vm.tabs" heading="{{tab.title}}" active="tab.active" disable="tab.disabled">
                     </br>
@@ -18,8 +14,6 @@
             </uib-tabset>
           <button ng-click="vm.updateCreateRow()" class="btn btn-primary" ng-disabled="vm.projectForm.$invalid">{{vm.operation}}</button>
           <button type="button" ng-click="vm.deleteRow()" class="btn btn-warning" confirm="Are you sure?" ng-hide="vm.operation === 'Create'">Delete</button>
-
-
         </form>
     </div>
 </div>

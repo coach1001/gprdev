@@ -4,6 +4,7 @@ angular.module('appCg').controller('OrganisationModalCtrl', function($scope, org
   provinces,
   orgTypes,
   orgStatuses,
+  main_contact_person,
   /*
                                                                         suburbs,
                                                                         places,
@@ -36,6 +37,15 @@ angular.module('appCg').controller('OrganisationModalCtrl', function($scope, org
   vm.postal_provinces = angular.extend(provinces);
   vm.postal_suburbs = [];
   vm.postal_places = [];
+
+  if(main_contact_person){
+    vm.main_contact_person = angular.extend(main_contact_person);  
+  }else{
+    vm.main_contact_person = {};
+  }
+  
+  
+  console.log(vm.main_contact_person);
 
   vm.tabs = [{
       title: 'General',
@@ -123,7 +133,45 @@ angular.module('appCg').controller('OrganisationModalCtrl', function($scope, org
               vm.openPersonsSelectModal();
             };
           }]
-        }, {
+        }, 
+          {
+            fieldGroup: [
+              
+              {
+                className: 'col-xs-4 nopadding',
+                key: 'full_name',
+                type: 'input',
+                model: vm.main_contact_person,
+                templateOptions:{
+                  label : 'Main Contact Name',
+                  disabled: true
+                }
+              },
+
+              {
+                className: 'col-xs-4 nopadding',
+                key: 'email_address',
+                type: 'input',
+                model: vm.main_contact_person,
+                templateOptions:{
+                  label : 'Main Contact Email',
+                  disabled: true
+                }
+              },
+
+              {
+                className: 'col-xs-4 nopadding',
+                key: 'cell_phone',
+                type: 'input',
+                model: vm.main_contact_person,
+                templateOptions:{
+                  label : 'Main Contact Cell',
+                  disabled: true
+                }
+              }
+
+          ]},
+        {
           key: 'email_address',
           type: 'input',
           templateOptions: {
@@ -244,7 +292,7 @@ angular.module('appCg').controller('OrganisationModalCtrl', function($scope, org
             type: 'select',
             templateOptions: {
 
-              label: 'Suburb',
+              label: 'Street Suburb',
               valueProp: 'id',
               labelProp: 'street_label'
             }
@@ -461,7 +509,15 @@ angular.module('appCg').controller('OrganisationModalCtrl', function($scope, org
       }
     }).result.then(function(result) {
       vm.organisation.main_contact_person = result.id;
+      vm.main_contact_person = angular.extend(result);
+      
+      vm.tabs[1].form.fields[1].fieldGroup[0].model = vm.main_contact_person;
+      vm.tabs[1].form.fields[1].fieldGroup[1].model = vm.main_contact_person;
+      vm.tabs[1].form.fields[1].fieldGroup[2].model = vm.main_contact_person;
+         
+
       vm.updateCreateRow();
+
     }, function(result) {
 
     });
@@ -490,7 +546,7 @@ angular.module('appCg').controller('OrganisationModalCtrl', function($scope, org
     }, function error(response) {
       ngToast.warning({ content: 'Record Delete Failed', timeout: 4000 });
     });
-
-
   };
+
+  console.log(vm.tabs);
 });

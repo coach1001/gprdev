@@ -5,7 +5,7 @@ angular.module('appCg').controller('ApplicationModalCtrl', function($scope, $uib
     gprRestApi,
     ngToast,
     $confirm,
-    $uibModalInstance, reporting,letterDetail) {
+    $uibModalInstance, reporting,letterDetail,main_contact_person) {
 
     var vm = this;
 
@@ -26,6 +26,11 @@ angular.module('appCg').controller('ApplicationModalCtrl', function($scope, $uib
         }
     };
 
+      if(main_contact_person){
+    vm.main_contact_person = angular.extend(main_contact_person);  
+  }else{
+    vm.main_contact_person = {};
+  }
 
     vm.applicationFields = [{
             key: 'call',
@@ -59,12 +64,11 @@ angular.module('appCg').controller('ApplicationModalCtrl', function($scope, $uib
             }
         }, {
             key: 'title',
-            type: 'textarea',
+            type: 'input',
             className: 'nopadding',
             templateOptions: {
                 label: 'Project Title',
-                placeholder: 'Project Name',
-                rows: 2,
+                placeholder: 'Project Name',                
                 required: false
             }
         }, {
@@ -88,7 +92,43 @@ angular.module('appCg').controller('ApplicationModalCtrl', function($scope, $uib
                     vm.openPersonsSelectModal();
                 };
             }]
-        },
+        },{
+            fieldGroup: [
+              
+              {
+                className: 'col-xs-4 nopadding',
+                key: 'full_name',
+                type: 'input',
+                model: vm.main_contact_person,
+                templateOptions:{
+                  label : 'Main Contact Name',
+                  disabled: true
+                }
+              },
+
+              {
+                className: 'col-xs-4 nopadding',
+                key: 'email_address',
+                type: 'input',
+                model: vm.main_contact_person,
+                templateOptions:{
+                  label : 'Main Contact Email',
+                  disabled: true
+                }
+              },
+
+              {
+                className: 'col-xs-4 nopadding',
+                key: 'cell_phone',
+                type: 'input',
+                model: vm.main_contact_person,
+                templateOptions:{
+                  label : 'Main Contact Cell',
+                  disabled: true
+                }
+              }
+
+          ]}
         /* {
                 key: 'place',
                 type: 'select',
@@ -219,6 +259,10 @@ angular.module('appCg').controller('ApplicationModalCtrl', function($scope, $uib
             }
         }).result.then(function(result) {
             vm.application.contact_person = result.id;
+            vm.main_contact_person = angular.extend(result);
+            vm.applicationFields[6].fieldGroup[0].model= vm.main_contact_person;
+            vm.applicationFields[6].fieldGroup[1].model= vm.main_contact_person;
+            vm.applicationFields[6].fieldGroup[2].model= vm.main_contact_person;
             vm.updateCreateRow();
         }, function(result) {
 
