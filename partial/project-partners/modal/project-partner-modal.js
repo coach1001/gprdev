@@ -31,13 +31,14 @@ angular.module('appCg').controller('ProjectPartnerModalCtrl', function(project_p
         vm.project_partner.partner_type = 0;
     }
 
-    vm.optionsPartners = {
+/*    vm.optionsPartners = {
         formState: {
             filter: ''
         }
     };
-
-    vm.project_partnerFields = [{
+*/
+    vm.project_partnerFields = [
+        {
             key: 'partner_type',
             type: 'ui-select-single',
             templateOptions: {

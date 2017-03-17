@@ -22,7 +22,10 @@ angular.module('appCg').controller('OrganisationsCtrl', function(organisations, 
             { name: 'email_address' },
             { name: 'referee' },
             { name: 'auditor' },
-            { name: 'province' }
+            { name: 'province' },
+            { name: 'contact_name' },
+            { name: 'contact_email' },
+
             //{ name: 'organisation_type' }
         ],
         onRegisterApi: function(gridApi) {

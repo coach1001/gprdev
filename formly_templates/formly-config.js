@@ -185,7 +185,7 @@ angular.module('appCg').run(function(formlyConfig) {
   
   formlyConfig.setType({
     name: 'timepicker',
-    template: '<uib-timepicker show-meridian="false" ng-model="model[options.key]"></uib-timepicker>',
+    template: '<div uib-timepicker show-meridian="false" ng-model="model[options.key]"></div>',
     wrapper: ['bootstrapLabel', 'bootstrapHasError'],
     defaultOptions: {
       ngModelAttrs: ngModelAttrs,

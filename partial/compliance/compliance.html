@@ -46,11 +46,11 @@
         
         
         <div ng-if="q.question_types.code==='date'">
-          <uib-datepicker ng-blur="vm.updateModelAnswer(catIndex,qIndex,q.compliance_answers[0].answer)" style="width:25%;" ng-model="q.compliance_answers[0].answer">
+          <div uib-datepicker ng-blur="vm.updateModelAnswer(catIndex,qIndex,q.compliance_answers[0].answer)" style="width:25%;" ng-model="q.compliance_answers[0].answer"></div>
         </div>
         
         <div ng-if="q.question_types.code==='time'">
-          <uib-timepicker hour-step="1" minute-step="1" show-meridian="false" ng-blur="vm.updateModelAnswer(catIndex,qIndex,q.compliance_answers[0].answer)" style="width:25%;" ng-model="q.compliance_answers[0].answer">
+          <div uib-timepicker hour-step="1" minute-step="1" show-meridian="false" ng-blur="vm.updateModelAnswer(catIndex,qIndex,q.compliance_answers[0].answer)" style="width:25%;" ng-model="q.compliance_answers[0].answer"></div>
         </div>
         
         <div ng-if="q.question_types.code==='boolean'">

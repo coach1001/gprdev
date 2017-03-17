@@ -5,7 +5,7 @@ angular.module('appCg').controller('CfpsCtrl', function(cfps, gprRestApi, $uibMo
     var unfilteredRows = angular.extend(cfps);
 
     vm.calls = vm.rows = angular.extend(cfps);
-
+    
 
     vm.options = {
         data: vm.rows,

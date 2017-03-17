@@ -16,17 +16,17 @@
       <li ng-hide="!isAuthenticated" uib-dropdown  ng-if="!vm.section">
         <a href="#" uib-dropdown-toggle>Calls for Proposals <b class="caret"></b></a>
         <ul uib-dropdown-menu>
-          <li><a ui-sref="home.cfps">Create/Edit Call</a></li>
-          <li><a ui-sref="home.kpis">Create/Edit Key Performance Indicator</a></li>
-          <li><a ui-sref="home.kras">Create/Edit Key Result Area</a></li>
-          <li><a ui-sref="home.programmes">Create/Edit Programme</a></li>
+          <li><a ui-sref="home.cfps">Call</a></li>
+          <li><a ui-sref="home.kpis">Performance Indicator</a></li>
+          <li><a ui-sref="home.kras">Key Result Area</a></li>
+          <li><a ui-sref="home.programmes">Programme</a></li>
         </ul>
       </li>
       <li ng-hide="!isAuthenticated" uib-dropdown  ng-if="!vm.section">
         <a href="#" uib-dropdown-toggle>Applications <b class="caret"></b></a>
         <ul uib-dropdown-menu>
-          <li><a ui-sref="home.applications">Create/Edit Application</a></li>
-          <li><a ui-sref="home.organisations">Create/Edit Organisation</a></li>
+          <li><a ui-sref="home.applications">Application</a></li>
+          <li><a ui-sref="home.organisations">Organisation</a></li>
 
         </ul>
       </li>
@@ -36,7 +36,7 @@
           <li><a ui-sref="home.compliance-select({compliance_section : 2})">Do Admin Compliance</a></li>          
           <li><a ui-sref="home.compliance-assign-applications({compliance_section : 2})">Assign Admin & Tech Officers</a></li>          
           <li><a ui-sref="home.compliance-select-pmu({compliance_section : 2})">Grants Unit - Promote/Demote/Fail</a></li>          
-          <!--<li><a href="#">Create/Edit Assessment Template</a></li>-->
+          <!--<li><a href="#">Assessment Template</a></li>-->
         </ul>
       </li>
       <li ng-hide="!isAuthenticated" uib-dropdown  ng-if="!vm.section">
@@ -45,7 +45,7 @@
           <li><a ui-sref="home.compliance-select({compliance_section : 3})">Do Relevance</a></li>          
           <li><a ui-sref="home.compliance-assign-applications({compliance_section : 3})">Assign Relevance Officers</a></li>          
           <li><a ui-sref="home.compliance-select-pmu({compliance_section : 3})">Grants Unit - Promote/Demote/Fail</a></li>          
-          <!--<li><a href="#">Create/Edit Assessment Template</a></li>-->
+          <!--<li><a href="#">Assessment Template</a></li>-->
         </ul>
       </li>
 
@@ -56,7 +56,7 @@
           <li><a ui-sref="home.compliance-assign-applications({compliance_section : 4})">Assign Assessors</a></li>                    
           <li><a ui-sref="home.compliance-select-la({compliance_section : 4})">Lead Assessor - View Assessments</a></li>          
           <!-- <li><a ui-sref="home.compliance-select-pmu({compliance_section : 4})">Grants Unit - Promote/Demote/Fail</a></li> -->
-          <!--<li><a href="#">Create/Edit Assessment Template</a></li>-->
+          <!--<li><a href="#">Assessment Template</a></li>-->
         </ul>
       </li>
 
@@ -67,7 +67,7 @@
         <a ui-sref="home.pmu-advisory-notes" uib-dropdown-toggle>PM/PMU Advisory Note</a>        
         <!-- <ul uib-dropdown-menu>
           <li><a ui-sref="home.pmu-advisory-notes">Add/Edit Note</a></li>          
-          <li><a href="#">Create/Edit Assessment Template</a></li>
+          <li><a href="#">Assessment Template</a></li>
         </ul> -->
       </li>
 
@@ -84,44 +84,44 @@
         <a href="#" uib-dropdown-toggle>Approval Meeting<b class="caret"></b></a>
         <ul uib-dropdown-menu>
           <li><a ui-sref="home.approval-meetings">Add/Edit Meeting</a></li>          
-          <!--<li><a href="#">Create/Edit Assessment Template</a></li>-->
+          <!--<li><a href="#">Assessment Template</a></li>-->
         </ul>
       </li>
 
 
       <!-- PMU SECTION -->
       <li ng-hide="!isAuthenticated" uib-dropdown  ng-if="vm.section">
-        <a href="#" uib-dropdown-toggle>Project<b class="caret"></b></a>
-        <ul uib-dropdown-menu>
-          <li><a ui-sref="home.projects">Create/Edit Project</a></li>
+        <a ui-sref="home.projects" uib-dropdown-toggle>Project<!-- <b class="caret"></b> --></a>
+<!--         <ul uib-dropdown-menu>
+          <li><a ui-sref="home.projects">Project</a></li>
         </ul>
-      </li>
+ -->      </li>
 
       <li ng-hide="!isAuthenticated" uib-dropdown  ng-if="vm.section">
         <a href="#" uib-dropdown-toggle>Project-Partners<b class="caret"></b></a>
         <ul uib-dropdown-menu>
-          <li><a ui-sref="home.project-partners">Create/Edit Project Partners</a></li>
-          <li><a ui-sref="home.project-partners-contracts">Create/Edit Partner Contracts</a></li>
-          <li><a ui-sref="home.project-partners-budgets">Create/Edit Partner Budgets</a></li>
-          <li><a ui-sref="home.project-partners-implementation-plans">Create/Edit Partner Implementation Plan</a></li>
-          <li><a ui-sref="home.project-partners-report-schedules">Create/Edit Partner Reporting Schedule</a></li>
+          <li><a ui-sref="home.project-partners">Project Partners</a></li>
+          <li><a ui-sref="home.project-partners-contracts">Partner Contracts</a></li>
+          <li><a ui-sref="home.project-partners-budgets">Partner Budgets</a></li>
+          <li><a ui-sref="home.project-partners-implementation-plans">Partner Implementation Plan</a></li>
+          <li><a ui-sref="home.project-partners-report-schedules">Partner Reporting Schedule</a></li>
         </ul>
       </li>
 
       <li ng-hide="!isAuthenticated" uib-dropdown  ng-if="vm.section">
-        <a href="#" uib-dropdown-toggle>Project-Reviews<b class="caret"></b></a>
-        <ul uib-dropdown-menu>
-          <li><a ui-sref="home.cfps">Create/Edit Review</a></li>
-        </ul>
+        <a ui-sref="home.project-reviews" uib-dropdown-toggle>Project-Reviews<!-- <b class="caret"></b> --></a>
+        <!-- <ul uib-dropdown-menu>
+          <li><a ui-sref="home.project-reviews">Review</a></li>
+        </ul> -->
       </li>
 
 
       <li ng-hide="!isAuthenticated" uib-dropdown  ng-if="vm.section">
-        <a href="#" uib-dropdown-toggle>Project Expenses<b class="caret"></b></a>
-        <ul uib-dropdown-menu>
-          <li><a ui-sref="home.cfps">Create/Edit Project Payment</a></li>
-          <li><a ui-sref="home.cfps">Review Project Expenses</a></li>
-        </ul>
+        <a ui-sref="home.project-expenses" uib-dropdown-toggle>Project Expenses<!-- <b class="caret"></b> --></a>
+        <!-- <ul uib-dropdown-menu>
+          <li><a ui-sref="home.project-expenses">Project Payment</a></li>
+          <li><a ui-sref="home.project-review-expenses">Review Project Expenses</a></li>
+        </ul> -->
       </li>
 
 

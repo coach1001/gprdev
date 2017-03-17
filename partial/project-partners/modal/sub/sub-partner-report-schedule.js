@@ -23,7 +23,7 @@ angular.module('appCg').controller('SubPartnerReportScheduleCtrl',function(repor
             options: {},
             model: vm.reporting_schedule,
             fields: [{
-                key: 'report_number',
+                key: 'report_no',
                 type: 'input',
                 templateOptions: {
                     type: 'number',

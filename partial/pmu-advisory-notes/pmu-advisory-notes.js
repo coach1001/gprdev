@@ -5,7 +5,7 @@ angular.module('appCg').controller('PmuAdvisoryNotesCtrl',function(applications,
   vm.applications = vm.rows = angular.extend(applications);
 
   vm.title = 'Pmu Advisory Notes';
-
+  
   vm.options = {
     data: vm.rows,
     enableFiltering: true,
@@ -20,7 +20,9 @@ angular.module('appCg').controller('PmuAdvisoryNotesCtrl',function(applications,
       { name: 'call_reference', width : 200,filter: {selectOptions: lookup_calls_uigrid, type: uiGridConstants.filter.SELECT } },
       //{ name: 'name', displayName: 'Organisation' },
       //{ name: 'email_address' },
+      { name: 'pm_advisory'},
       { name: 'pmu_advisory'},
+      { name: 'dd_outcomes'},
       { name: 'application_status_description', displayName: 'Application Status', width: 220}
     ],
     onRegisterApi: function(gridApi) {

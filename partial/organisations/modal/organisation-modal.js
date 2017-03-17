@@ -411,6 +411,7 @@ angular.module('appCg').controller('OrganisationModalCtrl', function($scope, org
     $uibModal.open({
       templateUrl: 'partial/many-to-many-modal/many-to-many-modal.html',
       controller: 'ManyToManyModalCtrl',
+      size : 'lg',
       resolve: {
         configManyToMany: function() {
           return {

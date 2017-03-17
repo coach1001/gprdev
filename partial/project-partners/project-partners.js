@@ -13,7 +13,10 @@ angular.module('appCg').controller('ProjectPartnersCtrl', function(projects, gpr
         vm.option_header = 'Implementation Plans';
     } else if (vm.option === 5) {
         vm.option_header = 'Reporting Schedules';
+    } else if (vm.option === 6) {
+        vm.option_header = 'Expenses';
     }
+
 
     vm.projectPartners = [];
 
@@ -27,7 +30,7 @@ angular.module('appCg').controller('ProjectPartnersCtrl', function(projects, gpr
         noUnselect: true,
         enableGridMenu: true,
         columnDefs: [
-            { name: 'project_code',sort: { direction: uiGridConstants.ASC} },
+            { name: 'project_code', sort: { direction: uiGridConstants.ASC } },
             { name: 'name' },
             { name: 'description' },
             { name: 'call_reference' },
@@ -102,20 +105,20 @@ angular.module('appCg').controller('ProjectPartnersCtrl', function(projects, gpr
                     vm.optionsPartners.data = vm.projectPartners;
                 }, function error(res) {});
             });
-        } else if (option === 2) {            
+        } else if (option === 2) {
             $uibModal.open({
                 templateUrl: 'partial/project-partners/modal/project-partner-contract-modal.html',
                 controller: 'ProjectPartnerContractModalCtrl as vm',
-                size : 'lg',
+                size: 'lg',
                 resolve: {
                     project_partner: function res(gprRestApi) {
                         return gprRestApi.getRow('grid_project_partners', id);
                     },
-                    project_partner_contract: function res(gprRestApi) {                        
-                        return gprRestApi.getRowWithFE_2('project_contracts','&project_partner=eq.'+id);                    
+                    project_partner_contract: function res(gprRestApi) {
+                        return gprRestApi.getRowWithFE_2('project_contracts', '&project_partner=eq.' + id);
                     },
-                    contract_types : function res(gprRestApi){
-                        return gprRestApi.getRows('contract_types',false);
+                    contract_types: function res(gprRestApi) {
+                        return gprRestApi.getRows('contract_types', false);
                     }
                 }
             }).result.then(function(result) {
@@ -131,12 +134,12 @@ angular.module('appCg').controller('ProjectPartnersCtrl', function(projects, gpr
             $uibModal.open({
                 templateUrl: 'partial/project-partners/modal/project-partner-budget-modal.html',
                 controller: 'ProjectPartnerBudgetModalCtrl as vm',
-                size : 'lg',
+                size: 'lg',
                 resolve: {
                     project_partner: function res(gprRestApi) {
                         return gprRestApi.getRow('grid_project_partners', id);
                     },
-                    partner_budget_schedule: function res(gprRestApi) {                        
+                    partner_budget_schedule: function res(gprRestApi) {
                         return gprRestApi.getRowsFilterColumn('project_budgets', 'project_partner', id);
                     }
                 }
@@ -152,12 +155,12 @@ angular.module('appCg').controller('ProjectPartnersCtrl', function(projects, gpr
             $uibModal.open({
                 templateUrl: 'partial/project-partners/modal/project-partner-implementation-modal.html',
                 controller: 'ProjectPartnerImplementationModalCtrl as vm',
-                size : 'lg',
+                size: 'lg',
                 resolve: {
                     project_partner: function res(gprRestApi) {
                         return gprRestApi.getRow('grid_project_partners', id);
                     },
-                    partner_implementation_schedule: function res(gprRestApi) {                        
+                    partner_implementation_schedule: function res(gprRestApi) {
                         return gprRestApi.getRowsFilterColumn('project_implementation_plans', 'project_partner', id);
                     }
                 }
@@ -173,13 +176,34 @@ angular.module('appCg').controller('ProjectPartnersCtrl', function(projects, gpr
             $uibModal.open({
                 templateUrl: 'partial/project-partners/modal/project-partner-report-schedule-modal.html',
                 controller: 'ProjectPartnerReportScheduleModalCtrl as vm',
-                size : 'lg',
+                size: 'lg',
                 resolve: {
                     project_partner: function res(gprRestApi) {
                         return gprRestApi.getRow('grid_project_partners', id);
                     },
-                    partner_report_schedule: function res(gprRestApi) {                        
+                    partner_report_schedule: function res(gprRestApi) {
                         return gprRestApi.getRowsFilterColumn('reporting_schedule', 'project_partner', id);
+                    }
+                }
+            }).result.then(function(result) {
+                console.log('modal closed');
+            }, function(result) {
+                gprRestApi.getRowsWithFEs('grid_project_partners', '&project=eq.' + vm.selectedProject).then(function success(res) {
+                    vm.projectPartners = angular.extend(res);
+                    vm.optionsPartners.data = vm.projectPartners;
+                }, function error(res) {});
+            });
+        } else if (option === 6) {
+            $uibModal.open({
+                templateUrl: 'partial/project-partners/modal/project-partner-expenses-modal.html',
+                controller: 'ProjectPartnerExpensesModalCtrl as vm',
+                size: 'lg',
+                resolve: {
+                    project_partner: function res(gprRestApi) {
+                        return gprRestApi.getRow('grid_project_partners', id);
+                    },
+                    partner_expenses: function res(gprRestApi) {
+                        return gprRestApi.getRowsFilterColumn('grid_project_expenses', 'partner_id', id);
                     }
                 }
             }).result.then(function(result) {

@@ -1,4 +1,4 @@
-angular.module('appCg').controller('SubPartnerBudgetScheduleCtrl', function(budget_schedule,
+angular.module('appCg').controller('SubPartnerBudgetScheduleCtrl', function(budget_schedule, implementation_schedule,
     operation,
     partner_id,
     gprRestApi,
@@ -13,7 +13,9 @@ angular.module('appCg').controller('SubPartnerBudgetScheduleCtrl', function(budg
     } else if (operation === 'Update') {
         vm.budget_schedule = angular.extend(budget_schedule);
     }
+    vm.implementation_schedule = angular.extend(implementation_schedule);
     vm.operation = operation;
+    console.log(vm.implementation_schedule);
 
     vm.tabs = [{
         title: 'Details',
@@ -22,34 +24,48 @@ angular.module('appCg').controller('SubPartnerBudgetScheduleCtrl', function(budg
         form: {
             options: {},
             model: vm.budget_schedule,
-            fields: [{
-                key: 'item',
-                type: 'input',
-                templateOptions: {
-                    type: 'text',
-                    label: 'Item',
-                    placeholder: 'Item',
-                    required: true
+            fields: [
+                {
+                    key: 'implementation_item',
+                    type: 'select',
+                    templateOptions: {
+                        label: 'Implementation Item',
+                        valueProp: 'id',
+                        labelProp: 'item',
+                        required: true,
+                        options: vm.implementation_schedule
+                    }
+                },
+
+                {
+                    key: 'item',
+                    type: 'input',
+                    templateOptions: {
+                        type: 'text',
+                        label: 'Item',
+                        placeholder: 'Item',
+                        required: true
+                    }
+                }, {
+                    key: 'description',
+                    type: 'textarea',
+                    templateOptions: {
+                        type: 'text',
+                        label: 'Description',
+                        rows: 3,
+                        placeholder: 'Item Description',
+                        required: false,
+                    }
+                }, {
+                    key: 'amount',
+                    type: 'input',
+                    templateOptions: {
+                        label: 'Item Amount',
+                        type: 'number',
+                        required: true
+                    }
                 }
-            }, {
-                key: 'description',
-                type: 'textarea',
-                templateOptions: {
-                    type: 'text',
-                    label: 'Description',
-                    rows: 3,
-                    placeholder: 'Item Description',
-                    required: false,                    
-                }
-            }, {
-                key: 'amount',
-                type: 'input',
-                templateOptions: {
-                    label: 'Item Amount',
-                    type: 'number',
-                    required: true
-                }
-            }]
+            ]
         }
     }];
 

@@ -1,0 +1,38 @@
+<!-- <div class="row">
+    <div class="col-sm-4">
+        <button type="button" class="btn btn-primary" ng-click="selectAll()">Select All</button>
+        </br>
+        </br>
+        <input type="text" class="form-control" ng-model="ofilter" placeholder="{{config.optionSearchPlaceholder}}" />
+        <h5>Options</h5>
+        <ul class="list-group" style="height: 40vh;display: block;overflow-y: scroll;border-color: #ddd;border-style: solid;border-width: 1px;">
+            <li class="list-group-item" ng-repeat="oItem in edita | orderBy : 'label' | filter : ofilter" ng-dblclick="addToSelected(oItem)" style="cursor:pointer;">{{oItem.label}}</li>
+        </ul>
+        <button type="button" class="btn btn-default" ng-click="resetSelectedList()">Reset Selection</button>        
+    </div>
+    <div class="col-sm-4">
+        <button type="button" class="btn btn-warning" ng-click="deselectAll()">Deselect All</button>
+        </br>
+        </br>
+        <input type="text" class="form-control" ng-model="sfilter" placeholder="{{config.selectedSearchPlaceholder}}" />
+        <h5>Selected</h5>    
+        <ul class="list-group" style="height: 40vh;display: block;overflow-y: scroll;border-color: #ddd;border-style: solid;border-width: 1px;">
+            <li class="list-group-item" ng-class="{bold: sItem.selected}" ng-repeat="sItem in edits | orderBy : 'label' | filter : sfilter" ng-click="selectItem(sItem)" ng-dblclick="removeFromSelected(sItem)" style="cursor:pointer;">{{sItem.label}}</li>
+        </ul>
+    </div>    
+    <div class="col-sm-4 " ng-if="itemSelected">
+        </br></br></br></br></br></br>
+        <div class="col-sm-12 panel panel-default">
+        <ng-form >
+            <h5>Extra Fields</h5>
+            <div ng-repeat="field in config.extraFields">
+            <div class="form-group">
+                <label>{{field.label}}</label>
+                <input class="form-control" ng-model="selectedItem[field.fieldName]" type="number" ng-if="field.type === 'number'" step="1"/>
+            </div>
+            </div>
+        </ng-form>
+        </div>
+    </div>
+</div>
+ -->

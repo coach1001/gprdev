@@ -1,4 +1,4 @@
-<div disable-all="vm.disabled">
+<!-- <div disable-all="vm.disabled"> -->
 <!-- <div disable-all="false"> -->
     <div class="modal-header">
         <button type="button" class="close pull-right" ng-click="$dismiss()" aria-hidden="true">&times;</button>
@@ -8,11 +8,12 @@
         <form novalidate>
             <formly-form model="vm.application" fields="vm.applicationFields" form="vm.applicationForm">
                 <button ng-click="vm.updateCreateRow()" class="btn btn-primary" ng-disabled="vm.applicationForm.$invalid">{{vm.operation}}</button>
-                  <button class="btn btn-danger pull-right" ng-click="vm.fail()" confirm="Are you sure?">Fail Application</button>
+                
+                  <button class="btn btn-danger pull-right" ng-click="vm.fail()" confirm="Are you sure?" ng-disabled="vm.disabled">Fail Application</button>
   <span class="pull-right">&nbsp;</span>
-  <button class="btn btn-warning pull-right" ng-click="vm.demote()">Demote Application and Delete Section Data</button>
+  <button class="btn btn-warning pull-right" ng-click="vm.demote()" ng-disabled="vm.disabled">Demote Application and Delete Section Data</button>
   <span class="pull-right">&nbsp;</span>
-  <button class="btn btn-success pull-right" ng-click="vm.promote()">Promote To Due Diligence</button>
+  <button class="btn btn-success pull-right" ng-click="vm.promote()" ng-disabled="vm.disabled">Promote To Due Diligence</button>
   <!-- <span class="pull-right">&nbsp;</span>
   <button class="btn btn-success pull-right" ng-click="vm.promote()">Promote To Approval Meeting</button>
  -->
@@ -20,4 +21,4 @@
             </formly-form>
         </form>
     </div>
-</div>
+<!-- </div> -->

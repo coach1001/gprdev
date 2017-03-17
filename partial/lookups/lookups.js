@@ -1,4 +1,5 @@
 angular.module('appCg').controller('LookupsCtrl', function(
+    bank_accounts,
     provinces,
     suburbs,
     places,
@@ -17,6 +18,7 @@ angular.module('appCg').controller('LookupsCtrl', function(
     vm.places = angular.extend(places);
     vm.orgTypes = angular.extend(orgTypes);
     vm.orgStatuses = angular.extend(orgStatuses);
+    vm.bankAccounts = angular.extend(bank_accounts);
 
     vm.provincesOpt = {
         data: vm.provinces,
@@ -129,6 +131,58 @@ angular.module('appCg').controller('LookupsCtrl', function(
             });
         }
     };
+    vm.bankAccountsOpt = {
+        data: vm.bankAccounts,
+        enableFiltering: true,
+        enableRowSelection: true,
+        enableRowHeaderSelection: false,
+        multiSelect: false,
+        modifierKeysToMultiSelect: false,
+        noUnselect: true,
+        enableGridMenu: true,
+        columnDefs: [
+            { name: 'account_number'},
+            { name: 'account_name'},
+            { name: 'account_type'},
+            { name: 'bank'},
+            { name: 'code'}
+
+        ],
+        onRegisterApi: function(gridApi) {
+            vm.grid6Api = gridApi;
+            gridApi.selection.on.rowSelectionChanged(null, function(row) {
+                var msg = 'row selected ' + row.isSelected;
+                vm.openModalBankAccount(row.entity.id, 'Update');
+            });
+        }
+    };
+    
+    vm.openModalBankAccount = function(id, operation) {
+        $uibModal.open({
+            templateUrl: 'partial/lookups/modal/bank-account-modal.html',
+            controller: 'BankAccountModalCtrl as vm',
+            resolve: { 
+                select : function res(){
+                    return false;
+                },
+                banks: function res(gprRestApi) {
+                    return gprRestApi.getRows('lookup_banks_min', false);
+                },                                
+                bank_account: function res(gprRestApi) {
+                    return gprRestApi.getRow('bank_accounts', id, false);
+                },
+                operation: function res() {
+                    return operation;
+                }
+            }
+        }).result.then(function(result) {
+            console.log('modal closed');
+        }, function(result) {
+            gprRestApi.getRows('grid_bank_accounts',false).then(function success(res){
+                vm.bankAccountsOpt.data = vm.bankAccounts = res;
+            });
+        });
+    };
 
     vm.openModalProvince = function(id, operation) {
         $uibModal.open({
@@ -150,6 +204,7 @@ angular.module('appCg').controller('LookupsCtrl', function(
             });
         });
     };
+
     vm.openModalSuburb = function(id, operation) {
         $uibModal.open({
             templateUrl: 'partial/lookups/modal/suburb-modal.html',
@@ -176,6 +231,7 @@ angular.module('appCg').controller('LookupsCtrl', function(
             });
         });
     };
+
     vm.openModalPlace = function(id, operation) {
         $uibModal.open({
             templateUrl: 'partial/lookups/modal/place-modal.html',

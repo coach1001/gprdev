@@ -7,6 +7,7 @@ angular.module('appCg').controller('ProjectPartnerBudgetModalCtrl',function(
     $confirm,
     $uibModalInstance,uiGridConstants) {
 
+
     var vm = this;
 
     vm.project_partner = angular.extend(project_partner);
@@ -39,6 +40,10 @@ angular.module('appCg').controller('ProjectPartnerBudgetModalCtrl',function(
             templateUrl: 'partial/project-partners/modal/sub/sub-partner-budget-schedule.html',
             controller: 'SubPartnerBudgetScheduleCtrl as vm',
             resolve: {
+                implementation_schedule: function res(gprRestApi) {
+                    
+                    return gprRestApi.getRowsFilterColumn('project_implementation_plans', 'project_partner', project_partner.id);
+                },
                 budget_schedule: function res(gprRestApi) {
                     return gprRestApi.getRow('project_budgets', id);
                 },

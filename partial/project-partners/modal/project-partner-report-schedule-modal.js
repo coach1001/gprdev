@@ -22,7 +22,7 @@ angular.module('appCg').controller('ProjectPartnerReportScheduleModalCtrl',funct
         noUnselect: true,
         enableGridMenu: true,
         columnDefs: [
-            { name: 'report_number'},            
+            { name: 'report_no'},            
             { name: 'due_date', type: 'date', cellFilter: 'date:\'dd MMMM yyyy\'' },
             { name: 'expiry_date', type: 'date', cellFilter: 'date:\'dd MMMM yyyy\'' }
 

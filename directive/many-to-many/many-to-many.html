@@ -1,26 +1,41 @@
-<div class="row">
-   	
-   	<div class="col-sm-6">
-   		<button type="button" class="btn btn-primary" ng-click="selectAll()">Select All</button>
-		</br>
-		</br>
-   		<input type="text" class="form-control" ng-model="ofilter" placeholder="{{config.optionSearchPlaceholder}}" />   		   		
-   		<h5>Options</h5>
-   		<ul class="list-group" style="height: 40vh;display: block;overflow-y: scroll;border-color: #ddd;border-style: solid;border-width: 1px;">
-   			<li class="list-group-item" ng-repeat="oItem in edita | orderBy : 'label' | filter : ofilter" ng-click="addToSelected(oItem)" style="cursor:pointer;">{{oItem.label}}</li>    
-   		</ul>   		
-   		<button type="button" class="btn btn-default" ng-click="resetSelectedList()">Reset Selection</button>
-   	</div> 
-    
-    <div class="col-sm-6">
-   		<button type="button" class="btn btn-warning" ng-click="deselectAll()">Deselect All</button>
-		</br>
-		</br>
-   		<input type="text" class="form-control" ng-model="sfilter" placeholder="{{config.selectedSearchPlaceholder}}" />   		   	   		
-   		<h5>Selected</h5>
-   		<ul class="list-group" style="height: 40vh;display: block;overflow-y: scroll;border-color: #ddd;border-style: solid;border-width: 1px;">
-    		<li class="list-group-item" ng-repeat="sItem in edits | orderBy : 'label' | filter : sfilter" ng-click="removeFromSelected(sItem)" style="cursor:pointer;">{{sItem.label}}</li>    
-    	</ul>      
-    	
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-md-4"><button type="button" class="btn btn-block btn-primary" ng-click="selectAll()">Select All</button></div>
+        <div class="col-md-4"><button type="button" class="btn btn-block btn-warning" ng-click="deselectAll()">Deselect All</button></div>
+        <div class="col-md-4"></div>
     </div>
-<div>
+    </br>
+    <div class="row">
+        <div class="col-md-4"><input class="form-control" type="text" class="form-control" ng-model="ofilter" placeholder="{{config.optionSearchPlaceholder}}" /></div>
+        <div class="col-md-4"><input class="form-control" type="text" class="form-control" ng-model="sfilter" placeholder="{{config.selectedSearchPlaceholder}}" /></div>
+        <div class="col-md-4"></div>
+    </div>
+    <div class="row">
+        <div class="col-md-4"><h5>Options</h5></div>
+        <div class="col-md-4"><h5>Selected</h5></div>
+        <div class="col-md-4"><h5>Extra Fields</h5></div>
+    </div>
+    <div class="row">
+        <div class="col-md-4"><ul class="list-group" style="height: 40vh;display: block;overflow-y: scroll;border-color: #ddd;border-style: solid;border-width: 1px;">
+            <li class="list-group-item" ng-repeat="oItem in edita | orderBy : 'label' | filter : ofilter" ng-dblclick="addToSelected(oItem)" style="cursor:pointer;">{{oItem.label}}</li>
+        </ul></div>
+        <div class="col-md-4"><ul class="list-group" style="height: 40vh;display: block;overflow-y: scroll;border-color: #ddd;border-style: solid;border-width: 1px;">
+            <li class="list-group-item" ng-class="{bold: sItem.selected}" ng-repeat="sItem in edits | orderBy : 'label' | filter : sfilter" ng-click="selectItem(sItem)" ng-dblclick="removeFromSelected(sItem)" style="cursor:pointer;">{{sItem.label}}</li>
+        </ul></div>
+        <div class="col-md-4" ng-if="itemSelected"> 
+        <ng-form >            
+            <div ng-repeat="field in config.extraFields">
+            <div class="form-group">
+                <label>{{field.label}}</label>
+                <input class="form-control" ng-model="selectedItem[field.fieldName]" type="number" ng-if="field.type === 'number'" step="1"/>
+            </div>
+            </div>
+        </ng-form>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-4"><button type="button" class="btn btn-block btn-default" ng-click="resetSelectedList()">Reset Selection</button></div>
+        <div class="col-md-4"></div>
+        <div class="col-md-4"></div>
+    </div>
+</div>

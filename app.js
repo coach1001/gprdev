@@ -1,4 +1,3 @@
-
 angular.module('appCg', [
     'ui.bootstrap',
     'ui.router',
@@ -7,9 +6,10 @@ angular.module('appCg', [
     'formlyBootstrap',
     'ngToast',
     'angular-confirm',
-    'ui.grid', 'ui.grid.selection', 'ui.grid.exporter', 'ui.grid.edit','ui.grid.autoResize',
-    'ui.select', 'ngLoadingSpinner', 'ui.checkbox', 'disableAll'
+    'ui.grid', 'ui.grid.selection', 'ui.grid.exporter', 'ui.grid.edit', 'ui.grid.autoResize', 'ui.grid.grouping',  'ui.grid.resizeColumns',
+    'ui.select', 'ngLoadingSpinner', 'ui.checkbox', 'disableAll','naif.base64'
 ]);
+
 
 (function() {
 
@@ -101,7 +101,15 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider, $loc
             },
             'mainContent@': {
                 templateUrl: 'partial/home/home.html',
-                controller: 'HomeCtrl as vm'
+                controller: 'HomeCtrl',
+                resolve: {
+                    projects: function res(gprRestApi) {
+                        return gprRestApi.getRows('view_dashboard_projects', false);
+                    },
+                    map: function res(gprRestApi) {
+                        return gprRestApi.getRows('view_dashboard_map', false);
+                    }
+                }
             }
         },
         data: {
@@ -220,6 +228,9 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider, $loc
                 templateUrl: 'partial/lookups/lookups.html',
                 controller: 'LookupsCtrl as vm',
                 resolve: {
+                    bank_accounts: function res(gprRestApi) {
+                        return gprRestApi.getRows('grid_bank_accounts', false);
+                    },
                     provinces: function res(gprRestApi) {
                         return gprRestApi.getRows('grid_provinces', false);
                     },
@@ -427,35 +438,6 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider, $loc
         }
     });
 
-    /*	$stateProvider.state('home.compliance-assessment', {
-    		url: '/compliance?:templateId&:appId&:application&:grants_unit&:la',
-    		views: {
-    			'mainContent@': {
-    				templateUrl: 'partial/compliance/compliance.html',
-    				controller: 'ComplianceCtrl as vm',
-    				resolve: {
-    					score_for_template: function res(gprRestApi, $stateParams) {
-    						return gprRestApi.getRowsWithFEs('application_compliance_average_score', '&application=eq.' + $stateParams.application + '&template_id=eq.' + $stateParams.templateId);
-    					},
-    					template: function res(gprRestApi, $stateParams) {
-    						return gprRestApi.getRowsWithFEs('compliance_templates', ',categories{*,questions{*,question_types{*},question_options{*},compliance_answers{*}}}', '&id=eq.' + $stateParams.templateId + '&categories.order=id.asc&categories.questions.compliance_answers.application_compliance_officer=eq.' + $stateParams.appId + '&categories.questions.order=id.asc');
-    					},
-    					complianceInfo: function res(gprRestApi, $stateParams) {
-    						console.log('Getting ...');
-    						return gprRestApi.getRowsWithFEs('grid_compliance_applications_for_assessors', '&id=eq.' + $stateParams.appId);
-    					},
-    					gu : function res($stateParams){						
-    						return $stateParams.grants_unit;
-    					},
-    					la : function res($stateParams){						
-    						return $stateParams.la;
-    					}
-
-    				}
-    			}
-    		}
-    	});*/
-
     $stateProvider.state('home.persons', {
         url: '/persons',
         views: {
@@ -522,17 +504,16 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider, $loc
     });
 
     $stateProvider.state('home.project-partners', {
-        url: '/project-partners',
-        templateUrl: 'partial/project-partners/project-partners.html',
+        url: '/project-partners',        
         views: {
             'mainContent@': {
                 templateUrl: 'partial/project-partners/project-partners.html',
                 controller: 'ProjectPartnersCtrl as vm',
                 resolve: {
                     projects: function res(gprRestApi) {
-                        return gprRestApi.getRows('grid_projects', false);                    
+                        return gprRestApi.getRows('grid_projects', false);
                     },
-                    option : function res(){
+                    option: function res() {
                         return 1;
                     }
                 }
@@ -541,17 +522,16 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider, $loc
     });
 
     $stateProvider.state('home.project-partners-contracts', {
-        url: '/project-partners-contracts',
-        templateUrl: 'partial/project-partners/project-partners.html',
+        url: '/project-partners-contracts',        
         views: {
             'mainContent@': {
                 templateUrl: 'partial/project-partners/project-partners.html',
                 controller: 'ProjectPartnersCtrl as vm',
                 resolve: {
                     projects: function res(gprRestApi) {
-                        return gprRestApi.getRows('grid_projects', false);                    
+                        return gprRestApi.getRows('grid_projects', false);
                     },
-                    option : function res(){
+                    option: function res() {
                         return 2;
                     }
                 }
@@ -560,17 +540,16 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider, $loc
     });
 
     $stateProvider.state('home.project-partners-budgets', {
-        url: '/project-partners-budgets',
-        templateUrl: 'partial/project-partners/project-partners.html',
+        url: '/project-partners-budgets',        
         views: {
             'mainContent@': {
                 templateUrl: 'partial/project-partners/project-partners.html',
                 controller: 'ProjectPartnersCtrl as vm',
                 resolve: {
                     projects: function res(gprRestApi) {
-                        return gprRestApi.getRows('grid_projects', false);                    
+                        return gprRestApi.getRows('grid_projects', false);
                     },
-                    option : function res(){
+                    option: function res() {
                         return 3;
                     }
                 }
@@ -579,17 +558,16 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider, $loc
     });
 
     $stateProvider.state('home.project-partners-implementation-plans', {
-        url: '/project-partners-implementation-plans',
-        templateUrl: 'partial/project-partners/project-partners.html',
+        url: '/project-partners-implementation-plans',        
         views: {
             'mainContent@': {
                 templateUrl: 'partial/project-partners/project-partners.html',
                 controller: 'ProjectPartnersCtrl as vm',
                 resolve: {
                     projects: function res(gprRestApi) {
-                        return gprRestApi.getRows('grid_projects', false);                    
+                        return gprRestApi.getRows('grid_projects', false);
                     },
-                    option : function res(){
+                    option: function res() {
                         return 4;
                     }
                 }
@@ -598,17 +576,16 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider, $loc
     });
 
     $stateProvider.state('home.project-partners-report-schedules', {
-        url: '/project-partners-report-schedules',
-        templateUrl: 'partial/project-partners/project-partners.html',
+        url: '/project-partners-report-schedules',        
         views: {
             'mainContent@': {
                 templateUrl: 'partial/project-partners/project-partners.html',
                 controller: 'ProjectPartnersCtrl as vm',
                 resolve: {
                     projects: function res(gprRestApi) {
-                        return gprRestApi.getRows('grid_projects', false);                    
+                        return gprRestApi.getRows('grid_projects', false);
                     },
-                    option : function res(){
+                    option: function res() {
                         return 5;
                     }
                 }
@@ -617,9 +594,39 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider, $loc
     });
 
 
+    $stateProvider.state('home.project-expenses', {
+        url: '/project-expenses',
+        views: {
+            'mainContent@': {
+                templateUrl: 'partial/project-partners/project-partners.html',
+                controller: 'ProjectPartnersCtrl as vm',
+                resolve: {
+                    projects: function res(gprRestApi) {
+                        return gprRestApi.getRows('grid_projects', false);
+                    },
+                    option: function res() {
+                        return 6;
+                    }
+                }
+            }
+        }
+    });
+    $stateProvider.state('home.project-reviews', {
+        url: '/project-reviews',
+        views: {
+            'mainContent@': {
+                templateUrl: 'partial/project-reviews/project-reviews.html',
+                controller: 'ProjectReviewsCtrl as vm',
+                resolve: {
+                    projects: function res(gprRestApi) {
+                        return gprRestApi.getRows('grid_projects', false);
+                    }
+                }
+            }
+        }
 
-
-
+    });
+    
     $urlRouterProvider.otherwise('/home');
     $locationProvider.html5Mode(false);
 });
@@ -730,7 +737,7 @@ angular.module('appCg').config(function($httpProvider) {
 
     $httpProvider.defaults.transformRequest.push(function(requestData) {
         //console.log(requestData);
-        
+
         try {
             var obj = JSON.parse(requestData);
             var objString;

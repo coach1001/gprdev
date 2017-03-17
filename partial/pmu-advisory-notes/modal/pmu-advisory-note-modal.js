@@ -6,6 +6,7 @@ angular.module('appCg').controller('PmuAdvisoryNoteModalCtrl',function(applicati
                                                                    $uibModalInstance,$state,authenticationService) {
 
   var vm = this;
+  //console.log('here');
 
   if (operation === 'Create') {
     vm.application = {};
@@ -22,12 +23,15 @@ angular.module('appCg').controller('PmuAdvisoryNoteModalCtrl',function(applicati
     vm.application.dates.end_date_ = new Date(vm.application.end_date);
   }
 */
+  console.log(vm.application.application_status);
+
   if(vm.application.application_status === 5){
     vm.disabled = false;
   }else{
     vm.disabled = true;
   }
 
+console.log(vm.disabled);
 
   vm.applicationFields = [{
     key: 'pm_advisory',
@@ -37,7 +41,7 @@ angular.module('appCg').controller('PmuAdvisoryNoteModalCtrl',function(applicati
       label: 'PM Advisory Note',
       placeholder: 'Note',
       rows: 7,
-      required: true
+      required: false
     }
   },{
     key: 'pmu_advisory',
@@ -47,12 +51,23 @@ angular.module('appCg').controller('PmuAdvisoryNoteModalCtrl',function(applicati
       label: 'PMU Advisory Note',
       placeholder: 'Note',
       rows: 7,
-      required: true
+      required: false
+    }
+  },{
+    key: 'dd_outcomes',
+    type: 'textarea',
+    className: 'nopadding',
+    templateOptions: {
+      label: 'Due Diligence Outcomes',
+      placeholder: 'Outcomes',
+      rows: 7,
+      required: false
     }
   }];
 
   vm.updateCreateRow = function () {
-    var body = angular.copy(vm.application);    
+    var body = angular.copy(vm.application);  
+    console.log(body);  
     gprRestApi.updateCreateRow('call_applications', body, vm.operation).then(function success(response) {
       ngToast.create({content: vm.operation + ' Record Successfull', timeout: 4000});
       if (vm.operation === 'Create') {

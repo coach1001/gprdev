@@ -1,0 +1,15 @@
+<div>
+    <div class="modal-header">
+        <button type="button" class="close pull-right" ng-click="$dismiss()" aria-hidden="true">&times;</button>
+        <h4 class="modal-title">Partner Expenses</h4>
+        <h5>Project : {{vm.project_partner.project}}</h5>
+        <h5>Partner : {{vm.project_partner.partner_name}}</h5>
+    </div>
+    <div class="modal-body">
+         <div class="form-group">
+        <button class="btn btn-primary" ng-click="vm.openModal(0,'Create')" >Add Expense Item</button>
+        </div>
+        <div ui-grid="vm.options" ui-grid-exporter ui-grid-auto-resize ui-grid-selection ui-grid-grouping></div>
+    </div>
+</div>
+

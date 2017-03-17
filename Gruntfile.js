@@ -204,6 +204,7 @@ module.exports = function (grunt) {
     copy: {
       main: {
         files: [
+          {src: ['za.svg'], dest: 'dist/'},
           {src: ['OpenSans-Light.ttf'], dest: 'dist/'},      
           {src: ['Raleway-Regular.ttf'], dest: 'dist/'},      
           {src: ['.htaccess'], dest: 'dist/htaccess'},

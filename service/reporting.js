@@ -1,6 +1,7 @@
 angular.module('appCg').factory('reporting', function(config, $window,gprRestApi,$timeout) {
 
 	var reporting = {};
+	var win;
 
 	reporting.base_url = config.app_report_base_url;
 	reporting.pdf_url = config.app_report_url_add;
@@ -20,6 +21,10 @@ angular.module('appCg').factory('reporting', function(config, $window,gprRestApi
 		reportName: 'Test Report',
 		unitName: 'RPT_TEST',		
 		//paramList: [{ name: 'application_id' }]
+	},{
+		reportName: 'Payment Request',
+		unitName: 'RPT_PRQ_EXPENSE',
+		paramList: [{ name: 'req_id_param' }]
 	}
 	];
 
@@ -29,8 +34,18 @@ angular.module('appCg').factory('reporting', function(config, $window,gprRestApi
     	return re.test(email);
 	};
 
+	function check(pm){
+			if(win.document){
+				win.document.title = "Payment Requisition - "+pm;
+			}
+			else{
+				setTimeout(check(pm),10);
+			} 	
+	}
+
 	reporting.generateReport = function(report, params,open_report) {		
 		var paramString= '';		
+		win = null;
 		var url = '';						
 			angular.forEach(reporting.reports[report].paramList, function(value, key) {
 				for (var i = 0; i <= params.length - 1; i++) {				
@@ -41,12 +56,13 @@ angular.module('appCg').factory('reporting', function(config, $window,gprRestApi
 			});		
 		url = reporting.base_url + reporting.reports[report].unitName + paramString + reporting.pdf_url;		
 		if(open_report){
-		 $window.open(url);
-		}else{
-
+		 win = $window.open(url);
+		 check(paramString);		 
 		}		
 		return url;
 	};
+
+
 
 	reporting.queueEmail = function(to,subject,body,hasAttachment,attachmentFileName,attachmentFileType,attachmentURL){
 		var data = {};		

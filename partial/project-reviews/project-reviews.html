@@ -1,0 +1,22 @@
+<h3>Projects <span class="btn-default badge">{{vm.gridApi.core.getVisibleRows().length}} of {{vm.projects.length}}</span></h3>
+<div class="container-fluid">
+    <div class="row">
+        <div ui-grid="vm.options" ui-grid-exporter ui-grid-selection ui-grid-auto-resize class="grid-third"></div>
+    </div>
+    <div class="row">
+        <h4>
+
+<span class=""> {{vm.selectedProject || 'No Project Selected'}}</span>
+
+Partners  <span class="btn-default badge">{{vm.gridApi_0.core.getVisibleRows().length}} of {{vm.projectPartners.length}}</span></h4>
+        <div ui-grid="vm.optionsPartners" ui-grid-exporter ui-grid-selection ui-grid-auto-resize class="grid-third"></div>
+    </div>
+    <div class="row">    	
+        <h4>Reviews</h4>
+        <!-- </br>
+        <button class="btn btn-primary" ng-click="vm.openModal(0,'Create')" ng-disabled="vm.addReview">Add Review</button>
+        </br>
+        </br>
+         --><div ui-grid="vm.optionsPartnerReviews" ui-grid-exporter ui-grid-selection ui-grid-auto-resize class="grid-third"></div>
+    </div>
+</div>

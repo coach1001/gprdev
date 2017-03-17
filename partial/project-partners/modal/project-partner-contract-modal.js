@@ -69,6 +69,14 @@ angular.module('appCg').controller('ProjectPartnerContractModalCtrl', function(
                     type: 'text',
                     datepickerPopup: 'yyyy-MM-dd'
                 }
+            },{
+                key: 'signed_by_grantor_on',
+                type: 'datepicker',
+                templateOptions: {
+                    label: 'FHR Signed On',
+                    type: 'text',
+                    datepickerPopup: 'yyyy-MM-dd'
+                }
             }]
         }
     }];

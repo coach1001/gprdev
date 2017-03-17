@@ -18,6 +18,8 @@ angular.module('appCg').controller('ProjectModalCtrl', function(project, kpis, p
         vm.project = angular.extend(project);
     }
     vm.operation = angular.extend(operation);
+    //console.log(vm.project);
+    //console.log(vm.applications);
 
     vm.tabs = [{
         title: 'General',
@@ -44,8 +46,10 @@ angular.module('appCg').controller('ProjectModalCtrl', function(project, kpis, p
                     placeholder: 'Project Description',
                     required: true
                 }
-            },{
-                    template: '<button class="btn btn-success" ng-click="openProjBen()">Edit Project Beneficiaries</button><br></br>',
+            },
+                {                
+                    //template: '<button class="btn btn-success span4" ng-click="openProjBen()">Beneficiaries</button><button class="btn btn-success span4" ng-click="openProjBen()">Beneficiaries</button></br>',
+                    templateUrl: 'partial/projects/modal/buttons.html',
                     hideExpression: function($viewValue, $modelValue, scope) {
                         if (vm.operation === 'Create') {
                             return true;
@@ -55,8 +59,14 @@ angular.module('appCg').controller('ProjectModalCtrl', function(project, kpis, p
                         $scope.openProjBen = function() {
                             vm.openProjBen();
                         };
+                        $scope.openProjAct = function() {
+
+                        };
+                        $scope.openProjTh = function() {
+
+                        };
                     }]
-                }, 
+                },
             ]
         }
     }, {
@@ -80,8 +90,6 @@ angular.module('appCg').controller('ProjectModalCtrl', function(project, kpis, p
                     watcher: {
                         listener: function(field, newValue, oldValue, scope) {
                             var i = vm.project_types.getIndex('id', newValue);
-
-
                             if (vm.project_types[i].code === 'S') {
                                 vm.cfp_app_visible = false;
                             } else {
@@ -91,7 +99,8 @@ angular.module('appCg').controller('ProjectModalCtrl', function(project, kpis, p
                         }
                     }
 
-                }, {
+                },
+                {
                     key: 'call_application',
                     type: 'ui-select-single',
                     templateOptions: {
@@ -101,23 +110,22 @@ angular.module('appCg').controller('ProjectModalCtrl', function(project, kpis, p
                         valueProp: 'application',
                         labelProp: 'application',
                         required: true,
-                        showDetails: true,
+                        showDetails: true,                        
                         options: vm.applications
                     },
                     watcher: {
                         listener: function(field, newValue, oldValue, scope) {
-                            var i = vm.applications.getIndex('application', newValue);
-                            //console.log(vm.applications[i].key_performance_indicator);
+                            var i = vm.applications.getIndex('application', newValue);                           
                             if (i > 0) {
                                 scope.fields[2].value(vm.applications[i].key_performance_indicator);
                             }
-
                         }
                     },
                     hideExpression: function($viewValue, $modelValue, scope) {
                         return vm.cfp_app_visible;
                     }
-                }, {
+                },
+                {
                     key: 'key_performance_indicator',
                     type: 'ui-select-single',
                     templateOptions: {
@@ -175,6 +183,7 @@ angular.module('appCg').controller('ProjectModalCtrl', function(project, kpis, p
         $uibModal.open({
             templateUrl: 'partial/many-to-many-modal/many-to-many-modal.html',
             controller: 'ManyToManyModalCtrl',
+            size: 'lg',
             resolve: {
                 configManyToMany: function() {
                     return {
@@ -191,7 +200,12 @@ angular.module('appCg').controller('ProjectModalCtrl', function(project, kpis, p
 
                         lookupTable: 'beneficiaries',
                         lookupValueProp: 'id',
-                        lookupLabelProp: 'type'
+                        lookupLabelProp: 'type',
+
+                        extraFields: [
+                            {fieldName : 'males', type: 'number', label : 'Males',required : false},
+                            {fieldName : 'females', type: 'number', label: 'Females',required : false}
+                        ]
                     };
                 }
             }

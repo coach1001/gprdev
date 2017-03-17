@@ -11,6 +11,10 @@
   right: 10px;
 }
 
+.bold{
+  font-weight: 900;  
+}
+
 div.navbar-collapse.collapse {
     display: block;
     overflow: hidden;
@@ -114,11 +118,20 @@ div.navbar-collapse.collapse.in {
   height: 75vh;
 }
 
+.grid-tall {
+  height: 85vh;
+}
+
 .grid-half {
   width: 98vw;
   height: 35vh;
 }
 
+
+.grid-third {
+  width: 98vw;
+  height: 25vh;
+}
 
 .gridSmall {
   width: 98vw;
@@ -197,3 +210,70 @@ filter: alpha(opacity=50);
 }
 
 pre {font-family: 'OpenSans';}
+
+svg .province {
+    stroke-width: 2 ;
+    stroke: #fff;
+
+    -webkit-transition: stroke 0.5s, stroke-width 0.5s ;
+    -o-transition: stroke 0.5s, stroke-width 0.5s ;
+    transition: stroke 0.5s, stroke-width 0.5s ;
+}
+
+svg .province:hover , .state.active {
+    cursor: pointer ;
+    stroke-width: 4 ;
+    stroke: #000;
+    fill: white;
+    animation-delay: 4s;
+}
+
+.regionlist {
+    -webkit-column-count: 5; /* Chrome, Safari, Opera */
+    -moz-column-count: 5; /* Firefox */
+    column-count: 5;
+}
+.regionlist > div {
+    display: inline-block;
+    width: 100%;
+    border-bottom: 1px solid grey;
+}
+.regionlist > div > div {
+    display: inline-block;
+    width: 48%;
+}
+
+.regionlist > div.active {
+    font-weight: bold;
+    background-color: lightblue;
+}
+
+svg path:hover , path.active { /* Amend this */
+    cursor: pointer;
+    opacity: 1;
+}
+
+.scale {
+    position: relative;
+}
+.scale div {
+    width: 9.07%;
+    display: inline-block;
+    text-align: center;
+    color: #fff;
+    font-weight: bold;
+    padding: 5px 0;
+}
+
+/*.ui-grid-header-cell .ui-grid-cell-contents {
+     white-space: normal;
+     -ms-text-overflow: clip;
+     -o-text-overflow: clip;
+     text-overflow: clip;
+     overflow: visible;
+}*/
+
+@page{
+  size: A4 portrait;
+  margin: 5%;
+}
