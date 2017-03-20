@@ -93,22 +93,25 @@ angular.module('appCg').controller('ProjectReviewsCtrl', function(projects, gprR
 
             gridApi.selection.on.rowSelectionChanged(null, function(row) {
                 vm.report_schedule = row.entity.reporting_schedule_id;
-                console.log(vm.report_schedule);
+                //console.log(vm.report_schedule);
 
                 if(row.entity.id){
-                	vm.openModal(row.entity.id, 'Update');	
+                	vm.openModal(row.entity.id, 'Update',row);	
                 }else{
-                	vm.openModal(row.entity.id, 'Create');
+                	vm.openModal(row.entity.id, 'Create',row);
                 }
                 
             });
         }
     };
 
-    vm.openModal = function(id, operation) {
+    vm.openModal = function(id, operation,row) {
+        //console.log(row.entity);
+
         $uibModal.open({
             templateUrl: 'partial/project-reviews/modal/project-review-modal.html',
             controller: 'ProjectReviewModalCtrl as vm',
+            size: 'lg',
             resolve: {
                 project_report: function res(gprRestApi) {
                     return gprRestApi.getRow('project_reports', id);
@@ -118,6 +121,9 @@ angular.module('appCg').controller('ProjectReviewsCtrl', function(projects, gprR
                 },
                 operation: function res() {
                     return operation;
+                },
+                project_partner: function res(){
+                    return row.entity.project_partner;
                 }
             }
         }).result.then(function(result) {

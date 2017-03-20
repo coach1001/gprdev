@@ -42,7 +42,7 @@ angular.module('appCg').factory('gprRestApi', function ($http, $q,config) {
     gprRestApi.tables = tableConfig;
   };
   gprRestApi.getRows = function (table, efi) {
-    var urlString = gprRestApi.baseUrl + '/' + table + '?select=*';
+    var urlString = gprRestApi.baseUrl + '/' + table; //+ '?select=*';
     if (efi) {
       urlString += gprRestApi.getFEUString(table);
     }

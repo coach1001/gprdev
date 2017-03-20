@@ -60,10 +60,10 @@ angular.module('appCg').controller('ProjectModalCtrl', function(project, kpis, p
                             vm.openProjBen();
                         };
                         $scope.openProjAct = function() {
-
+                            vm.openProjAct();
                         };
                         $scope.openProjTh = function() {
-
+                            vm.openProjTh();
                         };
                     }]
                 },
@@ -179,7 +179,6 @@ angular.module('appCg').controller('ProjectModalCtrl', function(project, kpis, p
     }];
 
     vm.openProjBen = function() {
-
         $uibModal.open({
             templateUrl: 'partial/many-to-many-modal/many-to-many-modal.html',
             controller: 'ManyToManyModalCtrl',
@@ -201,7 +200,7 @@ angular.module('appCg').controller('ProjectModalCtrl', function(project, kpis, p
                         lookupTable: 'beneficiaries',
                         lookupValueProp: 'id',
                         lookupLabelProp: 'type',
-
+                        
                         extraFields: [
                             {fieldName : 'males', type: 'number', label : 'Males',required : false},
                             {fieldName : 'females', type: 'number', label: 'Females',required : false}
@@ -212,8 +211,78 @@ angular.module('appCg').controller('ProjectModalCtrl', function(project, kpis, p
         }).result.then(function(result) {
             //do something with the result
         });
-
     };
+    vm.openProjAct = function() {
+        $uibModal.open({
+            templateUrl: 'partial/many-to-many-modal/many-to-many-modal.html',
+            controller: 'ManyToManyModalCtrl',
+            size: 'lg',
+            resolve: {
+                configManyToMany: function() {
+                    return {
+                        modalTitle: 'Project Activities Types',
+
+                        optionSearchPlaceholder: 'Search Activity Types',
+                        selectedSearchPlaceholder: 'Search Selected Activity Types',
+
+                        hybridTable: 'project_activities',
+                        lookupHybridColumn: 'activity',
+
+                        singularColumn: 'project',
+                        singularValue: vm.project.id,
+
+                        lookupTable: 'activities',
+                        lookupValueProp: 'id',
+                        lookupLabelProp: 'type',
+
+                        extraFields: [],
+                        /*extraFields: [
+                            {fieldName : 'males', type: 'number', label : 'Males',required : false},
+                            {fieldName : 'females', type: 'number', label: 'Females',required : false}
+                        ]*/
+                    };
+                }
+            }
+        }).result.then(function(result) {
+            //do something with the result
+        });
+    };
+    vm.openProjTh = function() {
+        $uibModal.open({
+            templateUrl: 'partial/many-to-many-modal/many-to-many-modal.html',
+            controller: 'ManyToManyModalCtrl',
+            size: 'lg',
+            resolve: {
+                configManyToMany: function() {
+                    return {
+                        modalTitle: 'Project Theme Types',
+
+                        optionSearchPlaceholder: 'Search Theme Types',
+                        selectedSearchPlaceholder: 'Search Selected Theme Types',
+
+                        hybridTable: 'project_themes',
+                        lookupHybridColumn: 'theme',
+
+                        singularColumn: 'project',
+                        singularValue: vm.project.id,
+
+                        lookupTable: 'themes',
+                        lookupValueProp: 'id',
+                        lookupLabelProp: 'type',
+
+                        extraFields: [],
+                        /*extraFields: [
+                            {fieldName : 'males', type: 'number', label : 'Males',required : false},
+                            {fieldName : 'females', type: 'number', label: 'Females',required : false}
+                        ]*/
+                    };
+                }
+            }
+        }).result.then(function(result) {
+            //do something with the result
+        });
+    };
+
 
     vm.updateCreateRow = function() {
         var body = angular.copy(vm.project);

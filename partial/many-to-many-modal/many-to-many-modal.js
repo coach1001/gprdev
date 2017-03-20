@@ -1,5 +1,11 @@
 angular.module('appCg').controller('ManyToManyModalCtrl', function($scope, configManyToMany, gprRestApi, ngToast) {
+    $scope.configManyToMany = angular.copy(configManyToMany);
 
+    if(configManyToMany.lookupParam){
+        configManyToMany.lookupTable+=configManyToMany.lookupParam;
+    }
+
+    /*
     $scope.configManyToMany = angular.copy(configManyToMany);
 
     $scope.originalSelectedOptions = [];
@@ -12,7 +18,22 @@ angular.module('appCg').controller('ManyToManyModalCtrl', function($scope, confi
 
     $scope.indicator= false;
 
+    if(configManyToMany.lookupParam){
+        configManyToMany.lookupTable+=configManyToMany.lookupParam;
+    }*/
+
     $scope.initialize = function() {
+        
+        $scope.originalSelectedOptions = [];
+        $scope.originalAvailableOptions = [];
+
+        $scope.editSelectedOptions = [];
+        $scope.editAvailableOptions = [];
+
+        $scope.allOptions = [];
+
+        $scope.indicator= false;
+
         
         gprRestApi.getRowsFilterColumn(
             configManyToMany.hybridTable,
@@ -35,20 +56,25 @@ angular.module('appCg').controller('ManyToManyModalCtrl', function($scope, confi
                 }
 
                 $scope.originalAvailableOptions = angular.copy($scope.allOptions);
+                //console.log(JSON.stringify($scope.originalAvailableOptions));
 
                 for (var k = 0; k < $scope.originalSelectedOptions.length; k++) {
                     for (var j = 0; j < $scope.allOptions.length; j++) {
-
                         if ($scope.originalSelectedOptions[k][configManyToMany.lookupHybridColumn] === $scope.allOptions[j][configManyToMany.lookupValueProp]) {
+                            
+                            //console.log($scope.originalSelectedOptions[k][configManyToMany.lookupHybridColumn],$scope.allOptions[j][configManyToMany.lookupValueProp]);
+                            
                             $scope.originalSelectedOptions[k].id = $scope.allOptions[j][configManyToMany.lookupValueProp];
                             $scope.originalSelectedOptions[k].label = $scope.allOptions[j][configManyToMany.lookupLabelProp];
                             $scope.originalAvailableOptions.splice(j, 1);
+                            console.log(JSON.stringify($scope.originalAvailableOptions));
                         }
                     }
                 }
 
                 $scope.editSelectedOptions = angular.copy($scope.originalSelectedOptions);
                 $scope.editAvailableOptions = angular.copy($scope.originalAvailableOptions);
+                //console.log($scope.originalSelectedOptions,$scope.originalAvailableOptions);
 
             }, function error(response) {
 
@@ -81,40 +107,40 @@ angular.module('appCg').controller('ManyToManyModalCtrl', function($scope, confi
     };
 
     $scope.Update = function() {
-
-        var body_array = [];
         
+        var body_array = [];        
 
         if ($scope.originalSelectedOptions.length > 0) {
 
             gprRestApi.deleteRows(configManyToMany.hybridTable, '?' + configManyToMany.singularColumn + '=eq.' + configManyToMany.singularValue).then(function success(response) {
 
                 body_array = $scope.formData();
-                gprRestApi.updateCreateRow(configManyToMany.hybridTable, body_array, 'Create').then(function success(response) {
-                  ngToast.create({ content: 'Create Records Successfull', timeout: 4000 });
-                  $scope.initialize();
-                }, function error(response) {
+                
+                if(body_array.length > 0){
+                    gprRestApi.updateCreateRow(configManyToMany.hybridTable, body_array, 'Create').then(function success(response) {
+                        ngToast.create({ content: 'Create Records Successfull', timeout: 4000 });
+                        $scope.initialize();
+                    }, function error(response) {
 
-                });
-
-
+                    });
+                }    
             }, function error(response) {
             });
 
         } else {
+            body_array = $scope.formData();
+                
+                if(body_array.length > 0){
+                    gprRestApi.updateCreateRow(configManyToMany.hybridTable, body_array, 'Create').then(function success(response) {
+                        ngToast.create({ content: 'Create Records Successfull', timeout: 4000 });
+                        $scope.initialize();
+                    }, function error(response) {
 
-              body_array = $scope.formData();
-                gprRestApi.updateCreateRow(configManyToMany.hybridTable, body_array, 'Create').then(function success(response) {
-                  ngToast.create({ content: 'Create Records Successfull', timeout: 4000 });
-                  $scope.initialize();
-                }, function error(response) {
-
-                });
-
-            }        
+                    });
+                }   
+        }        
 
     };
 
     $scope.initialize();
-
 });
