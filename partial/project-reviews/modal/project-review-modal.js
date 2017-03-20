@@ -112,11 +112,11 @@ angular.module('appCg').controller('ProjectReviewModalCtrl', function(project_re
                         lookupLabelProp: 'item',
                         lookupParam: '?project_partner=eq.' + vm.project_partner,
                         
-                        extraFields: [],
-                        /*extraFields: [
-                            {fieldName : 'males', type: 'number', label : 'Males',required : false},
-                            {fieldName : 'females', type: 'number', label: 'Females',required : false}
-                        ]*/
+                        //extraFields: [],
+                        extraFields: [
+                            {fieldName : 'impact', type: 'text', label : 'Impact',required : false, default: ' '},
+                         //   {fieldName : 'females', type: 'number', label: 'Females',required : false}
+                        ]
                     };
                 }
             }

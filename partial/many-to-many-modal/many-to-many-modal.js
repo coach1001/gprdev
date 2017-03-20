@@ -33,8 +33,8 @@ angular.module('appCg').controller('ManyToManyModalCtrl', function($scope, confi
         $scope.allOptions = [];
 
         $scope.indicator= false;
-
         
+
         gprRestApi.getRowsFilterColumn(
             configManyToMany.hybridTable,
             configManyToMany.singularColumn,
@@ -56,25 +56,34 @@ angular.module('appCg').controller('ManyToManyModalCtrl', function($scope, confi
                 }
 
                 $scope.originalAvailableOptions = angular.copy($scope.allOptions);
-                //console.log(JSON.stringify($scope.originalAvailableOptions));
+                
 
                 for (var k = 0; k < $scope.originalSelectedOptions.length; k++) {
                     for (var j = 0; j < $scope.allOptions.length; j++) {
                         if ($scope.originalSelectedOptions[k][configManyToMany.lookupHybridColumn] === $scope.allOptions[j][configManyToMany.lookupValueProp]) {
                             
-                            //console.log($scope.originalSelectedOptions[k][configManyToMany.lookupHybridColumn],$scope.allOptions[j][configManyToMany.lookupValueProp]);
+                            var index = $scope.originalAvailableOptions.getIndex('id',$scope.allOptions[j].id);                                                        
                             
                             $scope.originalSelectedOptions[k].id = $scope.allOptions[j][configManyToMany.lookupValueProp];
-                            $scope.originalSelectedOptions[k].label = $scope.allOptions[j][configManyToMany.lookupLabelProp];
-                            $scope.originalAvailableOptions.splice(j, 1);
-                            console.log(JSON.stringify($scope.originalAvailableOptions));
+                            $scope.originalSelectedOptions[k].label = $scope.allOptions[j][configManyToMany.lookupLabelProp];                                                        
+                            $scope.originalAvailableOptions.splice(index, 1);
+                            
                         }
                     }
                 }
 
                 $scope.editSelectedOptions = angular.copy($scope.originalSelectedOptions);
                 $scope.editAvailableOptions = angular.copy($scope.originalAvailableOptions);
-                //console.log($scope.originalSelectedOptions,$scope.originalAvailableOptions);
+
+                configManyToMany.extraFields.map(function(field){
+                    $scope.editAvailableOptions.map(function(opt){
+                        if(opt[field.fieldName]){
+
+                        }else{
+                            opt[field.fieldName] = field.default;    
+                        }
+                    });
+                });
 
             }, function error(response) {
 
@@ -111,9 +120,7 @@ angular.module('appCg').controller('ManyToManyModalCtrl', function($scope, confi
         var body_array = [];        
 
         if ($scope.originalSelectedOptions.length > 0) {
-
             gprRestApi.deleteRows(configManyToMany.hybridTable, '?' + configManyToMany.singularColumn + '=eq.' + configManyToMany.singularValue).then(function success(response) {
-
                 body_array = $scope.formData();
                 
                 if(body_array.length > 0){
@@ -125,6 +132,8 @@ angular.module('appCg').controller('ManyToManyModalCtrl', function($scope, confi
                     });
                 }    
             }, function error(response) {
+            
+                
             });
 
         } else {

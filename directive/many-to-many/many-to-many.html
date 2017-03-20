@@ -28,6 +28,7 @@
             <div class="form-group">
                 <label>{{field.label}}</label>
                 <input class="form-control" ng-model="selectedItem[field.fieldName]" type="number" ng-if="field.type === 'number'" step="1"/>
+                <textarea class="form-control" ng-model="selectedItem[field.fieldName]" rows="10" ng-if="field.type === 'text'">{{field.default}}</textarea>
             </div>
             </div>
         </ng-form>
