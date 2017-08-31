@@ -1,7 +1,7 @@
 function downloadURI(uri, name) {
   var link = document.createElement("a");
   link.download = name;
-  link.href = uri;
+  link.href = uri;  
   document.body.appendChild(link);
   link.click();
   document.body.removeChild(link);  
@@ -26,7 +26,6 @@ function b64toBlob(b64Data, contentType, sliceSize) {
     }
 
     var byteArray = new Uint8Array(byteNumbers);
-
     byteArrays.push(byteArray);
   }
     
@@ -34,12 +33,12 @@ function b64toBlob(b64Data, contentType, sliceSize) {
   return blob;
 }
 
-
 angular.module('appCg').controller('UploadFileCtrl',function($scope,$http){	
-	
-	$scope.upload = function(){				
-		
-		$http.post('http://localhost:3003/files', {
+	  
+	$scope.upload = function(){						
+	  console.log($scope.file);
+  	/*
+    $http.post('http://localhost:3003/files', {
 			filetype : $scope.file.filetype,
 			data: $scope.file.base64
 		},{ headers: {'Authorization':undefined} }).then( function succ(sr){
@@ -47,16 +46,18 @@ angular.module('appCg').controller('UploadFileCtrl',function($scope,$http){
 			$scope.view(id);
 		}, function err(er){
 
-		});		
+		});*/		
 	};
 
 	$scope.view = function(id){
-			$http.get('http://localhost:3003/files?id=eq.'+id+'&select=data,filetype',{ headers: {'Authorization': undefined } }).then( function succ(sr){
-				var blob = b64toBlob(sr.data[0].data,sr.data[0].filetype,512);
-				var blobUrl = URL.createObjectURL(blob);				
-				window.open(blobUrl);				
+    console.log(id);
+		$http.get('http://localhost:3003/files?id=eq.'+id+'&select=data,filetype',{ headers: {'Authorization': undefined } }).then( function succ(sr){				
+        var blob = b64toBlob(sr.data[0].data,sr.data[0].filetype,512);                      
+        var blobUrl = URL.createObjectURL(blob);        
+				downloadURI(blobUrl,"this.pdf");      
+        //window.open(blobUrl);				
 		}, function err(er){
-
+      console.log(er);
 		});		
 	
 	};

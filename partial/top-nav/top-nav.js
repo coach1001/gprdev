@@ -1,7 +1,7 @@
 angular.module('appCg').controller('TopNavCtrl', function ($uibModal, authenticationService,$state,loginModalService,$rootScope) {
   var vm = this;
   vm.navbarCollapsed = true;
-  vm.section = true;
+  vm.section = false;
 
   vm.loginFunc = function () {
 

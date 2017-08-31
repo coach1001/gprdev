@@ -7,7 +7,7 @@ angular.module('appCg', [
     'ngToast',
     'angular-confirm',
     'ui.grid', 'ui.grid.selection', 'ui.grid.exporter', 'ui.grid.edit', 'ui.grid.autoResize', 'ui.grid.grouping',  'ui.grid.resizeColumns',
-    'ui.select', 'ngLoadingSpinner', 'ui.checkbox', 'disableAll','naif.base64'
+    'ui.select', 'ngLoadingSpinner', 'ui.checkbox', 'disableAll','ngFileUpload'
 ]);
 
 
@@ -67,14 +67,14 @@ function convertDateStringsToDates(input) {
         // Check for string properties which look like dates.
         // TODO: Improve this regex to better match ISO 8601 date strings.
         if (typeof value === "string" && (match = value.match(regexIso8601forDate))) {
-            // Assume that Date.parse can parse ISO 8601 strings, or has been shimmed in older browsers to do so.      
+            // Assume that Date.parse can parse ISO 8601 strings, or has been shimmed in older browsers to do so.
             milliseconds_ = Date.parse(match[0]);
             if (!isNaN(milliseconds_)) {
                 input[key] = new Date(milliseconds_);
             }
         } else if (typeof value === "string" && (match = value.match(regexIso8601forDateTime))) {
             milliseconds_ = Date.parse(match[0]);
-            //var milliseconds 
+            //var milliseconds
             if (!isNaN(milliseconds_)) {
                 input[key] = new Date(milliseconds_);
             }
@@ -320,6 +320,9 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider, $loc
                     },
                     la: function() {
                         return false;
+                    },
+                    view_all: function(){
+                        return false;
                     }
                 }
             }
@@ -348,6 +351,9 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider, $loc
                     },
                     la: function() {
                         return false;
+                    },
+                    view_all: function(){
+                        return false;
                     }
                 }
             }
@@ -375,8 +381,10 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider, $loc
                     },
                     la: function() {
                         return false;
+                    },
+                    view_all: function(){
+                        return false;
                     }
-
                 }
             }
         }
@@ -403,6 +411,39 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider, $loc
                     },
                     la: function() {
                         return true;
+                    },
+                    view_all: function(){
+                        return false;
+                    }
+                }
+            }
+        }
+    });
+
+    $stateProvider.state('home.compliance-select-all', {
+        url: '/compliance-select-all?:compliance_section',
+        views: {
+            'mainContent@': {
+                templateUrl: 'partial/compliance-select/compliance-select.html',
+                controller: 'ComplianceSelectCtrl as vm',
+                resolve: {
+                    compliances: function(gprRestApi, authenticationService, $stateParams) {
+                        return gprRestApi.getRowsWithFEs('grid_compliance_applications', '&compliance_section=eq.' + $stateParams.compliance_section);
+                    },
+                    complianceSection: function($stateParams) {
+                        return $stateParams.compliance_section;
+                    },
+                    lookup_calls_uigrid: function res(gprRestApi) {
+                        return gprRestApi.getRows('lookup_calls_uigrid', false);
+                    },
+                    gu: function() {
+                        return false;
+                    },
+                    la: function() {
+                        return false;
+                    },
+                    view_all: function(){
+                        return true;
                     }
                 }
             }
@@ -411,7 +452,7 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider, $loc
 
 
     $stateProvider.state('home.compliance', {
-        url: '/compliance?:templateId&:appId&:application&:grants_unit&:la',
+        url: '/compliance?:templateId&:appId&:application&:grants_unit&:la&:view_all',
         views: {
             'mainContent@': {
                 templateUrl: 'partial/compliance/compliance.html',
@@ -431,7 +472,10 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider, $loc
                     },
                     la: function res($stateParams) {
                         return $stateParams.la;
-                    }
+                    },
+                    view_all: function res($stateParams) {
+                        return $stateParams.view_all;
+                    },
 
                 }
             }
@@ -504,7 +548,7 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider, $loc
     });
 
     $stateProvider.state('home.project-partners', {
-        url: '/project-partners',        
+        url: '/project-partners',
         views: {
             'mainContent@': {
                 templateUrl: 'partial/project-partners/project-partners.html',
@@ -522,7 +566,7 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider, $loc
     });
 
     $stateProvider.state('home.project-partners-contracts', {
-        url: '/project-partners-contracts',        
+        url: '/project-partners-contracts',
         views: {
             'mainContent@': {
                 templateUrl: 'partial/project-partners/project-partners.html',
@@ -540,7 +584,7 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider, $loc
     });
 
     $stateProvider.state('home.project-partners-budgets', {
-        url: '/project-partners-budgets',        
+        url: '/project-partners-budgets',
         views: {
             'mainContent@': {
                 templateUrl: 'partial/project-partners/project-partners.html',
@@ -558,7 +602,7 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider, $loc
     });
 
     $stateProvider.state('home.project-partners-implementation-plans', {
-        url: '/project-partners-implementation-plans',        
+        url: '/project-partners-implementation-plans',
         views: {
             'mainContent@': {
                 templateUrl: 'partial/project-partners/project-partners.html',
@@ -576,7 +620,7 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider, $loc
     });
 
     $stateProvider.state('home.project-partners-report-schedules', {
-        url: '/project-partners-report-schedules',        
+        url: '/project-partners-report-schedules',
         views: {
             'mainContent@': {
                 templateUrl: 'partial/project-partners/project-partners.html',
@@ -626,7 +670,7 @@ angular.module('appCg').config(function($stateProvider, $urlRouterProvider, $loc
         }
 
     });
-    
+
     $urlRouterProvider.otherwise('/home');
     $locationProvider.html5Mode(false);
 });

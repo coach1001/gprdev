@@ -2,17 +2,12 @@
   "name": "angular-ui-grid",
   "description": "A data grid for Angular",
   "main": [
-    "./less",
     "./ui-grid.css",
-    "./ui-grid.eot",
-    "./ui-grid.js",
-    "./ui-grid.svg",
-    "./ui-grid.ttf",
-    "./ui-grid.woff"
+    "./ui-grid.js"
   ],
   "ignore": [],
   "dependencies": {
-    "angular": ">=1.2.16 1.4.x"
+    "angular": ">=1.4.0 1.5.x"
   },
   "repository": {
     "type": "git",
@@ -35,15 +30,14 @@
     "data grid"
   ],
   "license": "MIT",
-  "version": "3.2.1",
-  "_release": "3.2.1",
+  "version": "4.0.4",
+  "_release": "4.0.4",
   "_resolution": {
     "type": "version",
-    "tag": "v3.2.1",
-    "commit": "bd03e45e67722c664d6facf5ca8fc4cdbb831bac"
+    "tag": "v4.0.4",
+    "commit": "0d92f73f431c3d3de19a987cf49f9948c96a6586"
   },
   "_source": "https://github.com/angular-ui/bower-ui-grid.git",
-  "_target": "^3.2.1",
-  "_originalSource": "angular-ui-grid",
-  "_direct": true
+  "_target": "^4.0.3",
+  "_originalSource": "angular-ui-grid"
 }

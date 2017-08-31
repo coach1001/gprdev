@@ -1,4 +1,4 @@
-angular.module('appCg').controller('ComplianceSelectCtrl',function(compliances,$state,complianceSection,uiGridConstants,$confirm,lookup_calls_uigrid,gu,la) {
+angular.module('appCg').controller('ComplianceSelectCtrl',function(compliances,$state,complianceSection,uiGridConstants,$confirm,lookup_calls_uigrid,gu,la,view_all) {
   var vm = this;
   complianceSection = Number(complianceSection);
   if(complianceSection === 2){
@@ -21,6 +21,8 @@ angular.module('appCg').controller('ComplianceSelectCtrl',function(compliances,$
   }
 
   vm.la = angular.copy(la);
+  vm.view_all = angular.copy(view_all);
+
   //console.log(vm.la);
 
   var unfilteredRows = angular.extend(compliances);
@@ -55,7 +57,7 @@ angular.module('appCg').controller('ComplianceSelectCtrl',function(compliances,$
           appId    : row.entity.id,
           application : row.entity.application,
           compliance_officer    : row.compliance_officer,
-          complete    : row.entity.complete,          
+          complete    : row.entity.complete
         };
       if(complianceSection === 2){
         compliance_packet.compliance_template = row.entity.admin_compliance_template;
@@ -67,8 +69,7 @@ angular.module('appCg').controller('ComplianceSelectCtrl',function(compliances,$
         compliance_packet.compliance_template = row.entity.assessment_compliance_template;
       }
       else if (complianceSection === 6){
-        compliance_packet.compliance_template = row.entity.due_diligence_compliance_template;
-        
+        compliance_packet.compliance_template = row.entity.due_diligence_compliance_template;      
       }
         
 
@@ -82,6 +83,7 @@ angular.module('appCg').controller('ComplianceSelectCtrl',function(compliances,$
   };
 
   vm.openModal = function(compliance_packet) {
-    $state.go('home.compliance',{templateId : compliance_packet.compliance_template, appId : compliance_packet.appId,application : compliance_packet.application, grants_unit : vm.gu.state, la : vm.la});                 
+    
+    $state.go('home.compliance',{templateId : compliance_packet.compliance_template, appId : compliance_packet.appId,application : compliance_packet.application, grants_unit : vm.gu.state, la : vm.la, view_all: vm.view_all});                 
   };
 });

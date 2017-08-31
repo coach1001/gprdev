@@ -59,11 +59,23 @@ angular.module('appCg').controller('HomeCtrl', function($uibModal, $scope, proje
         enableGridMenu: true,
         treeRowHeaderAlwaysVisible: false,
         showColumnFooter: true,
-
+        exporterPdfDefaultStyle: {
+            fontSize: 8
+        },
+        exporterPdfTableHeaderStyle: {
+            fontSize: 8, 
+        },
+        exporterPdfFooter: function ( currentPage, pageCount ) {
+          return { 
+            text: currentPage.toString() + ' of ' + pageCount.toString(), style: 'footerStyle' 
+          };
+        },
         columnDefs: [
-            { name: 'implementing_partners', width: '50%'},
-            { name: 'code', grouping: { groupPriority: 0 }, width: '9%', displayName: 'Province' },
-            { name: 'project_type_code', grouping: { groupPriority: 1 }, width: '7%', displayName: 'Type' }, {
+            { name: 'is_cfp', width: '100' },
+            { name: 'call_code', width: '100'},
+            { name: 'implementing_partners', width: '400'},
+            { name: 'code', grouping: { groupPriority: 0 }, width: '100', displayName: 'Province' },
+            { name: 'project_type_code', grouping: { groupPriority: 1 }, width: '70', displayName: 'Type' }, {
                 field: 'p_id',
                 treeAggregationHideLabel: true,
                 treeAggregationType: uiGridGroupingConstants.aggregation.COUNT,

@@ -102,7 +102,16 @@ angular.module('appCg').controller('CfpModalCtrl', function(programmes, alfresco
 					placeholder: 'Call Name',
 					required: true
 				}
-			}, {
+			},{
+          key: 'reply_to_email',
+          type: 'input',
+          templateOptions: {
+            label: 'Reply to Email Address',
+            placeholder: 'Email Address',
+            type: 'email',
+            required: true
+          }
+      },{
 				key: 'call_reference',
 				type: 'input',
 				templateOptions: {

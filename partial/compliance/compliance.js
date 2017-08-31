@@ -1,4 +1,4 @@
-angular.module('appCg').controller('ComplianceCtrl', function($scope, template, gprRestApi, $stateParams, complianceInfo, ngToast, $confirm, authenticationService, $state, score_for_template, gu, la) {
+angular.module('appCg').controller('ComplianceCtrl', function($scope, template, gprRestApi, $stateParams, complianceInfo, ngToast, $confirm, authenticationService, $state, score_for_template, gu, la, view_all) {
     var vm = this;
 
     vm.template = angular.copy(template[0]);
@@ -26,8 +26,14 @@ angular.module('appCg').controller('ComplianceCtrl', function($scope, template, 
         vm.la = false;
     }
 
-    console.log(score_for_template);
+    if (view_all) {
+        vm.view_all = angular.copy(view_all);
+    } else {
+        vm.view_all = false;
+    }
 
+    console.log(view_all);
+    
     if (vm.complianceInfo.application_status === 2) {
         vm.current_status = 'Admin & Tech';
     } else if (vm.complianceInfo.application_status === 3) {

@@ -24,16 +24,16 @@ angular.module('appCg').controller('ProjectPartnerExpensesModalCtrl',function(
         treeRowHeaderAlwaysVisible: false,
         showColumnFooter: true,
         columnDefs: [
-            { name: 'request_id' , width: '14%'},
-            { name: 'tranche_no', width: '14%'},            
+            { name: 'request_id' , width: '8%'},
+            { name: 'tranche_no', width: '8%'},            
             { name: 'request_date', type: 'date', cellFilter: 'date:\'dd MMMM yyyy\'',width:'15%' },
-            { name: 'amount',treeAggregationType: uiGridGroupingConstants.aggregation.SUM,footerCellTemplate: '<div class="ui-grid-cell-contents">{{col.getAggregationValue()|currency:"R ":0}}</div>',cellFilter: 'currency:"R ":0',width:'17%',customTreeAggregationFinalizerFn: function(aggregation) {
+            { name: 'amount',treeAggregationType: uiGridGroupingConstants.aggregation.SUM,footerCellTemplate: '<div class="ui-grid-cell-contents">{{col.getAggregationValue()|currency:"R ":0}}</div>',cellFilter: 'currency:"R ":0',width:'10%',customTreeAggregationFinalizerFn: function(aggregation) {
                     aggregation.rendered = aggregation.value;
                     vm.gridApi.core.notifyDataChange(uiGridConstants.dataChange.EDIT);
                 },},
             { name: 'payment_reference'},
-
-
+            { name: 'account_name'},
+            { name: 'account_number', width: '15%'}
         ],
         onRegisterApi: function(gridApi) {
             vm.gridApi = gridApi;
@@ -46,8 +46,7 @@ angular.module('appCg').controller('ProjectPartnerExpensesModalCtrl',function(
     vm.openModal = function(id, operation) {
         $uibModal.open({
             templateUrl: 'partial/project-partners/modal/sub/sub-partner-expense.html',
-            controller: 'SubPartnerExpenseCtrl as vm',
-            size : 'lg',
+            controller: 'SubPartnerExpenseCtrl as vm',            
             resolve: {
                 payment_types : function res(gprRestApi){
                         return gprRestApi.getRows('payment_types');

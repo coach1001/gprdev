@@ -15,18 +15,17 @@ angular.module('appCg').controller('OrganisationsCtrl', function(organisations, 
         noUnselect: true,
         enableGridMenu: true,
         columnDefs: [
-            {name: 'code'},
+            { name: 'code', width: '100' },
             { name: 'name' },
-            { name: 'web_site' },
-            { name: 'npo_no',displayName: 'NPO Number'},
+            { name: 'organisation_type' },
+            { name: 'web_site', visible: false },            
+            { name: 'npo_no',displayName: 'NPO', width: '120' },
             { name: 'email_address' },
-            { name: 'referee' },
-            { name: 'auditor' },
-            { name: 'province' },
-            { name: 'contact_name' },
-            { name: 'contact_email' },
-
-            //{ name: 'organisation_type' }
+            { name: 'province',width: '150' },
+            { name: 'place', width: '150' },
+            { name: 'suburb', width: '150' },
+            { name: 'contact_name', width: '150' },
+            { name: 'contact_email', width: '150' },            
         ],
         onRegisterApi: function(gridApi) {
             vm.gridApi = gridApi;
@@ -34,7 +33,7 @@ angular.module('appCg').controller('OrganisationsCtrl', function(organisations, 
                 var msg = 'row selected ' + row.isSelected;
                 vm.openModal(row.entity.id, 'Update');
             });
-        }
+        }        
     };
 
 

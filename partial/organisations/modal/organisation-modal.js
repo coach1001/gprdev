@@ -428,7 +428,9 @@ angular.module('appCg').controller('OrganisationModalCtrl', function($scope, org
 
             lookupTable: 'organisation_types',
             lookupValueProp: 'id',
-            lookupLabelProp: 'type'
+            lookupLabelProp: 'type',
+
+            extraFields: []
           };
         }
       }

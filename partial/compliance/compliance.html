@@ -1,23 +1,26 @@
 <div class="column">
   <h4 ng-if="vm.disabled" style="color: red; font-weight: bold;">View Mode - Application no Longer in Section, Currently in {{vm.current_status}}</h4>
   <h4 ng-if="vm.la === 'true' " style="color: red; font-weight: bold;">View Mode - Lead Assesor Review</h4>
-  
+  <h4 ng-if="vm.view_all === 'true' " style="color: red; font-weight: bold;">View Mode - Review</h4>
 
   <button ng-if="(vm.gu === 'false' || vm.complianceInfo.lead === true) && vm.la === 'false' &&  vm.complianceInfo.compliance_section !== 4" class="btn btn-primary pull-right" ui-sref="home.compliance-select({compliance_section : vm.complianceInfo.compliance_section})">
     Return to Select</button>
 
-  <button ng-if="(vm.gu === 'false' || vm.complianceInfo.lead === true) && vm.la === 'false' &&  vm.complianceInfo.compliance_section === 4" class="btn btn-primary pull-right" ui-sref="home.compliance-assessment-select({compliance_section : vm.complianceInfo.compliance_section})">
+  <button ng-if="(vm.gu === 'false' || vm.complianceInfo.lead === true) && vm.la === 'false' &&  vm.complianceInfo.compliance_section === 4 && vm.view_all === 'false'" class="btn btn-primary pull-right" ui-sref="home.compliance-assessment-select({compliance_section : vm.complianceInfo.compliance_section})">
     Return to Select</button>
 
   <button ng-if="(vm.gu === 'false' || vm.complianceInfo.lead === true) && vm.la === 'true' " class="btn btn-primary pull-right" ui-sref="home.compliance-select-la({compliance_section : vm.complianceInfo.compliance_section})">
     Return to Select</button>
 
-  <button ng-if="vm.gu === 'true' && vm.complianceInfo.lead === false" class="btn btn-primary pull-right" ui-sref="home.compliance-select-pmu({compliance_section : vm.complianceInfo.compliance_section})">  
+  <button ng-if="vm.gu === 'true' && vm.complianceInfo.lead === false" class="btn btn-primary pull-right" ui-sref="home.compliance-select-pmu({compliance_section : vm.complianceInfo.compliance_section})">
     Return to Grants Unit - Select</button>
-  
+
+  <button ng-if="vm.view_all === 'true'" class="btn btn-primary pull-right" ui-sref="home.compliance-select-all({compliance_section : vm.complianceInfo.compliance_section})">
+    Return to Select</button>
+
   <div disable-all="vm.disabled || vm.la === 'true' ">
     <h3 ng-if="vm.complianceInfo.compliance_section === 2">
-      Admin Compliance - {{vm.complianceInfo.application}} ({{vm.complianceInfo.name}})   
+      Admin Compliance - {{vm.complianceInfo.application}} ({{vm.complianceInfo.name}})
     </h3>
     <h3 ng-if="vm.complianceInfo.compliance_section === 3">
       Relevance Check - {{vm.complianceInfo.application}} ({{vm.complianceInfo.name}})
@@ -30,29 +33,29 @@
     </h3>
     <h6>Call Reference - {{vm.complianceInfo.call_reference}}</h6>
   </div>
-  
+
   <uib-tabset type="pills">
-    
-    
-    <uib-tab ng-init="catIndex = $index" ng-repeat="cat in vm.template.categories" heading="{{cat.title}}" active="tab.active" ng-if="cat.lead === vm.complianceInfo.lead ">    
+
+
+    <uib-tab ng-init="catIndex = $index" ng-repeat="cat in vm.template.categories" heading="{{cat.title}}" active="tab.active" ng-if="cat.lead === vm.complianceInfo.lead ">
       </br>
-    
-      <ng-form novalidate>  
+
+      <ng-form novalidate>
       <pre ng-if="cat.subtitle" style="font-style: italic;color:red; font-weight:bold;">{{cat.subtitle}}</pre>
-      
+
       <div ng-repeat="q in cat.questions" ng-init="qIndex = $index" disable-all="vm.disabled || vm.la === 'true' " ng-if="q.lead_question === vm.complianceInfo.lead">
         <h4>  <span class="badge badge-middle">{{q.question_number}}</span>  {{q.question}}</h4>
         <pre ng-if="q.description" style="font-style: italic;">{{q.description}}</pre>
-        
-        
+
+
         <div ng-if="q.question_types.code==='date'">
           <div uib-datepicker ng-blur="vm.updateModelAnswer(catIndex,qIndex,q.compliance_answers[0].answer)" style="width:25%;" ng-model="q.compliance_answers[0].answer"></div>
         </div>
-        
+
         <div ng-if="q.question_types.code==='time'">
           <div uib-timepicker hour-step="1" minute-step="1" show-meridian="false" ng-blur="vm.updateModelAnswer(catIndex,qIndex,q.compliance_answers[0].answer)" style="width:25%;" ng-model="q.compliance_answers[0].answer"></div>
         </div>
-        
+
         <div ng-if="q.question_types.code==='boolean'">
           <select class="form-control" ng-blur="vm.updateModelAnswer(catIndex,qIndex,q.compliance_answers[0].answer)" style="width:25%;" ng-model="q.compliance_answers[0].answer">
             <option value="null">Unknown</option>
@@ -60,28 +63,28 @@
             <option value="false">No</option>
           </select>
         </div>
-        
+
         <textarea ng-blur="vm.updateModelAnswer(catIndex,qIndex,q.compliance_answers[0].answer)" ng-model="q.compliance_answers[0].answer" label="" spellcheck="true" style="width:50%;height:150px;" ng-if="(q.question_types.code === 'textarea')"></textarea>
 
         <h6 ng-if="(q.question_types.code === 'number' && q.is_scoring)">Rating Score for Above Question 0 (min) - {{q.max_scoring}} (max)</h6>
-        
+
         <input ng-blur="vm.updateModelAnswer(catIndex,qIndex,q.compliance_answers[0].answer)" ng-model="q.compliance_answers[0].answer" type="number" ng-change="vm.updateCurrScore(q.compliance_answers[0].answer)" value="0" style="width:15%;" ng-if="(q.question_types.code === 'number')" step="0.5" min="0" max="{{q.max_scoring}}">
 
         <h5 ng-if="(q.has_motivation)">Comment/Justification</h5>
-        
-        <textarea ng-blur="vm.updateModelMotivation(catIndex,qIndex,q.compliance_answers[0].motivation)" ng-model="q.compliance_answers[0].motivation" label="" style="width:50%;height:120px;" ng-if="(q.has_motivation)">          
+
+        <textarea ng-blur="vm.updateModelMotivation(catIndex,qIndex,q.compliance_answers[0].motivation)" ng-model="q.compliance_answers[0].motivation" label="" style="width:50%;height:120px;" ng-if="(q.has_motivation)">
         </textarea>
-      
+
       </div>
-      
-      <h5 ng-if="q.question_types.code==='place_holder'" style="font-weight:bold;">{{q.question}}</h5>        
-      
-      </ng-form> 
-    
-    </uib-tab>   
+
+      <h5 ng-if="q.question_types.code==='place_holder'" style="font-weight:bold;">{{q.question}}</h5>
+
+      </ng-form>
+
+    </uib-tab>
   </uib-tabset>
 
-  
+
   <h4 ng-hide="vm.la === 'true'">Completed? <checkbox ng-disabled="!vm.complete" ng-hide="vm.la === 'true'" ng-model="vm.complianceInfo.complete"></checkbox></h4>
   <button class="btn btn-primary" ng-hide="vm.la === 'true'" ng-click="vm.saveAnswers()">Save Changes</button>
 
@@ -97,7 +100,7 @@
     Demote Application and Delete Section Data</button>
   <span class="pull-right">&nbsp;</span>
   <button ng-disabled="!vm.complianceInfo.complete || vm.disabled" ng-if="(vm.complianceInfo.compliance_section === 4 && vm.complianceInfo.lead === true) || vm.gu === 'true'" class="btn btn-success pull-right" ng-click="vm.promote()">
-   Approve and Promote Application</button></br></br>  
-   
+   Approve and Promote Application</button></br></br>
+
 
 </div>

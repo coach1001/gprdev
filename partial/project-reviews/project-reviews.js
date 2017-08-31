@@ -86,7 +86,7 @@ angular.module('appCg').controller('ProjectReviewsCtrl', function(projects, gprR
             { name: 'due_date', type: 'date', cellFilter: 'date:\'yyyy-MM-dd\'' },
             { name: 'expiry_date', type: 'date', cellFilter: 'date:\'yyyy-MM-dd\'' },
             { name: 'review_date', type: 'date', cellFilter: 'date:\'yyyy-MM-dd\'' },
-            { name: 'satisfactory', type: 'boolean', cellTemplate: '<checkbox disabled="true" ng-model="row.entity.satisfactory"></checkbox>' }
+            { name: 'recommend_payment', type: 'boolean', cellTemplate: '<checkbox disabled="true" ng-model="row.entity.recommend_payment"></checkbox>' }
         ],
         onRegisterApi: function(gridApi) {
             vm.gridApi_1 = gridApi;
@@ -111,8 +111,11 @@ angular.module('appCg').controller('ProjectReviewsCtrl', function(projects, gprR
         $uibModal.open({
             templateUrl: 'partial/project-reviews/modal/project-review-modal.html',
             controller: 'ProjectReviewModalCtrl as vm',
-            size: 'lg',
+            size: 'lg',            
             resolve: {
+                project_payments_schedule : function res(gprRestApi){
+                    return gprRestApi.getRowsFilterColumn('lookup_tranche_schedule','project_partner',row.entity.project_partner);
+                },
                 project_report: function res(gprRestApi) {
                     return gprRestApi.getRow('project_reports', id);
                 },

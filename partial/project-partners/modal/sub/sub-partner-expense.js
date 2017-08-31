@@ -149,7 +149,12 @@ angular.module('appCg').controller('SubPartnerExpenseCtrl', function(project_exp
 	};
 
 	vm.printReq = function() {
-      reporting.generateReport(3, [{ name: 'req_id_param', value: vm.project_expense.id }],true);
+      //console.log(vm.project_expense);
+      //console.log(vm.partner_tranches);
+      reporting.generateReport(3, [
+      { name: 'req_id_param', value: vm.project_expense.id },
+      { name: 'tranche_id_param', value: vm.project_expense.payment_schedule }],true);
+  	
   };
 
 	vm.updateCreateRow = function() {

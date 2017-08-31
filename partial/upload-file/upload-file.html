@@ -4,11 +4,18 @@
         <h4 class="modal-title">Upload File</h4>
     </div>
     <div class="modal-body">
-        <label class="btn btn-primary btn-file">
+    
+
+
+        <input type="file" base-sixty-four-input do-not-parse-if-oversize ng-model="file">         
+    
+
+
+       <!--  <label class="btn btn-primary btn-file">
             Browse
             <input type="file" ng-model="file" base-sixty-four-input style="display: none;">
         </label>
-
+ -->
     	File: {{file.filename}}
     </div>   
     <div class="modal-footer">

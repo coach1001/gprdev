@@ -1,3 +1,6 @@
+.large-width .modal-dialog {
+  width: 90%;
+}
 .ui-select-match-text{
   width: 100%;
   overflow: hidden;
@@ -12,7 +15,9 @@
 }
 
 .bold{
-  font-weight: 900;  
+  font-weight: 900;
+  color: white;
+  background-color: #008cba;
 }
 
 div.navbar-collapse.collapse {

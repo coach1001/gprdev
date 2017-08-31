@@ -3,7 +3,7 @@ angular.module('appCg').controller('ProjectReviewModalCtrl', function(project_re
     gprRestApi,
     ngToast,
     $confirm,
-    $uibModalInstance,$uibModal,project_partner) {
+    $uibModalInstance,$uibModal,project_partner,project_payments_schedule) {
 
     var vm = this;
     
@@ -16,7 +16,7 @@ angular.module('appCg').controller('ProjectReviewModalCtrl', function(project_re
     }
     
     vm.project_report.report_schedule = report_schedule;
-    
+    vm.project_payments_schedule = angular.extend(project_payments_schedule);
     vm.operation = angular.extend(operation);
     vm.project_partner = angular.extend(project_partner);
 
@@ -31,48 +31,72 @@ angular.module('appCg').controller('ProjectReviewModalCtrl', function(project_re
             required: true
         }
     }, {
-        key: 'narrative',
+        key: 'objectives',
         type: 'textarea',
         className: 'nopadding',
         templateOptions: {
-            label: 'General Narrative',
-            placeholder: 'Review',
+            label: 'Objectives',            
             rows: 3,
             required: true
         }
     },{
-        key: 'impact',
+        key: 'summary_of_assessment',
         type: 'textarea',
         className: 'nopadding',
         templateOptions: {
-            label: 'Impact',
-            placeholder: 'Impact',
+            label: 'Summary of Assessment',
             rows: 3,
             required: true
         }
     },{
-        key: 'final_recommendation',
+        key: 'recommendation',
         type: 'textarea',
         className: 'nopadding',
         templateOptions: {
-            label: 'Recommendation',
-            placeholder: 'Review',
+            label: 'Recommendation',            
             rows: 3,
             required: true
         }
-    }, {
-        key: 'satisfactory',
-        type: 'checkbox2',
-        templateOptions: {
-            label: 'Satisfactory ?',
-        }
-    }, {
+    },{
+    fieldGroup: [
+    {
+        className: 'col-xs-2 nopadding',
         key: 'recommend_payment',
         type: 'checkbox2',
         templateOptions: {
             label: 'Recommend Payment ?',
         }
+    },
+    {      
+      className: 'col-xs-5 nopadding',
+      key: 'tranche_to_pay',
+      type: 'select',
+      templateOptions: {
+        label: 'Tranche ?',
+        valueProp: 'id',
+        labelProp: 'label',
+        options: vm.project_payments_schedule,
+        required: false
+        }
     }, {
+      className: 'col-xs-5 nopadding',
+      key: 'ammend_payment',
+      type: 'input',
+      templateOptions: {
+        type: 'number',
+        label: 'Ammend Amount ?',
+        placeholder: '',
+        required: false
+      }
+    }
+    ]},
+    {      
+        key: 'recommend_extension',
+        type: 'checkbox2',
+        templateOptions: {
+            label: 'Recommend Extension ?',
+        }
+    },  {
             template: '<button class="btn btn-success" ng-click="openReportOnImplementation()">Implementation Plan Review</button><br></br>',
             templateOptions: {},
             hideExpression: function($viewValue, $modelValue, scope) {
@@ -93,6 +117,7 @@ angular.module('appCg').controller('ProjectReviewModalCtrl', function(project_re
             templateUrl: 'partial/many-to-many-modal/many-to-many-modal.html',
             controller: 'ManyToManyModalCtrl',
             size: 'lg',
+            //windowClass: 'large-width',
             resolve: {
                 configManyToMany: function() {
                     return {
@@ -107,15 +132,16 @@ angular.module('appCg').controller('ProjectReviewModalCtrl', function(project_re
                         singularColumn: 'project_report',
                         singularValue: vm.project_report.id,
 
-                        lookupTable: 'project_implementation_plans',
+                        lookupTable: 'lookup_project_implementation_plan',
                         lookupValueProp: 'id',
-                        lookupLabelProp: 'item',
+                        lookupLabelProp: 'item_label_budget',
                         lookupParam: '?project_partner=eq.' + vm.project_partner,
                         
                         //extraFields: [],
                         extraFields: [
+                            {fieldName : 'achieved_implemented', type: 'text', label : 'Achieved/Implemented',required : false, default: ' '},
                             {fieldName : 'impact', type: 'text', label : 'Impact',required : false, default: ' '},
-                         //   {fieldName : 'females', type: 'number', label: 'Females',required : false}
+                            {fieldName : 'expenditure', type: 'number', label: 'Expenditure',required : false}
                         ]
                     };
                 }

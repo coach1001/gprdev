@@ -1,4 +1,4 @@
-angular.module('appCg').controller('CfpsCtrl', function(cfps, gprRestApi, $uibModal) {
+angular.module('appCg').controller('CfpsCtrl', function(cfps, gprRestApi, $uibModal, uiGridConstants) {
     var vm = this;
     vm.title = 'Calls for Proposals';
 
@@ -17,11 +17,13 @@ angular.module('appCg').controller('CfpsCtrl', function(cfps, gprRestApi, $uibMo
         noUnselect: true,
         enableGridMenu: true,
         columnDefs: [
+            { name: 'id', sort: { direction: uiGridConstants.DESC }, width: '5%'},
             { name: 'call_reference', displayName: 'Call Reference' },
             { name: 'name',displayName: 'Call Name'},
             { name: 'programme_code', displayName: 'Programme Code' },
             { name: 'kra_code', displayName: 'KRA Code' },
-            { name: 'kpi_code', displayName: 'KPI Code' }
+            { name: 'kpi_code', displayName: 'KPI Code' },
+            { name: 'reply_to_email', displayName: 'Email' },
         ],
         onRegisterApi: function(gridApi) {
             vm.gridApi = gridApi;

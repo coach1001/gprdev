@@ -61,7 +61,8 @@ angular.module('appCg').controller('ProjectPartnersCtrl', function(projects, gpr
         noUnselect: true,
         enableGridMenu: true,
         columnDefs: [
-            { name: 'project' },
+            { name: 'project',width: '10%' },
+            { name: 'partner_seq' , width: '3%', displayName: ''},
             { name: 'partner_name' },
             { name: 'partner_type' },
             { name: 'partner_email' }
@@ -197,7 +198,7 @@ angular.module('appCg').controller('ProjectPartnersCtrl', function(projects, gpr
             $uibModal.open({
                 templateUrl: 'partial/project-partners/modal/project-partner-expenses-modal.html',
                 controller: 'ProjectPartnerExpensesModalCtrl as vm',
-                size: 'lg',
+                windowClass: 'large-width',
                 resolve: {
                     project_partner: function res(gprRestApi) {
                         return gprRestApi.getRow('grid_project_partners', id);
