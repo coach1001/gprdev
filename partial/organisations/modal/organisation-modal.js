@@ -6,9 +6,10 @@ angular.module('appCg').controller('OrganisationModalCtrl', function($scope, org
   orgStatuses,
   main_contact_person,
   /*
-                                                                        suburbs,
-                                                                        places,
+  suburbs,
+  places,
   */
+  geocode,
   operation,
   gprRestApi,
   ngToast,
@@ -39,12 +40,12 @@ angular.module('appCg').controller('OrganisationModalCtrl', function($scope, org
   vm.postal_places = [];
 
   if(main_contact_person){
-    vm.main_contact_person = angular.extend(main_contact_person);  
+    vm.main_contact_person = angular.extend(main_contact_person);
   }else{
     vm.main_contact_person = {};
   }
-  
-  
+
+
   console.log(vm.main_contact_person);
 
   vm.tabs = [{
@@ -133,10 +134,10 @@ angular.module('appCg').controller('OrganisationModalCtrl', function($scope, org
               vm.openPersonsSelectModal();
             };
           }]
-        }, 
+        },
           {
             fieldGroup: [
-              
+
               {
                 className: 'col-xs-4 nopadding',
                 key: 'full_name',
@@ -249,6 +250,7 @@ angular.module('appCg').controller('OrganisationModalCtrl', function($scope, org
                   //scope.fields[1].templateOptions.options = $filter('filter')(vm.places, {province: newValue});
                   gprRestApi.getRowsFilterColumn('places', 'province', newValue).then(function success(response) {
                     scope.fields[1].templateOptions.options = response;
+                    vm.street_places = response;
                   }, function error(response) {
 
                   });
@@ -279,6 +281,7 @@ angular.module('appCg').controller('OrganisationModalCtrl', function($scope, org
                   //scope.fields[2].templateOptions.options = $filter('filter')(vm.suburbs, {place: newValue});
                   gprRestApi.getRowsFilterColumn('lookup_suburbs', 'place', newValue).then(function success(response) {
                     scope.fields[2].templateOptions.options = response;
+                    vm.street_suburbs = response;
                     //console.log(scope);
                   }, function error(response) {});
                 } else {
@@ -296,9 +299,87 @@ angular.module('appCg').controller('OrganisationModalCtrl', function($scope, org
               valueProp: 'id',
               labelProp: 'street_label'
             }
-          }]
+          }],
+        },
+        {
+          fieldGroup: [
+            {
+              className: 'col-xs-6 nopadding',
+              key: 'lat',
+              type: 'input',
+              templateOptions: {
+                label: 'Latitude',
+                type: 'number'
+              }
+            },
+            {
+              className: 'col-xs-6 nopadding',
+              key: 'long',
+              type: 'input',
+              templateOptions: {
+                label: 'Longitude',
+                type: 'number',
 
-        }, {
+              }
+            },
+          ]
+        },
+        {
+          type: 'button',
+          templateOptions: {
+            text: 'Geocode Address',
+            onClick: function($event) {
+
+              var address = [];
+              var url= '';
+
+              address.push(vm.organisation.street_first_line.trim().toLowerCase());
+              address.push(vm.organisation.street_second_line.trim().toLowerCase());
+
+              var pvI = vm.organisation.street_province;
+              var stI = vm.organisation.street_place;
+              var ssI = vm.organisation.street_suburb;
+
+              vm.street_suburbs.find( function(item) {
+                if(item.id === ssI){
+                  address.push(item.street_label.replace(/\((.*)\)/g, '$1').trim().toLowerCase());
+                }
+              });
+
+               vm.street_places.find( function(item) {
+                if(item.id === stI){
+                  address.push(item.name.trim().toLowerCase());
+                }
+              });
+
+              vm.street_provinces.find( function(item) {
+                if(item.id === pvI){
+                  address.push(item.name.trim().toLowerCase());
+                }
+              });
+
+              address = address.map(function(item, index){
+                return item.replace(/ /g,'+');
+              });
+              
+              address.map(function(item,index){
+                if(index){
+                  url = url + ',' + item;
+                }else{
+                  url += item;
+                }
+              });
+
+              geocode.getCood(url).then(function(res){
+                console.log(res);
+              }, function(err){
+
+              });
+
+            }
+          }
+        },
+        {
           key: 'postal_first_line',
           type: 'input',
           templateOptions: {
@@ -306,7 +387,8 @@ angular.module('appCg').controller('OrganisationModalCtrl', function($scope, org
             placeholder: 'Line 1',
             required: false
           }
-        }, {
+        },
+        {
           key: 'postal_second_line',
           type: 'input',
           templateOptions: {
@@ -444,19 +526,19 @@ angular.module('appCg').controller('OrganisationModalCtrl', function($scope, org
     console.log('Open Bank Details');
   };
 
-  /*vm.openMcpDetails = function() {        
+  /*vm.openMcpDetails = function() {
       var operation = null;
-      
+
       if(vm.organisation.main_contact_person){
         operation = 'Update';
       }else{
         operation = 'Create';
       }
-      
+
       $uibModal.open({
           templateUrl: 'partial/persons/modal/person-modal.html',
           controller: 'PersonModalCtrl as vm',
-          scope : $scope,            
+          scope : $scope,
           resolve: {
               person: function res(gprRestApi) {
                   return gprRestApi.getRow('persons', vm.organisation.main_contact_person);
@@ -513,11 +595,11 @@ angular.module('appCg').controller('OrganisationModalCtrl', function($scope, org
     }).result.then(function(result) {
       vm.organisation.main_contact_person = result.id;
       vm.main_contact_person = angular.extend(result);
-      
+
       vm.tabs[1].form.fields[1].fieldGroup[0].model = vm.main_contact_person;
       vm.tabs[1].form.fields[1].fieldGroup[1].model = vm.main_contact_person;
       vm.tabs[1].form.fields[1].fieldGroup[2].model = vm.main_contact_person;
-         
+
 
       vm.updateCreateRow();
 
@@ -551,5 +633,47 @@ angular.module('appCg').controller('OrganisationModalCtrl', function($scope, org
     });
   };
 
-  console.log(vm.tabs);
+  vm.openUpload = function(object,prop,title,filePrefix,fileIdentifier) {
+      var fileId = vm[object][prop];
+      var createFile = false;
+      var fileName = filePrefix+fileIdentifier;
+
+      if(fileId === null){
+        createFile = true;
+        fileId = 0;
+      }else{
+        createFile = false;
+      }
+      $uibModal.open({
+          templateUrl: 'partial/upload-file/upload-file.html',
+          controller: 'UploadFileCtrl',
+          windowClass: 'large-width',
+          backdrop  : 'static',
+          keyboard  : false,
+          resolve: {
+            fileId: fileId,
+            createFile: createFile,
+            title: function() {
+                return title;
+            },
+            saveName: function() {
+                return fileName;
+            }
+          }
+      }).result.then(function(res) {
+        vm[object][prop] = res.data.fileId;
+        vm.updateCreateRow();
+      }, function(res){
+        if(res.fileDeleted)
+        {
+          vm[object][prop] = null;
+          vm.updateCreateRow();
+        }else{
+          vm[object][prop] = res.fileId;
+          vm.updateCreateRow();
+        }
+      });
+  };
+
+
 });

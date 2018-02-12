@@ -140,13 +140,40 @@ angular.module('appCg').run(function(formlyConfig) {
             };
         }]
     });
+
+    formlyConfig.setType({
+      name: 'button',
+      template: '<div><button type="{{::to.type}}" class="btn btn-{{::to.btnType}}" ng-click="onClick($event)">{{to.text}}</button></div>',
+      wrapper: ['bootstrapLabel'],
+      defaultOptions: {
+        templateOptions: {
+          btnType: 'default',
+          type: 'button'
+        },
+        extras: {
+          skipNgModelAttrsManipulator: true // <-- perf optimazation because this type has no ng-model
+        }
+      },
+      controller: function($scope) {
+
+        function onClick($event) {
+          if (angular.isString($scope.to.onClick)) {
+            return $scope.$eval($scope.to.onClick, {$event: $event});
+          } else {
+            return $scope.to.onClick($event);
+          }
+        }
+
+        $scope.onClick = onClick;
+      }
+    });
 })
 .run(function(formlyConfig) {
 
   /*
   ngModelAttrs stuff
   */
-    
+
   var ngModelAttrs = {};
 
   function camelize(string) {
@@ -162,7 +189,7 @@ angular.module('appCg').run(function(formlyConfig) {
   /*
   timepicker
   */
-    
+
   ngModelAttrs = {};
 
   // attributes
@@ -174,7 +201,7 @@ angular.module('appCg').run(function(formlyConfig) {
   ], function(attr) {
     ngModelAttrs[camelize(attr)] = {attribute: attr};
   });
-  
+
   // bindings
   angular.forEach([
     'hour-step',
@@ -182,7 +209,7 @@ angular.module('appCg').run(function(formlyConfig) {
   ], function(binding) {
     ngModelAttrs[camelize(binding)] = {bound: binding};
   });
-  
+
   formlyConfig.setType({
     name: 'timepicker',
     template: '<div uib-timepicker show-meridian="false" ng-model="model[options.key]"></div>',
@@ -195,7 +222,7 @@ angular.module('appCg').run(function(formlyConfig) {
     }
   });
 
-      
+
   formlyConfig.setType({
     name: 'checkbox2',
     template: '<checkbox ng-model="model[options.key]"></checkbox>',
@@ -207,13 +234,13 @@ angular.module('appCg').run(function(formlyConfig) {
 
   formlyConfig.setType({
     name: 'select-list',
-    extends : 'select',    
-    template:'<select class="form-control" ng-model="model[options.key]" size="7"></select>',    
+    extends : 'select',
+    template:'<select class="form-control" ng-model="model[options.key]" size="7"></select>',
     wrapper: ['bootstrapLabel', 'bootstrapHasError'],
     defaultOptions :{
       templateOptions : {}
     }
   });
-  
+
 });
 

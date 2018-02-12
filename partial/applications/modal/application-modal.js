@@ -1,5 +1,5 @@
 angular.module('appCg').controller('ApplicationModalCtrl', function($scope, $uibModal, application,
-    organisations,    
+    organisations,
     calls,
     operation,
     gprRestApi,
@@ -27,7 +27,7 @@ angular.module('appCg').controller('ApplicationModalCtrl', function($scope, $uib
     };
 
       if(main_contact_person){
-    vm.main_contact_person = angular.extend(main_contact_person);  
+    vm.main_contact_person = angular.extend(main_contact_person);
   }else{
     vm.main_contact_person = {};
   }
@@ -68,7 +68,7 @@ angular.module('appCg').controller('ApplicationModalCtrl', function($scope, $uib
             className: 'nopadding',
             templateOptions: {
                 label: 'Project Title',
-                placeholder: 'Project Name',                
+                placeholder: 'Project Name',
                 required: false
             }
         }, {
@@ -94,7 +94,7 @@ angular.module('appCg').controller('ApplicationModalCtrl', function($scope, $uib
             }]
         },{
             fieldGroup: [
-              
+
               {
                 className: 'col-xs-4 nopadding',
                 key: 'full_name',
@@ -152,29 +152,29 @@ angular.module('appCg').controller('ApplicationModalCtrl', function($scope, $uib
         var subject = 'Foundation for Human Rights Correspondence - Acknowledgment of Receipt';
         var body= 'Please find attached your Acknowledgement of Receipt Letter\n\nRegards\nGrants Unit\nFoundation for Human Rights';
         var hasAtt = true;
-        
+
         to.push('fweber@fhr.org.za');
         url=reporting.generateReport(1,[{'application_id' : 10001}],false);
-        
+
         reporting.queueEmail(to[0],subject,body,hasAtt,filename,filetype,url).then(function success(response){
-            email_id = response.data.id;            
+            email_id = response.data.id;
             ngToast.create({ content: 'Email Queued Successfully!', timeout: 4000 });
-            
+
         },function error(response){
             ngToast.warning({ content: 'Queueing Email Failed!', timeout: 4000 });
 
         });
-        
+
 
         /*
         if(reporting.validateEmail(letterDetail.app_contact_email)){
         	to.push(letterDetail.app_contact_email);
         }
         if(reporting.validateEmail(letterDetail.email_address)){
-         	to.push(letterDetail.email_address);   
+         	to.push(letterDetail.email_address);
         }
         if(reporting.validateEmail(letterDetail.org_contact_email)){
-          to.push(letterDetail.email_address);  
+          to.push(letterDetail.email_address);
         }*/
     };
 
@@ -269,5 +269,46 @@ angular.module('appCg').controller('ApplicationModalCtrl', function($scope, $uib
         });
 
     };
-    //console.log(vm);
+
+    vm.openUpload = function(object,prop,title,filePrefix,fileIdentifier) {
+        var fileId = vm[object][prop];
+        var createFile = false;
+        var fileName = filePrefix+fileIdentifier;
+
+        if(fileId === null){
+          createFile = true;
+          fileId = 0;
+        }else{
+          createFile = false;
+        }
+        $uibModal.open({
+            templateUrl: 'partial/upload-file/upload-file.html',
+            controller: 'UploadFileCtrl',
+            windowClass: 'large-width',
+            backdrop  : 'static',
+            keyboard  : false,
+            resolve: {
+              fileId: fileId,
+              createFile: createFile,
+              title: function() {
+                  return title;
+              },
+              saveName: function() {
+                  return fileName;
+              }
+            }
+        }).result.then(function(res) {
+          vm[object][prop] = res.data.fileId;
+          vm.updateCreateRow();
+        }, function(res){
+          if(res.fileDeleted)
+          {
+            vm[object][prop] = null;
+            vm.updateCreateRow();
+          }else{
+            vm[object][prop] = res.fileId;
+            vm.updateCreateRow();
+          }
+        });
+    };
 });

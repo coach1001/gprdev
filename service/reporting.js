@@ -25,6 +25,10 @@ angular.module('appCg').factory('reporting', function(config, $window,gprRestApi
 		reportName: 'Payment Request',
 		unitName: 'RPT_PRQ_EXPENSE',
 		paramList: [{ name: 'req_id_param' },{ name: 'tranche_id_param' },]
+	},{
+		reportName: 'Project Review',
+		unitName: 'RPT_REVIEW_REPORT_V2',
+		paramList: [{ name: 'project_review_id' }]
 	}
 	];
 

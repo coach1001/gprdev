@@ -63,11 +63,11 @@ angular.module('appCg').controller('HomeCtrl', function($uibModal, $scope, proje
             fontSize: 8
         },
         exporterPdfTableHeaderStyle: {
-            fontSize: 8, 
+            fontSize: 8,
         },
         exporterPdfFooter: function ( currentPage, pageCount ) {
-          return { 
-            text: currentPage.toString() + ' of ' + pageCount.toString(), style: 'footerStyle' 
+          return {
+            text: currentPage.toString() + ' of ' + pageCount.toString(), style: 'footerStyle'
           };
         },
         columnDefs: [
@@ -111,7 +111,8 @@ angular.module('appCg').controller('HomeCtrl', function($uibModal, $scope, proje
             { name: 'full_name', width: '17%', displayName: 'Project Officer' },
             { name: 'first_tranche_date', width: '17%', type: 'date', cellFilter: 'date:\'yyyy-MM-dd\'' },
             { name: 'signed_by_partner_on', width: '17%', type: 'date', cellFilter: 'date:\'yyyy-MM-dd\'' },
-            { name: 'signed_by_grantor_on', width: '17%', type: 'date', cellFilter: 'date:\'yyyy-MM-dd\'' }
+            { name: 'signed_by_grantor_on', width: '17%', type: 'date', cellFilter: 'date:\'yyyy-MM-dd\'' },
+            { name: 'implementing_partners_org_types', width: '25%', displayName: 'Org. Types'}
 
         ],
         onRegisterApi: function(gridApi) {
@@ -119,7 +120,7 @@ angular.module('appCg').controller('HomeCtrl', function($uibModal, $scope, proje
         }
     };
 
-    $scope.changeHoverRegion = function(region) { //                                    
+    $scope.changeHoverRegion = function(region) { //
         $scope.hoverRegion = region; // <-- Add this
     };
     $scope.printDiv = function(divName) {
@@ -134,12 +135,26 @@ angular.module('appCg').controller('HomeCtrl', function($uibModal, $scope, proje
     $scope.openUpload = function() {
         $uibModal.open({
             templateUrl: 'partial/upload-file/upload-file.html',
-            controller: 'UploadFileCtrl'
-        }).result.then(function(result) {
-            //do something with the result
+            controller: 'UploadFileCtrl',
+            windowClass: 'large-width',
+            resolve: {
+              fileId: 1,
+              createFile: false,
+              title: function() {
+                  return 'default';
+              },
+              saveName: function() {
+                  return 'default';
+              }
+            }
+        }).result.then(function(res) {
+        }, function(res){
+          if(res.fileDeleted)
+          {}else{}
         });
-
     };
+
+    //$scope.openUpload();
 });
 
 angular.module('appCg').filter('nToS', function() {

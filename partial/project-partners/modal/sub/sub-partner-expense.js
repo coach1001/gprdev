@@ -136,7 +136,7 @@ angular.module('appCg').controller('SubPartnerExpenseCtrl', function(project_exp
 				}
 			}
 		}).result.then(function(result) {
-			
+
 			gprRestApi.getRows('lookup_bank_accounts').then(function (res){
 					vm.tabs[0].form.fields[1].templateOptions.options = vm.bank_accounts = angular.extend(res);
 					vm.tabs[0].form.model.bank_account = result;
@@ -154,7 +154,7 @@ angular.module('appCg').controller('SubPartnerExpenseCtrl', function(project_exp
       reporting.generateReport(3, [
       { name: 'req_id_param', value: vm.project_expense.id },
       { name: 'tranche_id_param', value: vm.project_expense.payment_schedule }],true);
-  	
+
   };
 
 	vm.updateCreateRow = function() {
@@ -179,5 +179,130 @@ angular.module('appCg').controller('SubPartnerExpenseCtrl', function(project_exp
 		}, function error(response) {
 			ngToast.warning({ content: 'Record Delete Failed', timeout: 4000 });
 		});
+	};
+
+
+	vm.openUploadPP = function(object,prop,title,filePrefix,fileIdentifier) {
+	    var fileId = vm[object][prop];
+	    var createFile = false;
+	    var fileName = filePrefix+fileIdentifier;
+
+	    if(fileId === null){
+	      createFile = true;
+	      fileId = 0;
+	    }else{
+	      createFile = false;
+	    }
+	    $uibModal.open({
+	        templateUrl: 'partial/upload-file/upload-file.html',
+	        controller: 'UploadFileCtrl',
+	        windowClass: 'large-width',
+	        backdrop  : 'static',
+	        keyboard  : false,
+	        resolve: {
+	          fileId: fileId,
+	          createFile: createFile,
+	          title: function() {
+	              return title;
+	          },
+	          saveName: function() {
+	              return fileName;
+	          }
+	        }
+	    }).result.then(function(res) {
+	      vm[object][prop] = res.data.fileId;
+	      vm.updateCreateRow();
+	    }, function(res){
+	      if(res.fileDeleted)
+	      {
+	        vm[object][prop] = null;
+	        vm.updateCreateRow();
+	      }else{
+	        vm[object][prop] = res.fileId;
+	        vm.updateCreateRow();
+	      }
+	    });
+	};
+	vm.openUploadID = function(object,prop,title,filePrefix,fileIdentifier) {
+	    var fileId = vm[object][prop];
+	    var createFile = false;
+	    var fileName = filePrefix+fileIdentifier;
+
+	    if(fileId === null){
+	      createFile = true;
+	      fileId = 0;
+	    }else{
+	      createFile = false;
+	    }
+	    $uibModal.open({
+	        templateUrl: 'partial/upload-file/upload-file.html',
+	        controller: 'UploadFileCtrl',
+	        windowClass: 'large-width',
+	        backdrop  : 'static',
+	        keyboard  : false,
+	        resolve: {
+	          fileId: fileId,
+	          createFile: createFile,
+	          title: function() {
+	              return title;
+	          },
+	          saveName: function() {
+	              return fileName;
+	          }
+	        }
+	    }).result.then(function(res) {
+	      vm[object][prop] = res.data.fileId;
+	      vm.updateCreateRow();
+	    }, function(res){
+	      if(res.fileDeleted)
+	      {
+	        vm[object][prop] = null;
+	        vm.updateCreateRow();
+	      }else{
+	        vm[object][prop] = res.fileId;
+	        vm.updateCreateRow();
+	      }
+	    });
+	};
+	vm.openUploadAD = function(object,prop,title,filePrefix,fileIdentifier) {
+	    var fileId = vm[object][prop];
+	    var createFile = false;
+	    var fileName = filePrefix+fileIdentifier;
+
+	    if(fileId === null){
+	      createFile = true;
+	      fileId = 0;
+	    }else{
+	      createFile = false;
+	    }
+	    $uibModal.open({
+	        templateUrl: 'partial/upload-file/upload-file.html',
+	        controller: 'UploadFileCtrl',
+	        windowClass: 'large-width',
+	        backdrop  : 'static',
+	        keyboard  : false,
+	        resolve: {
+	          fileId: fileId,
+	          createFile: createFile,
+	          title: function() {
+	              return title;
+	          },
+	          saveName: function() {
+	              return fileName;
+	          }
+	        }
+	    }).result.then(function(res) {
+	      vm[object][prop] = res.data.fileId;
+	      vm.updateCreateRow();
+	    }, function(res){
+	      if(res.fileDeleted)
+	      {
+	        vm[object][prop] = null;
+	        vm.updateCreateRow();
+	      }else{
+	        vm[object][prop] = res.fileId;
+	        vm.updateCreateRow();
+	      }
+	    });
 	};
 });

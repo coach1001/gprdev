@@ -6,7 +6,7 @@ angular.module('appCg').controller('ProjectReviewsCtrl', function(projects, gprR
     vm.projects = vm.rows = angular.extend(projects);
     vm.projectPartners = [];
     vm.projectPartnerReviews = [];
-    vm.addReview = true;    
+    vm.addReview = true;
 
     vm.options = {
         data: vm.rows,
@@ -96,11 +96,11 @@ angular.module('appCg').controller('ProjectReviewsCtrl', function(projects, gprR
                 //console.log(vm.report_schedule);
 
                 if(row.entity.id){
-                	vm.openModal(row.entity.id, 'Update',row);	
+                	vm.openModal(row.entity.id, 'Update',row);
                 }else{
                 	vm.openModal(row.entity.id, 'Create',row);
                 }
-                
+
             });
         }
     };
@@ -111,7 +111,7 @@ angular.module('appCg').controller('ProjectReviewsCtrl', function(projects, gprR
         $uibModal.open({
             templateUrl: 'partial/project-reviews/modal/project-review-modal.html',
             controller: 'ProjectReviewModalCtrl as vm',
-            size: 'lg',            
+            size: 'lg',
             resolve: {
                 project_payments_schedule : function res(gprRestApi){
                     return gprRestApi.getRowsFilterColumn('lookup_tranche_schedule','project_partner',row.entity.project_partner);
@@ -120,13 +120,19 @@ angular.module('appCg').controller('ProjectReviewsCtrl', function(projects, gprR
                     return gprRestApi.getRow('project_reports', id);
                 },
                 report_schedule: function res(gprRestApi){
-                		return vm.report_schedule;                		
+                		return vm.report_schedule;
                 },
                 operation: function res() {
                     return operation;
                 },
                 project_partner: function res(){
                     return row.entity.project_partner;
+                },
+                report_schedule_full: function res(gprRestApi){
+                  return gprRestApi.getRow('reporting_schedule',vm.report_schedule);
+                },
+                project_partner_full: function res(gprRestApi){
+                  return gprRestApi.getRow('project_partners',row.entity.project_partner);
                 }
             }
         }).result.then(function(result) {
@@ -134,7 +140,7 @@ angular.module('appCg').controller('ProjectReviewsCtrl', function(projects, gprR
         }, function(result) {
             gprRestApi.getRowsWithFEs('grid_project_reports', '&project_partner=eq.' + vm.selectedProjectPartner).then(function success(res) {
                 vm.projectPartnerReviews = angular.extend(res);
-                vm.optionsPartnerReviews.data = vm.projectPartnerReviews;                
+                vm.optionsPartnerReviews.data = vm.projectPartnerReviews;
                 vm.addReview = false;
             }, function error(res) {
 

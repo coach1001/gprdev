@@ -12,14 +12,14 @@ angular.module('appCg').controller('ProjectPartnerContractModalCtrl', function(
     var operation = '';
 
     vm.options = {};
-    
+
     if (project_partner_contract) {
         operation = 'Update';
         vm.operation = angular.extend(operation);
         vm.project_partner_contract = angular.extend(project_partner_contract);
-         
-        gprRestApi.getRowsFilterColumn('payment_schedule', 'contract', project_partner_contract.id).then(function success(res) {            
-            vm.schedule = angular.extend(res);                        
+
+        gprRestApi.getRowsFilterColumn('payment_schedule', 'contract', project_partner_contract.id).then(function success(res) {
+            vm.schedule = angular.extend(res);
             vm.options.data = vm.rows = angular.extend(res);
         }, function error(res) {
 
@@ -126,14 +126,14 @@ angular.module('appCg').controller('ProjectPartnerContractModalCtrl', function(
             }
         }).result.then(function(result) {
             console.log('modal closed');
-        }, function(result) {                     
+        }, function(result) {
             gprRestApi.getRowsFilterColumn('payment_schedule', 'contract', project_partner_contract.id).then(function success(res) {
-            vm.options.data = vm.rows = vm.schedule = angular.extend(res);            
+            vm.options.data = vm.rows = vm.schedule = angular.extend(res);
             }, function error(res) {
 
             });
         });
-    };    
+    };
 
 
     vm.updateCreateRow = function() {
@@ -143,7 +143,7 @@ angular.module('appCg').controller('ProjectPartnerContractModalCtrl', function(
         gprRestApi.updateCreateRow('project_contracts', body, vm.operation).then(function success(response) {
             ngToast.create({ content: vm.operation + ' Record Successfull', timeout: 4000 });
             if (vm.operation === 'Create') {
-                vm.project_partner_contract.id = response.data.id;                
+                vm.project_partner_contract.id = response.data.id;
             } else if (vm.operation === 'Update') {
 
             }
@@ -159,6 +159,48 @@ angular.module('appCg').controller('ProjectPartnerContractModalCtrl', function(
             $uibModalInstance.dismiss('Record Deleted');
         }, function error(response) {
             ngToast.warning({ content: 'Record Delete Failed', timeout: 4000 });
+        });
+    };
+
+    vm.openUpload = function(object,prop,title,filePrefix,fileIdentifier) {
+        var fileId = vm[object][prop];
+        var createFile = false;
+        var fileName = filePrefix+fileIdentifier;
+
+        if(fileId === null){
+          createFile = true;
+          fileId = 0;
+        }else{
+          createFile = false;
+        }
+        $uibModal.open({
+            templateUrl: 'partial/upload-file/upload-file.html',
+            controller: 'UploadFileCtrl',
+            windowClass: 'large-width',
+            backdrop  : 'static',
+            keyboard  : false,
+            resolve: {
+              fileId: fileId,
+              createFile: createFile,
+              title: function() {
+                  return title;
+              },
+              saveName: function() {
+                  return fileName;
+              }
+            }
+        }).result.then(function(res) {
+          vm[object][prop] = res.data.fileId;
+          vm.updateCreateRow();
+        }, function(res){
+          if(res.fileDeleted)
+          {
+            vm[object][prop] = null;
+            vm.updateCreateRow();
+          }else{
+            vm[object][prop] = res.fileId;
+            vm.updateCreateRow();
+          }
         });
     };
 

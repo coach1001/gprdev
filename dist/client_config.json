@@ -4,7 +4,10 @@
 	"app_dbauth_login_url": "/login",
 	"app_ldap_base_url" : "http://gpr.fhr.org.za/ldap/prod",
 	"app_ldap_login_url" : "/login",
-	"app_report_base_url" : "http://10.0.0.111:8080/jasperserver/flow.html?_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2FGPR%2FReports&reportUnit=%2FGPR%2FReports%2F",	
+	"app_report_base_url" : "http://10.0.0.111:8080/jasperserver/flow.html?_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2FGPR%2FReports&reportUnit=%2FGPR%2FReports%2F",
 	"app_report_url_add" : "&standAlone=true&output=pdf&j_username=reportConsumer&j_password=password",
-	"alfresco_endpoints_base_url" : "https://alfresco.fhr.org.za/alfresco/s/fhr/fhrguestservice"
+	"alfresco_endpoints_base_url" : "https://alfresco.fhr.org.za/alfresco/s/fhr/fhrguestservice",
+	"file_server_base_url": "http://gpr.fhr.org.za:3005",
+	"geocode_api_key": "AIzaSyBWVjUazinMH-iURxs0uT70FpQ4aFgJ06Y",
+	"geocode_api_url": "https://maps.googleapis.com/maps/api/geocode/json?"
 }

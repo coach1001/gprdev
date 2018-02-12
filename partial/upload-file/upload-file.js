@@ -1,65 +1,97 @@
-function downloadURI(uri, name) {
-  var link = document.createElement("a");
-  link.download = name;
-  link.href = uri;  
-  document.body.appendChild(link);
-  link.click();
-  document.body.removeChild(link);  
-  /* jshint ignore:start */
-  delete link;
-  /* jshint ignore:end */
-}
-
-function b64toBlob(b64Data, contentType, sliceSize) {
-  contentType = contentType || '';
-  sliceSize = sliceSize || 512;
-
-  var byteCharacters = atob(b64Data);
-  var byteArrays = [];
-
-  for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-    var slice = byteCharacters.slice(offset, offset + sliceSize);
-
-    var byteNumbers = new Array(slice.length);
-    for (var i = 0; i < slice.length; i++) {
-      byteNumbers[i] = slice.charCodeAt(i);
+angular.module('appCg').directive('fileOnChange', function() {
+  return {
+    restrict: 'A',
+    link: function (scope, element, attrs) {
+      var onChangeHandler = scope.$eval(attrs.fileOnChange);
+      element.bind('change', onChangeHandler);
     }
+  };
+});
 
-    var byteArray = new Uint8Array(byteNumbers);
-    byteArrays.push(byteArray);
-  }
-    
-  var blob = new Blob(byteArrays, {type: contentType});
-  return blob;
-}
+angular.module('appCg').controller('UploadFileCtrl',function(Upload,
+   $sce,
+   $scope,
+   $uibModalInstance,
+   ngToast,
+   fileId,
+   createFile,
+   title,
+   config,
+   fileUploadDownload,
+   saveName){
 
-angular.module('appCg').controller('UploadFileCtrl',function($scope,$http){	
-	  
-	$scope.upload = function(){						
-	  console.log($scope.file);
-  	/*
-    $http.post('http://localhost:3003/files', {
-			filetype : $scope.file.filetype,
-			data: $scope.file.base64
-		},{ headers: {'Authorization':undefined} }).then( function succ(sr){
-			var id = sr.headers('Location').split('.')[1];			
-			$scope.view(id);
-		}, function err(er){
+  $scope.fileModel = null;
+  $scope.fileId = angular.extend(fileId);
+  $scope.title = angular.extend(title);
+  $scope.createFile = angular.extend(createFile);
+  $scope.fileSelected = false;
+  $scope.fileName = '';
 
-		});*/		
-	};
+  $scope.fileChanged = function($event){
 
-	$scope.view = function(id){
-    console.log(id);
-		$http.get('http://localhost:3003/files?id=eq.'+id+'&select=data,filetype',{ headers: {'Authorization': undefined } }).then( function succ(sr){				
-        var blob = b64toBlob(sr.data[0].data,sr.data[0].filetype,512);                      
-        var blobUrl = URL.createObjectURL(blob);        
-				downloadURI(blobUrl,"this.pdf");      
-        //window.open(blobUrl);				
-		}, function err(er){
-      console.log(er);
-		});		
-	
-	};
+    $scope.fileName = $event.target.files[0].name || '';
+    if($scope.fileName){
+       $scope.fileSelected = true;
+    }else{
+      $scope.fileSelected = false;
+    }
+  };
 
+  $scope.previewFile = function(){
+    if(!$scope.createFile){
+      $scope.previewURL=$sce.trustAsResourceUrl(config.file_server_base_url+'/file?fileId='+ $scope.fileId);
+    }else{
+      $scope.previewURL='';
+    }
+  };
+
+  $scope.submit = function(){
+    var extension = $scope.fileModel.name.split('.').pop().toLowerCase();
+    var newFileName = saveName+'.'+extension;
+    $scope.fileModel.saveAsFileName = newFileName;
+
+    if($scope.createFile){
+      $scope.previewURL = $sce.trustAsResourceUrl('');
+      fileUploadDownload.createFile($scope.fileModel).then( function(res){
+        $scope.fileId = res.data.fileId;
+        $scope.previewURL=$sce.trustAsResourceUrl(config.file_server_base_url+'/file?fileId='+ $scope.fileId);
+        $scope.fileSelected = false;
+        $scope.createFile = false;
+        $scope.fileName = '';
+      });
+    }else{
+      $scope.previewURL = $sce.trustAsResourceUrl('');
+      fileUploadDownload.updateFile($scope.fileId, $scope.fileModel).then( function(res){
+        $scope.previewURL=$sce.trustAsResourceUrl(config.file_server_base_url+'/file?fileId='+ $scope.fileId);
+        $scope.fileSelected = false;
+        $scope.fileName = '';
+      });
+    }
+  };
+
+  $scope.delete = function() {
+    fileUploadDownload.deleteFile($scope.fileId).then( function(res){
+      ngToast.warning({ content: 'File Deleted Successfully', timeout: 4000 });
+      $uibModalInstance.dismiss({
+        fileDeleted: true
+      });
+    });
+  };
+
+  $scope.view = function() {
+      fileUploadDownload.previewInTab($scope.fileId);
+      $uibModalInstance.dismiss({
+        fileDeleted: false,
+        fileId: $scope.fileId > 0 ? $scope.fileId : null
+      });
+  };
+
+  $scope.close = function() {
+    $uibModalInstance.dismiss({
+      fileDeleted: false,
+      fileId: $scope.fileId > 0 ? $scope.fileId : null
+    });
+  };
+
+  $scope.previewFile();
 });

@@ -53,6 +53,9 @@ angular.module('appCg').controller('ProjectsCtrl', function(projects, gprRestApi
                 project_types: function res(gprRestApi) {
                     return gprRestApi.getRows('project_types', false);
                 },
+                titles_descriptions: function res(gprRestApi) {
+                    return gprRestApi.getRows('view_application_title_description', false);
+                },
                 operation: function res() {
                     return operation;
                 }

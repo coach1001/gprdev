@@ -1,26 +1,44 @@
 <div>
     <div class="modal-header">
-        <button type="button" class="close pull-right" ng-click="$dismiss()" aria-hidden="true">&times;</button>
-        <h4 class="modal-title">Upload File</h4>
+        <button type="button" class="close pull-right" ng-click="$dismiss()"  aria-hidden="true">&times;</button>
+        <h4 ng-if="!createFile" class="modal-title">{{title}}-File ID:<span class="badge">{{fileId}}</span> </h4>
+        <h4 ng-if="createFile" class="modal-title">{{title}}</h4>
+
     </div>
     <div class="modal-body">
-    
+      <div class="row">
+        <div class="col-md-3">
+          <label class="btn btn-default btn-block">
+            Browse <input type="file" style="display: none;" ngf-select name="file" ng-model="fileModel" file-on-change="fileChanged"/>
+          </label>
+        </div>
+        <div class="col-md-3">
+          <button ng-disabled="!fileSelected" class="btn btn-block btn-primary" ng-click="submit()">
+            <span ng-if="createFile">Create</span>
+            <span ng-if="!createFile">Replace</span>
+          </button>
+        </div>
 
-
-        <input type="file" base-sixty-four-input do-not-parse-if-oversize ng-model="file">         
-    
-
-
-       <!--  <label class="btn btn-primary btn-file">
-            Browse
-            <input type="file" ng-model="file" base-sixty-four-input style="display: none;">
-        </label>
- -->
-    	File: {{file.filename}}
-    </div>   
+        <div class="col-md-3">
+          <button ng-if="!createFile" class="btn btn-block btn-success" ng-click="view()">
+            <span>Open in Tab and Close</span>
+          </button>
+        </div>
+        <div class="col-md-3">
+          <button ng-if="!createFile" confirm="Are you sure?" class="btn btn-block btn-danger" ng-click="delete()">
+            <span>Delete</span>
+          </button>
+        </div>
+      </div>
+      <h5 ng-if="fileName !== ''">File Name: {{fileName}}</h5>
+      <br ng-if="fileName === ''"/>
+      <div class="row">
+        <div class="col-md-12" style="height: 62vh;">
+          <iframe id="previewFrame" ng-src="{{previewURL}}"> <!--content--> </iframe>
+        </div>
+      </div>
+    </div>
     <div class="modal-footer">
-        <button class="btn btn-default" ng-click="$dismiss()">Cancel</button>
-        <button type="button" class="btn btn-primary" ng-click="upload()">Upload</button>
-        <button type="button" class="btn btn-info" ng-click="view(38)">View</button>    		
+        <button class="btn btn-primary" ng-click="close()">Close</button>
     </div>
 </div>

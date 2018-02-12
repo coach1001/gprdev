@@ -136,12 +136,13 @@ angular.module('appCg').controller('ProjectPartnersCtrl', function(projects, gpr
                 templateUrl: 'partial/project-partners/modal/project-partner-budget-modal.html',
                 controller: 'ProjectPartnerBudgetModalCtrl as vm',
                 size: 'lg',
+                windowClass: 'large-width',
                 resolve: {
                     project_partner: function res(gprRestApi) {
                         return gprRestApi.getRow('grid_project_partners', id);
                     },
                     partner_budget_schedule: function res(gprRestApi) {
-                        return gprRestApi.getRowsFilterColumn('project_budgets', 'project_partner', id);
+                        return gprRestApi.getRowsFilterColumn('grid_project_partner_budget', 'project_partner', id);
                     }
                 }
             }).result.then(function(result) {

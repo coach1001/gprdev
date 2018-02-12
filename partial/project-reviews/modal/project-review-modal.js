@@ -3,10 +3,13 @@ angular.module('appCg').controller('ProjectReviewModalCtrl', function(project_re
     gprRestApi,
     ngToast,
     $confirm,
+    reporting,
+    report_schedule_full,
+    project_partner_full,
     $uibModalInstance,$uibModal,project_partner,project_payments_schedule) {
 
     var vm = this;
-    
+
     //alert(report_schedule);
 
     if (operation === 'Create') {
@@ -14,13 +17,18 @@ angular.module('appCg').controller('ProjectReviewModalCtrl', function(project_re
     } else if (operation === 'Update') {
         vm.project_report = angular.extend(project_report);
     }
-    
+
     vm.project_report.report_schedule = report_schedule;
     vm.project_payments_schedule = angular.extend(project_payments_schedule);
     vm.operation = angular.extend(operation);
     vm.project_partner = angular.extend(project_partner);
 
-    vm.project_reportFields = [ 
+    vm.report_schedule_full = angular.extend(report_schedule_full);
+    vm.project_partner_full = angular.extend(project_partner_full);
+
+    console.log(vm.report_schedule_full,vm.project_partner_full);
+
+    vm.project_reportFields = [
     {
         key: 'review_date',
         type: 'datepicker',
@@ -35,7 +43,7 @@ angular.module('appCg').controller('ProjectReviewModalCtrl', function(project_re
         type: 'textarea',
         className: 'nopadding',
         templateOptions: {
-            label: 'Objectives',            
+            label: 'Objectives',
             rows: 3,
             required: true
         }
@@ -46,16 +54,16 @@ angular.module('appCg').controller('ProjectReviewModalCtrl', function(project_re
         templateOptions: {
             label: 'Summary of Assessment',
             rows: 3,
-            required: true
+            required: false
         }
     },{
         key: 'recommendation',
         type: 'textarea',
         className: 'nopadding',
         templateOptions: {
-            label: 'Recommendation',            
+            label: 'Recommendation',
             rows: 3,
-            required: true
+            required: false
         }
     },{
     fieldGroup: [
@@ -67,7 +75,7 @@ angular.module('appCg').controller('ProjectReviewModalCtrl', function(project_re
             label: 'Recommend Payment ?',
         }
     },
-    {      
+    {
       className: 'col-xs-5 nopadding',
       key: 'tranche_to_pay',
       type: 'select',
@@ -90,7 +98,7 @@ angular.module('appCg').controller('ProjectReviewModalCtrl', function(project_re
       }
     }
     ]},
-    {      
+    {
         key: 'recommend_extension',
         type: 'checkbox2',
         templateOptions: {
@@ -136,7 +144,7 @@ angular.module('appCg').controller('ProjectReviewModalCtrl', function(project_re
                         lookupValueProp: 'id',
                         lookupLabelProp: 'item_label_budget',
                         lookupParam: '?project_partner=eq.' + vm.project_partner,
-                        
+
                         //extraFields: [],
                         extraFields: [
                             {fieldName : 'achieved_implemented', type: 'text', label : 'Achieved/Implemented',required : false, default: ' '},
@@ -150,10 +158,14 @@ angular.module('appCg').controller('ProjectReviewModalCtrl', function(project_re
             //do something with the result
         });
     };
-   
+
+    vm.printReview = function() {
+      reporting.generateReport(4, [{ name: 'project_review_id', value: vm.project_report.id }], true);
+    };
+
     vm.updateCreateRow = function() {
         var body = angular.copy(vm.project_report);
-        
+
         gprRestApi.updateCreateRow('project_reports', body, vm.operation).then(function success(response) {
             ngToast.create({ content: vm.operation + ' Record Successfull', timeout: 4000 });
             if (vm.operation === 'Create') {
@@ -170,6 +182,47 @@ angular.module('appCg').controller('ProjectReviewModalCtrl', function(project_re
             $uibModalInstance.dismiss('Record Deleted');
         }, function error(response) {
             ngToast.warning({ content: 'Record Delete Failed', timeout: 4000 });
+        });
+    };
+    vm.openUpload = function(object,prop,title,filePrefix,fileIdentifier) {
+        var fileId = vm[object][prop];
+        var createFile = false;
+        var fileName = filePrefix+fileIdentifier;
+
+        if(fileId === null){
+          createFile = true;
+          fileId = 0;
+        }else{
+          createFile = false;
+        }
+        $uibModal.open({
+            templateUrl: 'partial/upload-file/upload-file.html',
+            controller: 'UploadFileCtrl',
+            windowClass: 'large-width',
+            backdrop  : 'static',
+            keyboard  : false,
+            resolve: {
+              fileId: fileId,
+              createFile: createFile,
+              title: function() {
+                  return title;
+              },
+              saveName: function() {
+                  return fileName;
+              }
+            }
+        }).result.then(function(res) {
+          vm[object][prop] = res.data.fileId;
+          vm.updateCreateRow();
+        }, function(res){
+          if(res.fileDeleted)
+          {
+            vm[object][prop] = null;
+            vm.updateCreateRow();
+          }else{
+            vm[object][prop] = res.fileId;
+            vm.updateCreateRow();
+          }
         });
     };
 });
