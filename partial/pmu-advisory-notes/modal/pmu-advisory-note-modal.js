@@ -66,13 +66,13 @@ console.log(vm.disabled);
   }];
 
   vm.updateCreateRow = function () {
-    var body = angular.copy(vm.application);  
-    console.log(body);  
+    var body = angular.copy(vm.application);
+    console.log(body);
     gprRestApi.updateCreateRow('call_applications', body, vm.operation).then(function success(response) {
       ngToast.create({content: vm.operation + ' Record Successfull', timeout: 4000});
       if (vm.operation === 'Create') {
         vm.application.id = response.data.id;
-      }      
+      }
       vm.operation = 'Update';
     }, function error(response) {
       ngToast.warning({content: vm.operation + ' Record Failed', timeout: 4000});
@@ -88,7 +88,7 @@ console.log(vm.disabled);
     });
   };
 
-  vm.promote = function(){    
+  vm.promote = function(){
     vm.updateCreateRow();
     $confirm(
       {
@@ -96,32 +96,32 @@ console.log(vm.disabled);
         text : 'Warning : You will only be able to view data from this section after promotion',
         ok : 'Yes',
         cancel : 'No'
-      }).then(function(res){        
+      }).then(function(res){
         gprRestApi.runRPC('promote_application',
           {application : vm.application.id , current_section : vm.application.application_status}).then(
           function success(res){
             $uibModalInstance.dismiss('');
-            $state.go('home.pmu-advisory-notes');  
-          },function error(res){          
-          
+            $state.go('home.pmu-advisory-notes');
+          },function error(res){
+
           });
     });
   };
 
   vm.fail =function(){
-    vm.saveAnswers();
+    vm.updateCreateRow();
     $confirm(
       {
         title : 'Fail Application',
         text : 'Are you sure ?',
         ok : 'Yes',
         cancel : 'No'
-      }).then(function(res){        
+      }).then(function(res){
         gprRestApi.runRPC('fail_application',
-          {application : vm.application.id , current_section : vm.application.application_status }).then(function success(res){            
+          {application : vm.application.id , current_section : vm.application.application_status }).then(function success(res){
             $uibModalInstance.dismiss('');
-            $state.go('home.pmu-advisory-notes');  
-        },function error(res){          
+            $state.go('home.pmu-advisory-notes');
+        },function error(res){
         });
     });
 
@@ -134,12 +134,12 @@ console.log(vm.disabled);
         text : 'Warning : All Section Data will be Deleted for this Application',
         ok : 'Yes',
         cancel : 'No'
-      }).then(function(res){        
+      }).then(function(res){
         gprRestApi.runRPC('demote_application',
-          {application : vm.application.id , current_section : vm.application.application_status }).then(function success(res){            
+          {application : vm.application.id , current_section : vm.application.application_status }).then(function success(res){
             $uibModalInstance.dismiss('');
-            $state.go('home.pmu-advisory-notes');  
-        },function error(res){          
+            $state.go('home.pmu-advisory-notes');
+        },function error(res){
         });
     });
   };

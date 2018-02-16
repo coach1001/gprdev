@@ -20,7 +20,7 @@ angular.module('appCg').controller('ApplicationsCtrl', function(applications, gp
             { name: 'call_reference', width: 200, filter: { selectOptions: lookup_calls_uigrid, type: uiGridConstants.filter.SELECT } },
             { name: 'name', displayName: 'Organisation' },
             { name: 'email_address' },
-            { name: 'description', displayName: 'Application Status', width: 220 }
+            { name: 'description', displayName: 'Application Status', width: 400 }
         ],
         onRegisterApi: function(gridApi) {
             vm.gridApi = gridApi;
