@@ -291,6 +291,49 @@ angular.module('appCg').controller('ProjectModalCtrl', function(project, kpis, p
     });
   };
 
+  
+  vm.openUpload = function(object,prop,title,filePrefix,fileIdentifier) {
+    var fileId = vm[object][prop];
+    var createFile = false;
+    var fileName = filePrefix+fileIdentifier;
+
+    if(fileId === null){
+      createFile = true;
+      fileId = 0;
+    }else{
+      createFile = false;
+    }
+    $uibModal.open({
+        templateUrl: 'partial/upload-file/upload-file.html',
+        controller: 'UploadFileCtrl',
+        windowClass: 'large-width',
+        backdrop  : 'static',
+        keyboard  : false,
+        resolve: {
+          fileId: fileId,
+          createFile: createFile,
+          title: function() {
+              return title;
+          },
+          saveName: function() {
+              return fileName;
+          }
+        }
+    }).result.then(function(res) {
+      vm[object][prop] = res.data.fileId;
+      vm.updateCreateRow();
+    }, function(res){
+      if(res.fileDeleted)
+      {
+        vm[object][prop] = null;
+        vm.updateCreateRow();
+      }else{
+        vm[object][prop] = res.fileId;
+        vm.updateCreateRow();
+      }
+    });
+  };
+
 
   vm.updateCreateRow = function() {
     var body = angular.copy(vm.project);

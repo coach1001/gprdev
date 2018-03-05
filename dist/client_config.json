@@ -1,8 +1,8 @@
 {
-	"app_db_base_url": "http://gpr.fhr.org.za:3004",
+	"app_db_base_url": "https://192.168.5.6/gpr-api",
 	"app_dbrpc_base_url": "/rpc",
 	"app_dbauth_login_url": "/login",
-	"app_ldap_base_url" : "http://gpr.fhr.org.za/ldap/prod",
+	"app_ldap_base_url" : "https://192.168.5.6/gpr-auth",
 	"app_ldap_login_url" : "/login",
 	"app_report_base_url" : "http://10.0.0.111:8080/jasperserver/flow.html?_flowId=viewReportFlow&_flowId=viewReportFlow&ParentFolderUri=%2FGPR%2FReports&reportUnit=%2FGPR%2FReports%2F",
 	"app_report_url_add" : "&standAlone=true&output=pdf&j_username=reportConsumer&j_password=password",
